@@ -1,9 +1,14 @@
-import Image from 'next/image'
-import styles from './page.module.css'
+import Image from "next/image";
+import styles from "./page.module.css";
+import Link from "next/link";
 
 export default function Home() {
   return (
     <main className={styles.main}>
+      {/* 임시 버튼 : 로그인 화면으로 이동 */}
+      <Link href="/login">
+        <button>로그인화면</button>
+      </Link>
       <div className={styles.description}>
         <p>
           Get started by editing&nbsp;
@@ -15,7 +20,7 @@ export default function Home() {
             target="_blank"
             rel="noopener noreferrer"
           >
-            By{' '}
+            By{" "}
             <Image
               src="/vercel.svg"
               alt="Vercel Logo"
@@ -91,5 +96,5 @@ export default function Home() {
         </a>
       </div>
     </main>
-  )
+  );
 }
