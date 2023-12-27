@@ -1,13 +1,10 @@
 "use client";
+
 import React, { useEffect, useState } from "react";
 import styles from "./login.module.css";
 import { useRouter } from "next/navigation";
 import { supabase } from "@/utils/supabase";
-
-type LoginType = {
-  id: string;
-  password: string;
-};
+import Link from "next/link";
 
 function page() {
   const router = useRouter();
@@ -27,37 +24,30 @@ function page() {
   const handleLginForm = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    try {
-      const { data, error } = await supabase.auth.signInWithPassword({
-        email,
-        password,
-      });
-      alert("로그인 성공");
-      setIsLogin(true);
-      router.push("/");
-    } catch (error) {
-      console.error(error);
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
+    console.log("data : ", data);
+    if (error) {
+      console.log("error --- ", error);
+      return alert("실패");
     }
-
-    setEmail("");
-    setPassword("");
+    alert("로그인 성공");
+    setIsLogin(true);
+    router.push("/");
   };
 
-  useEffect(() => {
-    console.log("isLogin : ", isLogin);
-  }, [isLogin]);
+  // useEffect(() => {
+  //   console.log("isLogin : ", isLogin);
+  // }, [isLogin]);
 
   return (
     <>
       <form onSubmit={handleLginForm}>
         <div>
           <p>이메일</p>
-          <input
-            type="text"
-            value={email}
-            onChange={handleEmailInput}
-            min={0}
-          />
+          <input type="text" value={email} onChange={handleEmailInput} />
         </div>
         <div>
           <p>비밀번호</p>
@@ -80,7 +70,9 @@ function page() {
         <p>-------------</p>
         <div>
           <a>비밀번호찾기</a>
-          <a>회원가입</a>
+          <Link href={"/signup"} legacyBehavior>
+            <a>회원가입</a>
+          </Link>
         </div>
       </div>
     </>
