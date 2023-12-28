@@ -27,6 +27,7 @@ function page() {
       email,
       password,
     });
+    console.log(process.env.NEXT_PUBLIC_SERVICE_KEY);
     console.log("data : ", data);
 
     if (error) {
