@@ -2,7 +2,7 @@
 
 import React, { useEffect } from "react";
 import Layout from "./profileLayout";
-import { supabase } from "@/components/ilb/supabase-config";
+import { supabase } from "@/lib/supabase-config";
 
 function ProfilePage() {
   async function signInWithEmail() {

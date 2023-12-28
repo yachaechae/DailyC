@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import styles from "./profile-info.module.css";
 import Image from "next/image";
 import defaultImg from "../../../public/images/defaultImg.png";
-import { supabase } from "../ilb/supabase-config";
+import { supabase } from "@/lib/supabase-config";
 
 function ProfileInfo({ showModal }: any) {
   const [profile, setProfile] = useState<any>({});
@@ -22,7 +22,7 @@ function ProfileInfo({ showModal }: any) {
         <Image src={defaultImg} alt="기본이미지" />
       </div>
       <div className={styles.nickname}>홍길동</div>
-      <div className={styles.email}>{profile.user.email}</div>
+      <div className={styles.email}>email</div>
       <button onClick={showModal} className={styles.btn}>
         수 정
       </button>

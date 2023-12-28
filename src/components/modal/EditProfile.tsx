@@ -4,8 +4,8 @@ import SelectGender from "../ui/Radio";
 import defaultImg from "../../../public/images/defaultImg.png";
 import Image from "next/image";
 import { TfiClose } from "react-icons/tfi";
-import { supabase } from "../ilb/supabase-config";
 import uuid from "react-uuid";
+import { supabase } from "@/lib/supabase-config";
 
 function EditProfile({ closeModal }: any) {
   const [gender, setGender] = useState<string>("");
