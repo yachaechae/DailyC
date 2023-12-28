@@ -1,8 +1,7 @@
 "use client";
-import React, { useEffect, useState } from "react";
-import styles from "./login.module.css";
+import React, { useState } from "react";
 import { useRouter } from "next/navigation";
-import { supabase } from "@/utils/supabase";
+import { supabase } from "@/lib/supabase-config";
 import Link from "next/link";
 import {
   FormControl,
@@ -11,6 +10,7 @@ import {
   Radio,
   RadioGroup,
 } from "@mui/material";
+// import styles from "./login.module.css";
 
 function page() {
   const router = useRouter();
