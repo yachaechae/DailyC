@@ -1,10 +1,9 @@
 "use client";
-
 import React, { useEffect, useState } from "react";
-import styles from "./login.module.css";
 import { useRouter } from "next/navigation";
 import { supabase } from "@/utils/supabase";
 import Link from "next/link";
+// import styles from "./login.module.css";
 
 function page() {
   const router = useRouter();
@@ -39,6 +38,8 @@ function page() {
     setIsLogin(true);
     router.push("/");
   };
+
+  // 비밀번호 찾기 기능
 
   return (
     <>

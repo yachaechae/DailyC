@@ -2,6 +2,7 @@ import Image from "next/image";
 import styles from "./page.module.css";
 import Link from "next/link";
 import LogoutBtn from "@/components/main/LogoutBtn";
+import GetUserBtn from "@/components/main/GetUserBtn";
 
 export default function Home() {
   return (
@@ -12,6 +13,8 @@ export default function Home() {
       </Link>
       {/* 로그아웃 버튼 */}
       <LogoutBtn />
+      {/* 유저정보 확인 버튼 */}
+      <GetUserBtn />
       <div className={styles.description}>
         <p>
           Get started by editing&nbsp;

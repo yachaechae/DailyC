@@ -33,7 +33,7 @@ function page() {
     setCheckPassword(e.target.value);
   };
 
-  const handleSexSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleGenderSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     setGender(e.target.value);
   };
 
@@ -41,7 +41,7 @@ function page() {
     setHeight(parseInt(e.target.value));
   };
 
-  const handleSignup = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSignupForm = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const { data, error } = await supabase.auth.signUp({
@@ -65,13 +65,9 @@ function page() {
     router.push("/login");
   };
 
-  // useEffect(() => {
-  //   console.log("isLogin : ", isLogin);
-  // }, [isLogin]);
-
   return (
     <>
-      <form onSubmit={handleSignup}>
+      <form onSubmit={handleSignupForm}>
         <div>
           <p>이메일</p>
           <input type="text" value={email} onChange={handleEmailInput} />
@@ -100,7 +96,7 @@ function page() {
               aria-labelledby="demo-controlled-radio-buttons-group"
               name="controlled-radio-buttons-group"
               value={gender}
-              onChange={handleSexSelect}
+              onChange={handleGenderSelect}
             >
               <FormControlLabel value="Man" control={<Radio />} label="Man" />
               <FormControlLabel
