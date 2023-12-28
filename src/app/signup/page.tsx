@@ -18,7 +18,7 @@ function page() {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [checkPassword, setCheckPassword] = useState<string>("");
-  const [sex, setSex] = useState<string>("");
+  const [gender, setGender] = useState<string>("");
   const [height, setHeight] = useState<number>(0);
 
   const handleEmailInput = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -34,7 +34,7 @@ function page() {
   };
 
   const handleSexSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSex(e.target.value);
+    setGender(e.target.value);
   };
 
   const handleHeightInput = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -44,27 +44,25 @@ function page() {
   const handleSignup = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    try {
-      const { data, error } = await supabase.auth.signUp({
-        email,
-        password,
-        options: {
-          data: {
-            sex,
-            height,
-          },
+    const { data, error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        data: {
+          gender,
+          height,
         },
-      });
-      console.log("data : ", data);
-      if (error) {
-        console.error("error : ", error);
-        return alert("실패");
-      }
-      alert("회원가입 성공");
-      router.push("/login");
-    } catch (error) {
-      console.error(error);
+      },
+    });
+    console.log("data : ", data);
+
+    if (error) {
+      console.error("error : ", error);
+      return alert("실패");
     }
+
+    alert("회원가입 성공");
+    router.push("/login");
   };
 
   // useEffect(() => {
@@ -101,7 +99,7 @@ function page() {
               row
               aria-labelledby="demo-controlled-radio-buttons-group"
               name="controlled-radio-buttons-group"
-              value={sex}
+              value={gender}
               onChange={handleSexSelect}
             >
               <FormControlLabel value="Man" control={<Radio />} label="Man" />

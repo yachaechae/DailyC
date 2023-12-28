@@ -29,18 +29,16 @@ function page() {
       password,
     });
     console.log("data : ", data);
+
     if (error) {
       console.log("error --- ", error);
       return alert("실패");
     }
+
     alert("로그인 성공");
     setIsLogin(true);
     router.push("/");
   };
-
-  // useEffect(() => {
-  //   console.log("isLogin : ", isLogin);
-  // }, [isLogin]);
 
   return (
     <>
