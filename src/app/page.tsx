@@ -1,4 +1,3 @@
-import Image from "next/image";
 import Link from "next/link";
 import LogoutBtn from "@/components/main/LogoutBtn";
 import GetUserBtn from "@/components/main/GetUserBtn";
