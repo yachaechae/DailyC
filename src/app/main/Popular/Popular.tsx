@@ -1,6 +1,5 @@
 import React from "react";
-import Card from "../Card/Card";
-import styles from "../page.module.css";
+import BasicCard from "../Card/BasicCard";
 import { Title } from "../main.styles";
 
 export default function Popular() {
@@ -8,7 +7,7 @@ export default function Popular() {
 		<>
 			<Title>인기 코디</Title>
 
-			<Card />
+			<BasicCard />
 		</>
 	);
 }

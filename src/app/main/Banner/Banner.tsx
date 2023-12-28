@@ -23,15 +23,29 @@ const Banner = () => {
 		return () => clearInterval(interval);
 	}, [currentIndex]);
 	return (
-		<Slider>
-			<ArrowBackIosNewOutlinedIcon className="prevButton" onClick={prevSlide} />
-			<SliderWrapper style={{ transform: `translateX(${-currentIndex * 100}%)` }}>
+		<div className="relative w-screen m-auto overflow-hidden">
+			<ArrowBackIosNewOutlinedIcon
+				className="absolute top-1/2 left-4 -translate-y-1/2 border-none bg-white bg-opacity-75  p-3 cursor-pointer text-5xl z-10"
+				onClick={prevSlide}
+			/>
+			<div
+				className="flex transition-transform duration-500 ease-in-out"
+				style={{ transform: `translateX(${-currentIndex * 100}%)` }}
+			>
 				{images.map((image, index) => (
-					<SlideImg key={index} src={image} alt={`Slide ${index + 1}`} />
+					<img
+						className="flex-shrink-0 flex-grow-0 w-screen"
+						key={index}
+						src={image}
+						alt={`Slide ${index + 1}`}
+					/>
 				))}
-			</SliderWrapper>
-			<ArrowForwardIosOutlined className="nextButton" onClick={nextSlide} />
-		</Slider>
+			</div>
+			<ArrowForwardIosOutlined
+				className="absolute top-1/2 right-4 -translate-y-1/2 border-none bg-white bg-opacity-75  p-3 cursor-pointer text-5xl z-10"
+				onClick={nextSlide}
+			/>
+		</div>
 	);
 };
 
