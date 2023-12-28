@@ -35,7 +35,7 @@ function page() {
       return alert("실패");
     }
 
-    alert("로그인 성공");
+    alert("로그인 되었습니다.");
     setIsLogin(true);
     router.push("/");
   };
