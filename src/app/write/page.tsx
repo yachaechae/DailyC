@@ -9,7 +9,7 @@ import React, {
   useRef,
   useState,
 } from "react";
-import { v4 as uuidv4 } from "uuid";
+import uuid from "react-uuid";
 
 declare type inputsType = {
   id: string;
@@ -24,7 +24,7 @@ const WritePage = () => {
   const [writedId, setWritedId] = useState("123");
   const [writedName, setWritedName] = useState("tjdsksro90@gmail.com");
   const [inputs, setInputs] = useState<inputsType>({
-    id: uuidv4(),
+    id: uuid(),
     gender: "woman",
     height: "",
     title: "",
