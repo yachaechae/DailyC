@@ -1,12 +1,11 @@
-import NavBar from "@/components/NavBar";
-import ProfileInfo from "@/components/ProfileInfo";
 import React from "react";
+import Layout from "./profileLayout";
 
 function ProfilePage() {
   return (
     <>
-      <ProfileInfo />
-      <NavBar />
+      <Layout />
+      <p>나의 코디</p>
     </>
   );
 }

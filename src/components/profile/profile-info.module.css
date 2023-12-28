@@ -1,0 +1,40 @@
+.warpper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 30px;
+  gap: 20px;
+}
+
+.avatarfigure {
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  user-select: none;
+}
+
+.avatarfigure > img {
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+}
+
+.nickname {
+  font-size: 30px;
+  font-weight: 700;
+}
+
+.email {
+  color: lightgrey;
+}
+
+.btn {
+  font-size: 15px;
+  padding: 7px 50px;
+  border: 0;
+  background-color: #f49608;
+  border-radius: 10px;
+  cursor: pointer;
+  color: white;
+  font-weight: 700;
+}
