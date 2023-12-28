@@ -6,7 +6,7 @@ function GetUserBtn() {
   const handleGetUserBtn = async () => {
     const user = await getUser();
     if (!user) return alert("로그인된 이메일이 없습니다.");
-    console.log("user 여기 ", user);
+    console.log("user 정보 ", user);
   };
 
   return (
