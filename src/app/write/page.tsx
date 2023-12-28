@@ -1,9 +1,15 @@
 "use client";
 
 import { supabase } from "@/lib/supabase-config";
-import { v4 as uuidv4 } from "uuid";
-import React, { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import { Session } from "@supabase/supabase-js";
+import React, {
+  ChangeEvent,
+  FormEvent,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
+import { v4 as uuidv4 } from "uuid";
 
 declare type inputsType = {
   id: string;
@@ -13,42 +19,7 @@ declare type inputsType = {
   content: string;
 };
 
-declare type subImgType = {
-  name: string;
-  url: string;
-};
-
 const WritePage = () => {
-  const [session, setSession] = useState<Session | null>(null);
-
-  useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      console.log(session);
-      setSession(session);
-    });
-
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, session) => {
-      setSession(session);
-    });
-
-    return () => subscription.unsubscribe();
-  }, []);
-
-  if (!session) {
-    // return <Auth supabaseClient={supabase} appearance={{ theme: ThemeSupa }} />;
-    console.log("login out");
-  } else {
-    console.log("login in");
-  }
-
-  async function signInWithEmail() {
-    const { data, error } = await supabase.auth.signInWithPassword({
-      email: "tjdsksro90@gmail.com",
-      password: "1234",
-    });
-  }
   // TODO: 유저 아이디랑 아이디 받을것
   const [writedId, setWritedId] = useState("123");
   const [writedName, setWritedName] = useState("tjdsksro90@gmail.com");
@@ -98,20 +69,6 @@ const WritePage = () => {
     });
   };
 
-  // supabase 로그인
-  // const [userId, setUserId] = useState("");
-
-  // const getUser = async () => {
-  //   try {
-  //     const {data} = await supabase.auth.getUser()
-  //     if(data !== null){
-  //       setUserId(data.id)
-  //     } else {
-  //       setUserId('')
-  //     }
-  //   }
-  // }
-
   const [mainImg, setMainImg] = useState<string>("");
 
   const handleChangeImg = async (e: ChangeEvent<HTMLInputElement>) => {
@@ -154,67 +111,193 @@ const WritePage = () => {
     }
   };
 
-  //TODO: 서브 이미지쪽
-  const [subImgObject, setSubImgObject] = useState<subImgType[]>([
-    { name: "subImg1", url: "" },
-    { name: "subImg2", url: "" },
-    { name: "subImg3", url: "" },
-    { name: "subImg4", url: "" },
-    { name: "subImg5", url: "" },
-  ]);
+  let selectedSubArray: string[] = [];
+
+  const subImg1 = useRef<any>(null);
+  const subImg2 = useRef<any>(null);
+  const subImg3 = useRef<any>(null);
+  const subImg4 = useRef<any>(null);
+  const subImg5 = useRef<any>(null);
+  const [subImgFile1, setSubImgFile1] = useState<File>();
+  const [subImgFile2, setSubImgFile2] = useState<File>();
+  const [subImgFile3, setSubImgFile3] = useState<File>();
+  const [subImgFile4, setSubImgFile4] = useState<File>();
+  const [subImgFile5, setSubImgFile5] = useState<File>();
+  const [subImgpreview1, setSubImgPreview1] = useState<string | null>("");
+  const [subImgpreview2, setSubImgPreview2] = useState<string | null>("");
+  const [subImgpreview3, setSubImgPreview3] = useState<string | null>("");
+  const [subImgpreview4, setSubImgPreview4] = useState<string | null>("");
+  const [subImgpreview5, setSubImgPreview5] = useState<string | null>("");
 
   const handleChangeSubImg = async (
     e: ChangeEvent<HTMLInputElement>,
-    subImg: string
+    value: number
   ) => {
-    if (e.target.name === "subImg") {
-      let selectedFile: File = (e.target.files as FileList)[0];
-
-      const { error, data } = await supabase.storage
-        .from("images")
-        .upload(`posts/${writedName}/${inputs.id}/${subImg}`, selectedFile, {
-          cacheControl: "3600",
-          upsert: false,
-        });
-      if (error) console.log("Error creating a Main Image", error);
-      else {
-        console.log("Main Image created successfully", data);
-        await previewSubImg(subImg, true);
+    if (e.target.files !== null) {
+      const file = e.target.files[0];
+      if (file && file.type.substring(0, 5) === "image") {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        switch (value) {
+          case 1:
+            setSubImgFile1(file);
+            reader.onloadend = () => {
+              setSubImgPreview1(reader.result as string);
+            };
+            break;
+          case 2:
+            setSubImgFile2(file);
+            reader.onloadend = () => {
+              setSubImgPreview2(reader.result as string);
+            };
+            break;
+          case 3:
+            setSubImgFile3(file);
+            reader.onloadend = () => {
+              setSubImgPreview3(reader.result as string);
+            };
+            break;
+          case 4:
+            setSubImgFile4(file);
+            reader.onloadend = () => {
+              setSubImgPreview4(reader.result as string);
+            };
+            break;
+          case 5:
+            setSubImgFile5(file);
+            reader.onloadend = () => {
+              setSubImgPreview5(reader.result as string);
+            };
+            break;
+          default:
+            console.log("default");
+            break;
+        }
+      } else {
+        e.target.value = "";
+        previewSubDelete(value);
       }
     }
   };
 
-  // 올린 이미지 가져오기
-  const previewSubImg = async (subImg: string, check: boolean) => {
-    const { data } = supabase.storage
-      .from("images")
-      .getPublicUrl(`posts/${writedName}/${inputs.id}/${subImg}`);
-
-    let findIndex = subImgObject.findIndex((item) => item.name === subImg);
-    let copiedItems = [...subImgObject];
-    if (check) {
-      copiedItems[findIndex].url = data.publicUrl;
-      setSubImgObject(copiedItems);
-    } else {
-      copiedItems[findIndex].url = "";
-      setSubImgObject(copiedItems);
+  const previewSubDelete = (value: number) => {
+    switch (value) {
+      case 1:
+        if (subImgpreview2 !== null) {
+          setSubImgFile1(subImgFile2);
+          setSubImgPreview1(subImgpreview2);
+          subImg1.current.value = "";
+          subImg2.current.value = "";
+          if (subImgFile2 === null || subImgFile2 === undefined) return;
+          if (subImgpreview3 !== null) {
+            setSubImgFile2(subImgFile3);
+            setSubImgPreview2(subImgpreview3);
+            subImg2.current.value = "";
+            subImg3.current.value = "";
+            if (subImgFile3 === null || subImgFile3 === undefined) return;
+            if (subImgpreview4 !== null) {
+              setSubImgFile3(subImgFile4);
+              setSubImgPreview3(subImgpreview4);
+              subImg3.current.value = "";
+              subImg4.current.value = "";
+              if (subImgFile4 === null || subImgFile4 === undefined) return;
+              if (subImgpreview5 !== null) {
+                setSubImgFile4(subImgFile5);
+                setSubImgPreview4(subImgpreview5);
+                setSubImgFile5(undefined);
+                setSubImgPreview5(null);
+                subImg4.current.value = "";
+                subImg5.current.value = "";
+                if (subImgFile5 === null || subImgFile5 === undefined) return;
+              }
+            }
+          }
+        } else {
+          subImg1.current.value = "";
+          setSubImgFile1(undefined);
+          setSubImgPreview1(null);
+        }
+        break;
+      case 2:
+        if (subImgpreview3 !== null) {
+          setSubImgFile2(subImgFile3);
+          setSubImgPreview2(subImgpreview3);
+          subImg2.current.value = "";
+          subImg3.current.value = "";
+          if (subImgFile3 === null || subImgFile3 === undefined) return;
+          if (subImgpreview4 !== null) {
+            setSubImgFile3(subImgFile4);
+            setSubImgPreview3(subImgpreview4);
+            subImg3.current.value = "";
+            subImg4.current.value = "";
+            if (subImgFile4 === null || subImgFile4 === undefined) return;
+            if (subImgpreview5 !== null) {
+              setSubImgFile4(subImgFile5);
+              setSubImgPreview4(subImgpreview5);
+              setSubImgFile5(undefined);
+              setSubImgPreview5(null);
+              subImg4.current.value = "";
+              subImg5.current.value = "";
+              if (subImgFile5 === null || subImgFile5 === undefined) return;
+            }
+          }
+        } else {
+          subImg2.current.value = "";
+          setSubImgFile2(undefined);
+          setSubImgPreview2(null);
+        }
+        break;
+      case 3:
+        if (subImgpreview4 !== null) {
+          setSubImgFile3(subImgFile4);
+          setSubImgPreview3(subImgpreview4);
+          subImg3.current.value = "";
+          subImg4.current.value = "";
+          if (subImgFile4 === null || subImgFile4 === undefined) return;
+          if (subImgpreview5 !== null) {
+            setSubImgFile4(subImgFile5);
+            setSubImgPreview4(subImgpreview5);
+            setSubImgFile5(undefined);
+            setSubImgPreview5(null);
+            subImg4.current.value = "";
+            subImg5.current.value = "";
+            if (subImgFile5 === null || subImgFile5 === undefined) return;
+          }
+        } else {
+          subImg3.current.value = "";
+          setSubImgFile3(undefined);
+          setSubImgPreview3(null);
+        }
+        break;
+      case 4:
+        if (subImgpreview5 !== null) {
+          setSubImgFile4(subImgFile5);
+          setSubImgPreview4(subImgpreview5);
+          setSubImgFile5(undefined);
+          setSubImgPreview5(null);
+          subImg4.current.value = "";
+          subImg5.current.value = "";
+          if (subImgFile5 === null || subImgFile5 === undefined) return;
+        } else {
+          subImg4.current.value = "";
+          setSubImgFile4(undefined);
+          setSubImgPreview4(null);
+        }
+        break;
+      case 5:
+        subImg5.current.value = "";
+        setSubImgFile5(undefined);
+        setSubImgPreview5(null);
+        break;
+      default:
+        console.log("default");
+        break;
     }
   };
 
-  const previewSubDelete = async (subImg: string) => {
-    const { data, error } = await supabase.storage
-      .from("avatars")
-      .remove([`posts/${writedName}/${inputs.id}/${subImg}`]);
-
-    if (error) console.log("Error deleting a Main Image", error);
-    else {
-      console.log("Main Image deleted successfully", data);
-      await previewSubImg(subImg, false);
-    }
-  };
-
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    await getSubImgArr();
     addPost();
   };
 
@@ -232,7 +315,7 @@ const WritePage = () => {
           writedId: writedId,
           writedName: writedName,
           mainImg: mainImg,
-          subImg: subImgObject,
+          subImg: selectedSubArray,
         },
       ])
       .select();
@@ -241,6 +324,42 @@ const WritePage = () => {
     else {
       console.log("Post created successfully", data);
     }
+  };
+
+  const getSubImgArr = async () => {
+    if (subImgFile1 !== undefined)
+      await handleUploadSubImg(subImgFile1, "subImg1");
+    if (subImgFile2 !== undefined)
+      await handleUploadSubImg(subImgFile2, "subImg2");
+    if (subImgFile3 !== undefined)
+      await handleUploadSubImg(subImgFile3, "subImg3");
+    if (subImgFile4 !== undefined)
+      await handleUploadSubImg(subImgFile4, "subImg4");
+    if (subImgFile5 !== undefined)
+      await handleUploadSubImg(subImgFile5, "subImg5");
+  };
+
+  const handleUploadSubImg = async (selectedFile: File, subImg: string) => {
+    console.log(selectedFile);
+    const { error, data } = await supabase.storage
+      .from("images")
+      .upload(`posts/${writedName}/${inputs.id}/${subImg}`, selectedFile, {
+        cacheControl: "3600",
+        upsert: false,
+      });
+    if (error) console.log("Error creating a Sub Image", error);
+    else {
+      console.log("Sub Image created successfully", data);
+      await handleDownSubImg(subImg);
+    }
+  };
+
+  const handleDownSubImg = async (subImg: string) => {
+    const { data } = supabase.storage
+      .from("images")
+      .getPublicUrl(`posts/${writedName}/${inputs.id}/${subImg}`);
+
+    selectedSubArray.push(data.publicUrl);
   };
 
   return (
@@ -345,45 +464,124 @@ const WritePage = () => {
         </div>
         <div>
           <label htmlFor="subImg">서브 사진</label>* 최대 5장
-          {subImgObject.map((item, index) => (
-            <div key={index}>
+          <div>
+            <input
+              type="file"
+              accept="image/png, image/jpeg, image/jpg"
+              id="subImg1"
+              ref={subImg1}
+              name="subImg"
+              onChange={(e) => handleChangeSubImg(e, 1)}
+            />
+            {subImgFile1 ? (
+              <div>
+                <img src={subImgpreview1 as string} alt="subImg" />
+                <button type="button" onClick={() => previewSubDelete(1)}>
+                  삭제
+                </button>
+              </div>
+            ) : (
+              <>프리뷰 없음</>
+            )}
+          </div>
+          {subImgFile1 ? (
+            <div>
               <input
                 type="file"
                 accept="image/png, image/jpeg, image/jpg"
-                id={item.name}
+                id="subImg2"
+                ref={subImg2}
                 name="subImg"
-                onChange={(e) => handleChangeSubImg(e, item.name)}
+                onChange={(e) => handleChangeSubImg(e, 2)}
               />
-              {item.url !== "" ? (
+              {subImgFile2 ? (
                 <div>
-                  <img src={item.url} alt="subImg" />
-                  <button
-                    type="button"
-                    onClick={() => previewSubDelete(item.name)}
-                  >
+                  <img src={subImgpreview2 as string} alt="subImg" />
+                  <button type="button" onClick={() => previewSubDelete(2)}>
                     삭제
                   </button>
                 </div>
               ) : (
-                <div>
-                  <p>미리보기 없음</p>
-                </div>
+                <>프리뷰 없음</>
               )}
             </div>
-          ))}
+          ) : (
+            <></>
+          )}
+          {subImgFile2 ? (
+            <div>
+              <input
+                type="file"
+                accept="image/png, image/jpeg, image/jpg"
+                id="subImg3"
+                ref={subImg3}
+                name="subImg"
+                onChange={(e) => handleChangeSubImg(e, 3)}
+              />
+              {subImgFile3 ? (
+                <div>
+                  <img src={subImgpreview3 as string} alt="subImg" />
+                  <button type="button" onClick={() => previewSubDelete(3)}>
+                    삭제
+                  </button>
+                </div>
+              ) : (
+                <>프리뷰 없음</>
+              )}
+            </div>
+          ) : (
+            <></>
+          )}
+          {subImgFile3 ? (
+            <div>
+              <input
+                type="file"
+                accept="image/png, image/jpeg, image/jpg"
+                id="subImg4"
+                ref={subImg4}
+                name="subImg"
+                onChange={(e) => handleChangeSubImg(e, 4)}
+              />
+              {subImgFile4 ? (
+                <div>
+                  <img src={subImgpreview4 as string} alt="subImg" />
+                  <button type="button" onClick={() => previewSubDelete(4)}>
+                    삭제
+                  </button>
+                </div>
+              ) : (
+                <>프리뷰 없음</>
+              )}
+            </div>
+          ) : (
+            <></>
+          )}
+          {subImgFile4 ? (
+            <div>
+              <input
+                type="file"
+                accept="image/png, image/jpeg, image/jpg"
+                id="subImg5"
+                ref={subImg5}
+                name="subImg"
+                onChange={(e) => handleChangeSubImg(e, 5)}
+              />
+              {subImgFile5 ? (
+                <div>
+                  <img src={subImgpreview5 as string} alt="subImg" />
+                  <button type="button" onClick={() => previewSubDelete(5)}>
+                    삭제
+                  </button>
+                </div>
+              ) : (
+                <>프리뷰 없음</>
+              )}
+            </div>
+          ) : (
+            <></>
+          )}
         </div>
         <button type="submit">글 작성 완료</button>
-        <button type="button" onClick={signInWithEmail}>
-          로그인
-        </button>
-        <button
-          type="button"
-          onClick={async () => {
-            await supabase.auth.signOut();
-          }}
-        >
-          로그아웃
-        </button>
       </form>
     </div>
   );
