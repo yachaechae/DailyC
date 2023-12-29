@@ -1,6 +1,6 @@
 import Link from "next/link";
 import React from "react";
-import styles from "./navbar.module.css";
+import styles from "../layout/navbar.module.css";
 import { usePathname } from "next/navigation";
 
 function NavBar() {
@@ -26,7 +26,7 @@ function NavBar() {
         .active {
           color: #f49608;
           border-bottom: 5px solid #f49608;
-          padding-bottom: 5px;
+          padding-bottom: 7px;
         }
       `}</style>
     </nav>
