@@ -7,24 +7,14 @@ import { TfiClose } from "react-icons/tfi";
 import { supabase } from "@/lib/supabase-config";
 import uuid from "react-uuid";
 import { getUser } from "@/utils/auth";
+import Alert from "@mui/material/Alert";
 
 function EditProfile({ closeModal }: any) {
   const [gender, setGender] = useState<string>("");
   const [nickname, setNickname] = useState<string>("");
-  const [tall, setTall] = useState<string>("");
   const [selectedImg, setSelectedImg] = useState(defaultImg);
   const [file, setFile] = useState(null);
-  const [userProfile, setUserProfile] = useState<any>({});
-
-  const getProfile = async () => {
-    const user = await getUser();
-    setUserProfile(user);
-  };
-  useEffect(() => {
-    getProfile();
-  }, []);
-
-  const profileHeight = userProfile.user_metadata?.height;
+  const [profile, setProfile] = useState<any>({});
 
   const nicknameHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNickname(e.target.value);
@@ -32,6 +22,33 @@ function EditProfile({ closeModal }: any) {
   const tallHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTall(e.target.value);
   };
+
+  const getProfile = async () => {
+    const user = await getUser();
+    console.log(user);
+    setProfile(user);
+  };
+  useEffect(() => {
+    getProfile();
+  }, []);
+
+  const updateUserData = async (tall: string, gender: string) => {
+    const updatedHeight = tall === undefined ? profileHeight : tall;
+    const { data, error } = await supabase.auth.updateUser({
+      data: {
+        height: `${updatedHeight}`,
+        gender: `${gender}`,
+      },
+    });
+    console.log(data);
+  };
+
+  const profileHeight = profile.user_metadata?.height;
+  const profileGender = profile.user_metadata?.gender;
+
+  const [tall, setTall] = useState<string>(profileHeight);
+
+  console.log(tall === undefined ? profileHeight : tall);
 
   async function uploadFile(file: any) {
     if (file) {
@@ -63,7 +80,11 @@ function EditProfile({ closeModal }: any) {
       <div className={styles.nickname}>
         <input value={nickname} type="text" onChange={nicknameHandler} />
       </div>
-      <SelectGender gender={gender} setGender={setGender} />
+      <SelectGender
+        gender={gender}
+        setGender={setGender}
+        userProfile={profile}
+      />
       <div className={styles.height}>
         <label htmlFor="height">키</label>
         <input
@@ -76,7 +97,14 @@ function EditProfile({ closeModal }: any) {
       </div>
       <button
         onClick={() => {
+          if (gender === "") {
+            <Alert severity="warning">
+              This is a warning alert — check it out!
+            </Alert>;
+            console.log("alert");
+          }
           uploadFile(file);
+          updateUserData(tall, gender);
           closeModal();
         }}
         className={styles.btn}
