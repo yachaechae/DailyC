@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Jua, Judson } from "next/font/google";
 import "./globals.css";
 import Image from "next/image";
+import Link from "next/link";
 
 const jua = Jua({ weight: "400", subsets: ["latin"] });
 const judson = Judson({ weight: "400", subsets: ["latin"] });
@@ -23,7 +24,10 @@ export default function RootLayout({
           <div
             className={`${judson.className} container xl w-full flex justify-between items-center`}
           >
-            <div className="flex items-center relative text-orange text-3xl gap-2">
+            <Link
+              href={"/"}
+              className="flex items-center relative text-orange text-3xl gap-2"
+            >
               <Image
                 src="/logo.svg"
                 alt="Next.js Logo"
@@ -32,10 +36,14 @@ export default function RootLayout({
                 priority
               />
               DailyC
-            </div>
+            </Link>
             <ul className="flex gap-8 text-2xl">
-              <li>마이페이지</li>
-              <li>로그인</li>
+              <Link href={"/profilepage"}>
+                <li>마이페이지</li>
+              </Link>
+              <Link href={"/login"}>
+                <li>로그인</li>
+              </Link>
             </ul>
           </div>
         </header>
