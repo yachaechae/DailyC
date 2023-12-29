@@ -4,11 +4,14 @@ import { useRouter } from "next/navigation";
 import { getUser, logout } from "@/utils/auth";
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { useRecoilState } from "recoil";
+import { isLoginState } from "@/recoil/state";
 
 function LoginAndLogoutBtn() {
   const router = useRouter();
 
-  const [isLogin, setIsLogin] = useState<boolean>(false);
+  // const [isLogin, setIsLogin] = useState<boolean>(false);
+  const [isLogin, setIsLogin] = useRecoilState(isLoginState);
 
   const getisLogin = async () => {
     const user = await getUser();

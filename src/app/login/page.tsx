@@ -4,6 +4,8 @@ import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase-config";
 import Link from "next/link";
 import { getUser } from "@/utils/auth";
+import { useRecoilState } from "recoil";
+import { isLoginState } from "@/recoil/state";
 // import styles from "./login.module.css";
 
 function page() {
@@ -11,7 +13,8 @@ function page() {
 
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
-  const [isLogin, setIsLogin] = useState<boolean>(false);
+  // const [isLogin, setIsLogin] = useState<boolean>(false);
+  const [isLogin, setIsLogin] = useRecoilState(isLoginState);
 
   const handleEmailInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
