@@ -20,10 +20,6 @@ module.exports = {
 		},
 
 		extend: {
-			height: {
-				27: "27px",
-				75: "75px",
-			},
 			colors: {
 				orange: "#FF9148",
 				deepOrange: "#FF7F5A",
@@ -33,20 +29,5 @@ module.exports = {
 			},
 		},
 	},
-	plugins: [
-		({ addUtilities }) => {
-			addUtilities({
-				".custom-category-item": {
-					"@apply max-w-[200px] w-full text-center cursor-pointer relative text-[#f49608] py-2 px-0.5 hover:bg-[#ffe8c7] hover:rounded-[25px]":
-						"",
-				},
-				".custom-category-item::after": {
-					"@apply absolute top-1/2 -right-6 translate-y-1/2 h-[27px] content-['']  border-orange": "",
-				},
-				".custom-category-item:last-child::after": {
-					" @apply border-0": "",
-				},
-			});
-		},
-	],
+	plugins: [],
 };
