@@ -5,7 +5,7 @@ import { Title } from "../main.styles";
 export default function Popular() {
 	return (
 		<>
-			<Title>인기 코디</Title>
+			<h2 className="mb-14 text-4xl">인기 코디</h2>
 
 			<BasicCard />
 		</>

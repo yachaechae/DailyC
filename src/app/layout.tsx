@@ -15,8 +15,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 	return (
 		<html lang="en">
 			<body className={jua.className}>
-				<header className="h-75 flex items-center shadow-[0_4px_4px_rgba(0,0,0,0.25)]">
-					<div className={`${judson.className} container xl w-full flex justify-between items-center`}>
+				<header className="h-[75px] flex items-center shadow-[0_4px_4px_rgba(0,0,0,0.25)]">
+					<div className="container w-full flex justify-between items-center">
 						<div className="flex items-center relative text-orange text-3xl gap-2">
 							<Image src="/logo.svg" alt="Next.js Logo" width={50} height={50} priority />
 							DailyC
