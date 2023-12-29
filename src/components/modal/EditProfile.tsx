@@ -1,11 +1,12 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./edit-profile.module.css";
 import SelectGender from "../ui/Radio";
-import defaultImg from "../../../public/images/defaultImg.png";
+import defaultImg from "../../../public/assets/defaultImg.png";
 import Image from "next/image";
 import { TfiClose } from "react-icons/tfi";
-import { supabase } from "../ilb/supabase-config";
+import { supabase } from "@/lib/supabase-config";
 import uuid from "react-uuid";
+import { getUser } from "@/utils/auth";
 
 function EditProfile({ closeModal }: any) {
   const [gender, setGender] = useState<string>("");
@@ -13,6 +14,17 @@ function EditProfile({ closeModal }: any) {
   const [tall, setTall] = useState<string>("");
   const [selectedImg, setSelectedImg] = useState(defaultImg);
   const [file, setFile] = useState(null);
+  const [userProfile, setUserProfile] = useState<any>({});
+
+  const getProfile = async () => {
+    const user = await getUser();
+    setUserProfile(user);
+  };
+  useEffect(() => {
+    getProfile();
+  }, []);
+
+  const profileHeight = userProfile.user_metadata?.height;
 
   const nicknameHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNickname(e.target.value);
@@ -55,7 +67,7 @@ function EditProfile({ closeModal }: any) {
       <div className={styles.height}>
         <label htmlFor="height">키</label>
         <input
-          value={tall}
+          defaultValue={profileHeight}
           id="height"
           type="number"
           onChange={tallHandler}
@@ -69,7 +81,7 @@ function EditProfile({ closeModal }: any) {
         }}
         className={styles.btn}
       >
-        수정완료!
+        수정 완료!
       </button>
       <div onClick={closeModal} className={styles.closebtn}>
         <TfiClose size={30} />

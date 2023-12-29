@@ -1,7 +1,7 @@
 .warpper {
   position: relative;
-  width: 800px;
-  height: 700px;
+  width: 700px;
+  height: 600px;
   background-color: white;
   display: flex;
   flex-direction: column;
@@ -16,6 +16,8 @@
 }
 
 .avatarfigure > img {
+  width: 160px;
+  height: 160px;
   border-radius: 50%;
   cursor: pointer;
 }
