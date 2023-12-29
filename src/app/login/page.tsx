@@ -1,8 +1,9 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase-config";
 import Link from "next/link";
+import { getUser } from "@/utils/auth";
 // import styles from "./login.module.css";
 
 function page() {

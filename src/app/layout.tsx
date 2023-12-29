@@ -3,6 +3,7 @@ import { Jua, Judson } from "next/font/google";
 import "./globals.css";
 import Image from "next/image";
 import Link from "next/link";
+import LoginAndLogoutBtn from "@/components/main/LoginAndLogoutBtn";
 
 const jua = Jua({ weight: "400", subsets: ["latin"] });
 const judson = Judson({ weight: "400", subsets: ["latin"] });
@@ -41,9 +42,7 @@ export default function RootLayout({
               <Link href={"/profilepage"}>
                 <li>마이페이지</li>
               </Link>
-              <Link href={"/login"}>
-                <li>로그인</li>
-              </Link>
+              <LoginAndLogoutBtn />
             </ul>
           </div>
         </header>
