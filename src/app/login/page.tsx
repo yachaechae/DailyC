@@ -1,19 +1,16 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase-config";
 import Link from "next/link";
-import { getUser } from "@/utils/auth";
 import { useRecoilState } from "recoil";
 import { isLoginState } from "@/recoil/state";
-// import styles from "./login.module.css";
 
 function page() {
   const router = useRouter();
 
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
-  // const [isLogin, setIsLogin] = useState<boolean>(false);
   const [isLogin, setIsLogin] = useRecoilState(isLoginState);
 
   const handleEmailInput = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -43,8 +40,6 @@ function page() {
     setIsLogin(true);
     router.push("/");
   };
-
-  // 비밀번호 찾기 기능
 
   return (
     <div className="container flex justify-center items-center h-[calc(100vh-75px)]">
