@@ -28,12 +28,10 @@ function page() {
       email,
       password,
     });
-    console.log(process.env.NEXT_PUBLIC_SERVICE_KEY);
-    console.log("data : ", data);
 
     if (error) {
-      console.log("error --- ", error);
-      return alert("실패");
+      console.error("error : ", error);
+      return alert(error.message);
     }
 
     alert("로그인 되었습니다.");
@@ -97,7 +95,7 @@ function page() {
         </form>
         <div className="flex justify-end w-full">
           <Link href={"/signup"} legacyBehavior>
-            <a className="text-xs text-gray-500 mt-3 w-12">회원가입</a>
+            <a className="text-xs text-gray-500 mt-3">회원가입</a>
           </Link>
         </div>
       </div>

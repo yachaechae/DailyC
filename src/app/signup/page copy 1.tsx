@@ -17,7 +17,8 @@ function page() {
 
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
-  const [checkPassword, setCheckPassword] = useState<string>("");
+  // const [checkPassword, setCheckPassword] = useState<string>("");
+  const [nickName, setNickName] = useState<string>("");
   const [gender, setGender] = useState<string>("");
   const [height, setHeight] = useState<number>(0);
 
@@ -29,9 +30,9 @@ function page() {
     setPassword(e.target.value);
   };
 
-  const handleCheckPasswordInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setCheckPassword(e.target.value);
-  };
+  // const handleCheckPasswordInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   setCheckPassword(e.target.value);
+  // };
 
   const handleGenderSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     setGender(e.target.value);
@@ -80,14 +81,14 @@ function page() {
             onChange={handlePasswordInput}
           />
         </div>
-        <div>
+        {/* <div>
           <p>비밀번호 확인</p>
           <input
             type="password"
             value={checkPassword}
             onChange={handleCheckPasswordInput}
           />
-        </div>
+        </div> */}
         <div>
           <FormControl>
             <FormLabel id="demo-controlled-radio-buttons-group">성별</FormLabel>
