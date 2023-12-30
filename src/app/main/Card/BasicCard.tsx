@@ -10,8 +10,9 @@ import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import OrangeIcon from "@/icon/OrangeIcon";
 import { AccountCircle } from "@mui/icons-material";
-import { Judson } from "next/font/google";
+import { Jua, Judson } from "next/font/google";
 
+const jua = Jua({ weight: "400", subsets: ["latin"] });
 const judson = Judson({ weight: "400", subsets: ["latin"] });
 
 export default function BasicCard() {
@@ -21,20 +22,25 @@ export default function BasicCard() {
 		setLiked(!liked);
 	};
 	return (
-		<Card sx={{ maxWidth: 250 }}>
-			<CardContent className="relative p-0">
-				<CardMedia component="img" height="194" image="http://placekitten.com/200/300"></CardMedia>
-				<CardContent className="absolute bottom-0 left-0 bg-slate-50 bg-opacity-50">
-					<Typography variant="body2" color="text.secondary">
-						This impressive paella is a perfect party dish and a fun meal to cook together with your guests.
-						Add 1 cup of frozen peas along with the mussels, if you like.
+		<Card className="w-[250px]">
+			<div className="relative group">
+				<CardMedia component="img" image="http://placekitten.com/200/300"></CardMedia>
+				<div className="absolute w-full bottom-0 left-0 bg-slate-50 bg-opacity-50 p-4 hidden group-hover:block transition duration-200 ease-out group-hover:ease-in">
+					<Typography
+						variant="h4"
+						className={`${jua.className} text-white drop-shadow-[0_1px_5px_rgba(0,0,0,0.7)]`}
+					>
+						편안 데일리룩
 					</Typography>
-				</CardContent>
-			</CardContent>
+					<Typography variant="h6" className={`${jua.className}`}>
+						#트레이닝 # 편안 #집앞
+					</Typography>
+				</div>
+			</div>
 			<CardHeader
 				className="bg-gray-300 py-2 px-3"
 				avatar={
-					<Avatar sx={{ bgcolor: "white" }} aria-label="recipe">
+					<Avatar sx={{ bgcolor: "white" }}>
 						<AccountCircle className="fill-orange size-[125%]"> </AccountCircle>
 					</Avatar>
 				}
