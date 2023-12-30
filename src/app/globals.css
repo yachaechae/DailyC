@@ -2,8 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-@import '/src/app/main/custom.styles.css';
-
+@import "/src/app/main/custom.styles.css";
 
 html,
 body,
@@ -129,4 +128,7 @@ q:after {
 table {
   border-collapse: collapse;
   border-spacing: 0;
+}
+html {
+  scroll-behavior: smooth;
 }
