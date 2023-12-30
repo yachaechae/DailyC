@@ -8,6 +8,7 @@ import { supabase } from "@/lib/supabase-config";
 import { getUser } from "@/utils/auth";
 import { useRecoilState } from "recoil";
 import { userState } from "@/recoil/state";
+import UserImg from "../profile/UserImg";
 
 function EditProfile({ closeModal }: any) {
   const [gender, setGender] = useState<string>("");
@@ -25,7 +26,6 @@ function EditProfile({ closeModal }: any) {
   const getProfile = async () => {
     const user = await getUser();
     setProfile(user);
-    console.log(user);
   };
   useEffect(() => {
     getProfile();
@@ -37,7 +37,7 @@ function EditProfile({ closeModal }: any) {
 
   const [tall, setTall] = useState<string>(profileHeight);
   const [nickname, setNickname] = useState<string>(profileNickname);
-  const [selectedImg, setSelectedImg] = useState<string>(profileImg);
+  const [selectedImg, setSelectedImg] = useState<any>(<UserImg />);
 
   const previewImg = (event: any) => {
     const imgFile = event.target.files[0];
@@ -50,11 +50,9 @@ function EditProfile({ closeModal }: any) {
   };
 
   const updateUserData = async () => {
-    const updatedHeight =
-      user.height === undefined ? profileHeight : user.height;
-    const updatedNickname =
-      user.nickname === undefined ? profileNickname : user.nickname;
-    const updatedImg = user.userImg !== undefined ? user.userImg : profileImg;
+    const updatedHeight = tall === undefined ? profileHeight : tall;
+    const updatedNickname = nickname === undefined ? profileNickname : nickname;
+    const updatedImg = selectedImg !== undefined ? selectedImg : profileImg;
     const { data, error } = await supabase.auth.updateUser({
       data: {
         userImg: `${updatedImg}`,
@@ -66,12 +64,13 @@ function EditProfile({ closeModal }: any) {
     setUser({
       id: profile.id,
       email: profile.email,
-      nickname: profile.user_metadata?.nickname,
-      height: profile.user_metadata?.height,
-      gender: profile.user_metadata?.gender,
-      userImg: profile.user_metadata?.userImg,
+      nickname: updatedNickname,
+      height: updatedHeight,
+      gender: gender,
+      userImg: updatedImg,
     });
   };
+  console.log(user);
 
   useEffect(() => {
     const fetchData = async () => {

@@ -1,15 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import styles from "./profile-info.module.css";
-import Image from "next/image";
-import defaultImg from "../../../public/assets/defaultImg.png";
-import { supabase } from "@/lib/supabase-config";
+
 import UserImg from "./UserImg";
-import { getUser } from "@/utils/auth";
 import { useRecoilState } from "recoil";
 import { userState } from "@/recoil/state";
 function ProfileInfo({ showModal }: any) {
   const [user, setUser] = useRecoilState(userState);
-
+  console.log(user);
   return (
     <div className={styles.warpper}>
       <div className={styles.avatarfigure}>

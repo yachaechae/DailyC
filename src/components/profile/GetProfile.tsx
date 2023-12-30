@@ -15,17 +15,25 @@ function GetProfile() {
 
   useEffect(() => {
     getUserInfo();
-    setUser({
-      id: profile.id,
-      email: profile.email,
-      nickname: profile.user_metadata?.nickname,
-      height: profile.user_metadata?.height,
-      gender: profile.user_metadata?.gender,
-      userImg: profile.user_metadata?.userImg,
-    });
   }, []);
+
+  useEffect(() => {
+    if (profile) {
+      setUser({
+        id: profile.id,
+        email: profile.email,
+        nickname: profile.user_metadata?.nickname,
+        height: profile.user_metadata?.height,
+        gender: profile.user_metadata?.gender,
+        userImg: profile.user_metadata?.userImg,
+      });
+    } else {
+      return;
+    }
+  }, [profile]);
   console.log(user);
-  return <div>GetProfile</div>;
+
+  return <></>;
 }
 
 export default GetProfile;
