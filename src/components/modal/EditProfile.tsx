@@ -5,26 +5,16 @@ import defaultImg from "../../../public/assets/defaultImg.png";
 import Image from "next/image";
 import { TfiClose } from "react-icons/tfi";
 import { supabase } from "@/lib/supabase-config";
-import uuid from "react-uuid";
 import { getUser } from "@/utils/auth";
+import { useRecoilState } from "recoil";
+import { userState } from "@/recoil/state";
+import UserImg from "../profile/UserImg";
 
 function EditProfile({ closeModal }: any) {
   const [gender, setGender] = useState<string>("");
-  const [nickname, setNickname] = useState<string>("");
-  const [tall, setTall] = useState<string>("");
-  const [selectedImg, setSelectedImg] = useState(defaultImg);
   const [file, setFile] = useState(null);
-  const [userProfile, setUserProfile] = useState<any>({});
-
-  const getProfile = async () => {
-    const user = await getUser();
-    setUserProfile(user);
-  };
-  useEffect(() => {
-    getProfile();
-  }, []);
-
-  const profileHeight = userProfile.user_metadata?.height;
+  const [profile, setProfile] = useState<any>({});
+  const [user, setUser] = useRecoilState(userState);
 
   const nicknameHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNickname(e.target.value);
@@ -33,15 +23,21 @@ function EditProfile({ closeModal }: any) {
     setTall(e.target.value);
   };
 
-  async function uploadFile(file: any) {
-    if (file) {
-      const { data, error } = await supabase.storage
-        .from("profileImage")
-        .upload(`/users/user1/${uuid()}`, file);
-    } else {
-      return null;
-    }
-  }
+  const getProfile = async () => {
+    const user = await getUser();
+    setProfile(user);
+  };
+  useEffect(() => {
+    getProfile();
+  }, []);
+
+  const profileHeight = user.height;
+  const profileNickname = user.nickname;
+  const profileImg = user.userImg;
+
+  const [tall, setTall] = useState<string>(profileHeight);
+  const [nickname, setNickname] = useState<string>(profileNickname);
+  const [selectedImg, setSelectedImg] = useState<any>(<UserImg />);
 
   const previewImg = (event: any) => {
     const imgFile = event.target.files[0];
@@ -52,6 +48,41 @@ function EditProfile({ closeModal }: any) {
     const imgUrl: any = URL.createObjectURL(imgFile);
     setSelectedImg(imgUrl);
   };
+
+  const updateUserData = async () => {
+    const updatedHeight = tall === undefined ? profileHeight : tall;
+    const updatedNickname = nickname === undefined ? profileNickname : nickname;
+    const updatedImg = selectedImg !== undefined ? selectedImg : profileImg;
+    const { data, error } = await supabase.auth.updateUser({
+      data: {
+        userImg: `${updatedImg}`,
+        nickname: `${updatedNickname}`,
+        height: `${updatedHeight}`,
+        gender: `${gender}`,
+      },
+    });
+    setUser({
+      id: profile.id,
+      email: profile.email,
+      nickname: updatedNickname,
+      height: updatedHeight,
+      gender: gender,
+      userImg: updatedImg,
+    });
+  };
+  console.log(user);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const user = await getUser();
+      setProfile(user);
+      setTall(user?.user_metadata?.height || "");
+      setNickname(user?.user_metadata?.nickname || "");
+      setSelectedImg(user?.user_metadata?.userImg || defaultImg);
+    };
+
+    fetchData();
+  }, []);
   return (
     <div className={styles.warpper}>
       <div>
@@ -61,9 +92,17 @@ function EditProfile({ closeModal }: any) {
         </label>
       </div>
       <div className={styles.nickname}>
-        <input value={nickname} type="text" onChange={nicknameHandler} />
+        <input
+          defaultValue={profileNickname}
+          type="text"
+          onChange={nicknameHandler}
+        />
       </div>
-      <SelectGender gender={gender} setGender={setGender} />
+      <SelectGender
+        gender={gender}
+        setGender={setGender}
+        userProfile={profile}
+      />
       <div className={styles.height}>
         <label htmlFor="height">키</label>
         <input
@@ -76,14 +115,30 @@ function EditProfile({ closeModal }: any) {
       </div>
       <button
         onClick={() => {
-          uploadFile(file);
+          if (gender === "") {
+            alert("성별을 선택해 주세요!");
+            return false;
+          }
+          const answer = window.confirm("이대로 수정하시겠습니까?");
+          if (!answer) return;
+          updateUserData();
+
           closeModal();
         }}
         className={styles.btn}
       >
         수정 완료!
       </button>
-      <div onClick={closeModal} className={styles.closebtn}>
+      <div
+        onClick={() => {
+          const answer = window.confirm(
+            "수정된 내용이 저장되지 않습니다. 그래도 나가시겠습니까?"
+          );
+          if (!answer) return;
+          closeModal();
+        }}
+        className={styles.closebtn}
+      >
         <TfiClose size={30} />
       </div>
     </div>
