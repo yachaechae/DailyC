@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import LoginAndLogoutBtn from "@/components/main/LoginAndLogoutBtn";
 import RecoilProvider from "@/components/RecoilProvider";
+import GetProfile from "@/components/profile/GetProfile";
 
 const jua = Jua({ weight: "400", subsets: ["latin"] });
 const judson = Judson({ weight: "400", subsets: ["latin"] });
@@ -23,6 +24,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={jua.className}>
         <RecoilProvider>
+          <GetProfile />
           <header className="h-[75px] flex items-center shadow-[0_4px_4px_rgba(0,0,0,0.25)]">
             <div className="container w-full flex justify-between items-center">
               <Link
