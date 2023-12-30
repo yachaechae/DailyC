@@ -7,7 +7,6 @@ import { TfiClose } from "react-icons/tfi";
 import { supabase } from "@/lib/supabase-config";
 import uuid from "react-uuid";
 import { getUser } from "@/utils/auth";
-import Alert from "@mui/material/Alert";
 
 function EditProfile({ closeModal }: any) {
   const [gender, setGender] = useState<string>("");
@@ -98,11 +97,11 @@ function EditProfile({ closeModal }: any) {
       <button
         onClick={() => {
           if (gender === "") {
-            <Alert severity="warning">
-              This is a warning alert — check it out!
-            </Alert>;
-            console.log("alert");
+            alert("성별을 선택해 주세요!");
+            return false;
           }
+          const answer = window.confirm("이대로 수정하시겠습니까?");
+          if (!answer) return;
           uploadFile(file);
           updateUserData(tall, gender);
           closeModal();
@@ -111,7 +110,16 @@ function EditProfile({ closeModal }: any) {
       >
         수정 완료!
       </button>
-      <div onClick={closeModal} className={styles.closebtn}>
+      <div
+        onClick={() => {
+          const answer = window.confirm(
+            "수정된 내용이 저장되지 않습니다. 그래도 나가시겠습니까?"
+          );
+          if (!answer) return;
+          closeModal();
+        }}
+        className={styles.closebtn}
+      >
         <TfiClose size={30} />
       </div>
     </div>
