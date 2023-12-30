@@ -20,7 +20,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 			<body className={jua.className}>
 				<RecoilProvider>
 					<header className="h-[75px] flex items-center shadow-[0_4px_4px_rgba(0,0,0,0.25)]">
-						<div className={`${judson.className} container xl w-full flex justify-between items-center`}>
+						<div className="container w-full flex justify-between items-center">
 							<Link href={"/"} className="flex items-center relative text-orange text-3xl gap-2">
 								<Image src="/logo.svg" alt="Next.js Logo" width={50} height={50} priority />
 								DailyC
