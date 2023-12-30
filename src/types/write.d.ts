@@ -13,7 +13,7 @@ declare type postType = {
   title: string;
   content: string;
   create_at: Date;
-  update_at: Data | null;
+  update_at: Date | null;
   writedId: string;
   writedName: string;
   tags: string[];

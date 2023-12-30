@@ -22,7 +22,6 @@ const EditComponentPage = ({ postData }: { postData: any[] | null }) => {
   const [inputs, setInputs] = useRecoilState(inputsState);
   const [tags, setTags] = useRecoilState(tagsState);
   const [tagList, setTagList] = useRecoilState(tagListState);
-  // ------------- 새로 추가 ----------------
   const [postDataId, setPostDataId] = useRecoilState(postDataState);
 
   useEffect(() => {

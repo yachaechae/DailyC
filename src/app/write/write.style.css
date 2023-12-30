@@ -39,7 +39,8 @@ input.input::-webkit-inner-spin-button {
   width: 20px;
   height: 20px;
   border-radius: 50%;
-  background: #f49508;
+  background: #f49508 !important;
+  margin-top: 3px;
 }
 .writeFileWrap {
   display: flex;
