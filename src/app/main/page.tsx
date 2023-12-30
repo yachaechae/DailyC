@@ -1,22 +1,19 @@
 "use client";
 import React from "react";
-import Banner from "./Banner/Banner";
-import Nav from "./Nav/Nav";
-import Popular from "./Popular/Popular";
-import Recent from "./Recent/Recent";
-import { Judson } from "next/font/google";
-
-const judson = Judson({ weight: "400", subsets: ["latin"] });
+import Banner from "@/components/main/banner/Banner";
+import Nav from "@/components/main/nav/Nav";
+import Popular from "@/components/main/popular/Popular";
+import Recent from "@/components/main/recent/Recent";
 
 export default function page() {
-	return (
-		<>
-			<Nav />
-			<Banner />
-			<div className="container mt-[10rem]">
-				<Popular />
-				<Recent />
-			</div>
-		</>
-	);
+  return (
+    <>
+      <Nav />
+      <Banner />
+      <div className="container mt-[10rem]">
+        <Popular />
+        <Recent />
+      </div>
+    </>
+  );
 }

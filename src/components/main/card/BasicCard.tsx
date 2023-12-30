@@ -4,12 +4,11 @@ import { useState } from "react";
 import Card from "@mui/material/Card";
 import CardHeader from "@mui/material/CardHeader";
 import CardMedia from "@mui/material/CardMedia";
-import CardContent from "@mui/material/CardContent";
 import Avatar from "@mui/material/Avatar";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import OrangeIcon from "@/icon/OrangeIcon";
-import { AccountCircle } from "@mui/icons-material";
+import { AccountCircle, Bookmark, BookmarkBorder, WorkspacePremium } from "@mui/icons-material";
 import { Jua, Judson } from "next/font/google";
 
 const jua = Jua({ weight: "400", subsets: ["latin"] });
@@ -17,13 +16,27 @@ const judson = Judson({ weight: "400", subsets: ["latin"] });
 
 export default function BasicCard() {
 	const [liked, setLiked] = useState(false);
+	const [bookmark, setBookmark] = useState(false);
 
 	const handleLikeClick = () => {
 		setLiked(!liked);
 	};
+	const handleBookmarkClick = () => {
+		setBookmark(!bookmark);
+	};
 	return (
 		<Card className="w-[250px]">
 			<div className="relative group">
+				<div className="absolute top-1 w-full flex justify-between">
+					<WorkspacePremium className="size-12 fill-gold drop-shadow" />
+					<div onClick={handleBookmarkClick} className="cursor-pointer">
+						{bookmark ? (
+							<Bookmark className="size-12 fill-orange " />
+						) : (
+							<BookmarkBorder className="size-12" />
+						)}
+					</div>
+				</div>
 				<CardMedia component="img" image="http://placekitten.com/200/300"></CardMedia>
 				<div className="absolute w-full bottom-0 left-0 bg-slate-50 bg-opacity-50 p-4 hidden group-hover:block transition duration-200 ease-out group-hover:ease-in">
 					<Typography
