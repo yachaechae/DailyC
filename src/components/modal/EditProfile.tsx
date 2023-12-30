@@ -5,15 +5,15 @@ import defaultImg from "../../../public/assets/defaultImg.png";
 import Image from "next/image";
 import { TfiClose } from "react-icons/tfi";
 import { supabase } from "@/lib/supabase-config";
-import uuid from "react-uuid";
 import { getUser } from "@/utils/auth";
+import { useRecoilState } from "recoil";
+import { userState } from "@/recoil/state";
 
 function EditProfile({ closeModal }: any) {
   const [gender, setGender] = useState<string>("");
-  const [nickname, setNickname] = useState<string>("");
-  const [selectedImg, setSelectedImg] = useState(defaultImg);
   const [file, setFile] = useState(null);
   const [profile, setProfile] = useState<any>({});
+  const [user, setUser] = useRecoilState(userState);
 
   const nicknameHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNickname(e.target.value);
@@ -24,40 +24,20 @@ function EditProfile({ closeModal }: any) {
 
   const getProfile = async () => {
     const user = await getUser();
-    console.log(user);
     setProfile(user);
+    console.log(user);
   };
   useEffect(() => {
     getProfile();
   }, []);
 
-  const updateUserData = async (tall: string, gender: string) => {
-    const updatedHeight = tall === undefined ? profileHeight : tall;
-    const { data, error } = await supabase.auth.updateUser({
-      data: {
-        height: `${updatedHeight}`,
-        gender: `${gender}`,
-      },
-    });
-    console.log(data);
-  };
-
-  const profileHeight = profile.user_metadata?.height;
-  const profileGender = profile.user_metadata?.gender;
+  const profileHeight = user.height;
+  const profileNickname = user.nickname;
+  const profileImg = user.userImg;
 
   const [tall, setTall] = useState<string>(profileHeight);
-
-  console.log(tall === undefined ? profileHeight : tall);
-
-  async function uploadFile(file: any) {
-    if (file) {
-      const { data, error } = await supabase.storage
-        .from("profileImage")
-        .upload(`/users/user1/${uuid()}`, file);
-    } else {
-      return null;
-    }
-  }
+  const [nickname, setNickname] = useState<string>(profileNickname);
+  const [selectedImg, setSelectedImg] = useState<string>(profileImg);
 
   const previewImg = (event: any) => {
     const imgFile = event.target.files[0];
@@ -68,6 +48,42 @@ function EditProfile({ closeModal }: any) {
     const imgUrl: any = URL.createObjectURL(imgFile);
     setSelectedImg(imgUrl);
   };
+
+  const updateUserData = async () => {
+    const updatedHeight =
+      user.height === undefined ? profileHeight : user.height;
+    const updatedNickname =
+      user.nickname === undefined ? profileNickname : user.nickname;
+    const updatedImg = user.userImg !== undefined ? user.userImg : profileImg;
+    const { data, error } = await supabase.auth.updateUser({
+      data: {
+        userImg: `${updatedImg}`,
+        nickname: `${updatedNickname}`,
+        height: `${updatedHeight}`,
+        gender: `${gender}`,
+      },
+    });
+    setUser({
+      id: profile.id,
+      email: profile.email,
+      nickname: profile.user_metadata?.nickname,
+      height: profile.user_metadata?.height,
+      gender: profile.user_metadata?.gender,
+      userImg: profile.user_metadata?.userImg,
+    });
+  };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const user = await getUser();
+      setProfile(user);
+      setTall(user?.user_metadata?.height || "");
+      setNickname(user?.user_metadata?.nickname || "");
+      setSelectedImg(user?.user_metadata?.userImg || defaultImg);
+    };
+
+    fetchData();
+  }, []);
   return (
     <div className={styles.warpper}>
       <div>
@@ -77,7 +93,11 @@ function EditProfile({ closeModal }: any) {
         </label>
       </div>
       <div className={styles.nickname}>
-        <input value={nickname} type="text" onChange={nicknameHandler} />
+        <input
+          defaultValue={profileNickname}
+          type="text"
+          onChange={nicknameHandler}
+        />
       </div>
       <SelectGender
         gender={gender}
@@ -102,8 +122,8 @@ function EditProfile({ closeModal }: any) {
           }
           const answer = window.confirm("이대로 수정하시겠습니까?");
           if (!answer) return;
-          uploadFile(file);
-          updateUserData(tall, gender);
+          updateUserData();
+
           closeModal();
         }}
         className={styles.btn}

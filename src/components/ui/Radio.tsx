@@ -13,7 +13,6 @@ export default function SelectGender({ gender, setGender, userProfile }: any) {
     setGender(e.target.value);
   };
 
-  const profileGender = userProfile.user_metadata?.gender;
   return (
     <FormControl>
       <FormLabel id="demo-row-radio-buttons-group-label">
@@ -27,7 +26,7 @@ export default function SelectGender({ gender, setGender, userProfile }: any) {
         onChange={genderHandler}
       >
         <FormControlLabel
-          value="남성"
+          value="man"
           control={<Radio color="default" />}
           label={
             <Typography>
@@ -36,7 +35,7 @@ export default function SelectGender({ gender, setGender, userProfile }: any) {
           }
         />
         <FormControlLabel
-          value="여성"
+          value="woman"
           control={<Radio color="default" />}
           label={
             <Typography>
