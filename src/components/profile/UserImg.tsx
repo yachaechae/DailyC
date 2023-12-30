@@ -18,9 +18,6 @@ function UserImg() {
     getProfile();
   }, []);
 
-  console.log("userImg : ", userImg);
-  console.log("정상인가 : ", !userImg);
-
   return (
     <>
       {!userImg ? (
@@ -31,7 +28,7 @@ function UserImg() {
         <Image src={userImg} alt="테스트" width={120} height={120} />
       )}
       <Avatar sx={{ bgcolor: "white" }}>
-        <AccountCircle className="fill-orange size-[125%]"> </AccountCircle>
+        <AccountCircle className="fill-orange size-[125%]"></AccountCircle>
       </Avatar>
     </>
   );
