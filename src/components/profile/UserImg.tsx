@@ -22,14 +22,11 @@ function UserImg() {
     <>
       {!userImg ? (
         <Avatar sx={{ bgcolor: "white" }}>
-          <AccountCircle className="fill-orange size-[125%]"> </AccountCircle>
+          <AccountCircle color="primary" sx={{ fontSize: 50 }} />
         </Avatar>
       ) : (
         <Image src={userImg} alt="테스트" width={120} height={120} />
       )}
-      <Avatar sx={{ bgcolor: "white" }}>
-        <AccountCircle className="fill-orange size-[125%]"></AccountCircle>
-      </Avatar>
     </>
   );
 }
