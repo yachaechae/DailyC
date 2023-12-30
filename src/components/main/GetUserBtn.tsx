@@ -1,6 +1,6 @@
 "use client";
 import { getUser } from "@/utils/auth";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import UserImg from "../profile/UserImg";
 
 function GetUserBtn() {
