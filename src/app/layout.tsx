@@ -23,7 +23,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={jua.className}>
         <RecoilProvider>
-          <header className="h-75 flex items-center shadow-[0_4px_4px_rgba(0,0,0,0.25)]">
+          <header className="h-[75px] flex items-center shadow-[0_4px_4px_rgba(0,0,0,0.25)]">
             <div
               className={`${judson.className} container xl w-full flex justify-between items-center`}
             >

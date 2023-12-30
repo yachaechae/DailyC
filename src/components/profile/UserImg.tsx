@@ -1,3 +1,4 @@
+// "use client";
 import { getUser } from "@/utils/auth";
 import { AccountCircle } from "@mui/icons-material";
 import { Avatar } from "@mui/material";
