@@ -6,6 +6,7 @@ import Link from "next/link";
 import LoginAndLogoutBtn from "@/components/main/LoginAndLogoutBtn";
 import RecoilProvider from "@/components/RecoilProvider";
 import GetProfile from "@/components/profile/GetProfile";
+import ScrollToTopBtn from "@/components/layout/ScrollToTopBtn";
 
 const jua = Jua({ weight: "400", subsets: ["latin"] });
 const judson = Judson({ weight: "400", subsets: ["latin"] });
@@ -49,6 +50,7 @@ export default function RootLayout({
             </div>
           </header>
           {children}
+          <ScrollToTopBtn />
         </RecoilProvider>
       </body>
     </html>
