@@ -1,0 +1,129 @@
+input.input::-webkit-inner-spin-button {
+  appearance: none;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+}
+
+.input {
+  transition: all 0.3s;
+}
+.input:focus {
+  outline: none;
+  box-shadow: 0 0 8px 4px #f4950857;
+}
+
+.writeTagsBtn {
+  display: flex;
+  padding: 0 7px;
+  color: #f49508;
+  background-color: #fff;
+  border: 2px solid #f49508;
+  border-radius: 12px;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.3s;
+}
+.writeTagsBtn:hover {
+  background-color: #f8e8cf;
+}
+.writeTagsBtn.active {
+  color: #fff;
+  background-color: #f49508;
+}
+.writeTagsBtn.active:hover {
+  background-color: #dd8500;
+  border: 2px solid #dd8500;
+}
+.writeTagsBtnPlus {
+  color: #fff;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #f49508 !important;
+  margin-top: 3px;
+}
+.writeFileWrap {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  flex-wrap: wrap;
+}
+.writeFileList {
+  position: relative;
+  width: 200px;
+  height: 300px;
+}
+.writeLable {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 2;
+  cursor: pointer;
+}
+.writeFile {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+.writeFile:after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: #f3f3f3;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+.writePreviewWrap {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 3;
+}
+.writePreviewWrap.down {
+  z-index: 1;
+}
+.writePreviewWrap > p {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+.writePreviewWrap > p.writePreviewPlus {
+  color: #f49508;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 4rem;
+}
+
+.writePreviewWrap > p img {
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+}
+
+.writePreviewWrap .delBtn {
+  width: 25px;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  height: 25px;
+  border-radius: 50%;
+  background-color: #f49508;
+  color: #fff;
+  font-size: 0.9rem;
+}
+
+.writeSumitBtn {
+  width: 225px;
+  height: 45px;
+  background-color: #f49508 !important;
+  color: #fff;
+}
