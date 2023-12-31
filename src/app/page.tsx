@@ -1,5 +1,6 @@
 import GetUserBtn from "@/components/main/GetUserBtn";
 import GetProfile from "@/components/profile/GetProfile";
+import UserImg from "@/components/profile/UserImg";
 
 export default function Home() {
   return (
@@ -7,6 +8,7 @@ export default function Home() {
       {/* 유저정보 확인 버튼 */}
       <GetUserBtn />
       <GetProfile />
+      <UserImg />
     </div>
   );
 }

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styles from "./edit-profile.module.css";
 import SelectGender from "../ui/SelectGender";
-import defaultImg from "@assets/defaultImg.png";
 import Image from "next/image";
 import { TfiClose } from "react-icons/tfi";
 import { supabase } from "@/lib/supabase-config";
@@ -45,6 +44,7 @@ function EditProfile({ closeModal }: any) {
     setFile(imgFile);
     // 프리뷰 구현
     // File -> Url 형식으로 변환
+    console.log("imgFile : ", imgFile);
     const imgUrl: any = URL.createObjectURL(imgFile);
     setSelectedImg(imgUrl);
   };
@@ -70,7 +70,6 @@ function EditProfile({ closeModal }: any) {
       userImg: updatedImg,
     });
   };
-  console.log(user);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -83,6 +82,7 @@ function EditProfile({ closeModal }: any) {
 
     fetchData();
   }, []);
+
   return (
     <div className={styles.warpper}>
       <div>
@@ -97,7 +97,6 @@ function EditProfile({ closeModal }: any) {
               height={160}
             />
           )}
-
           <input type="file" onChange={previewImg} />
         </label>
       </div>
