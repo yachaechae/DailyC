@@ -1,4 +1,4 @@
-import Nav from "@/app/main/Nav/Nav";
+import Nav from "@/components/main/nav/Nav";
 import {
   inputsState,
   postDataState,

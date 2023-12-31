@@ -1,6 +1,6 @@
 "use client";
 
-import Nav from "@/app/main/Nav/Nav";
+import Nav from "@/components/main/nav/Nav";
 import { inputsState, tagsState, writeUserState } from "@/app/state/state";
 import "@/app/write/write.style.css";
 import HrComponents from "@/components/ui/hr";
