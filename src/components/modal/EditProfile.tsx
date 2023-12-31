@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styles from "./edit-profile.module.css";
 import SelectGender from "../ui/Radio";
-import defaultImg from "../../../public/assets/defaultImg.png";
+import defaultImg from "@assets/defaultImg.png";
 import Image from "next/image";
 import { TfiClose } from "react-icons/tfi";
 import { supabase } from "@/lib/supabase-config";
@@ -55,10 +55,10 @@ function EditProfile({ closeModal }: any) {
     const updatedImg = selectedImg !== undefined ? selectedImg : profileImg;
     const { data, error } = await supabase.auth.updateUser({
       data: {
-        userImg: `${updatedImg}`,
-        nickname: `${updatedNickname}`,
-        height: `${updatedHeight}`,
-        gender: `${gender}`,
+        userImg: updatedImg,
+        nickname: updatedNickname,
+        height: updatedHeight,
+        gender: gender,
       },
     });
     setUser({
@@ -78,7 +78,7 @@ function EditProfile({ closeModal }: any) {
       setProfile(user);
       setTall(user?.user_metadata?.height || "");
       setNickname(user?.user_metadata?.nickname || "");
-      setSelectedImg(user?.user_metadata?.userImg || defaultImg);
+      setSelectedImg(user?.user_metadata?.userImg || null);
     };
 
     fetchData();
@@ -87,7 +87,17 @@ function EditProfile({ closeModal }: any) {
     <div className={styles.warpper}>
       <div>
         <label className={styles.avatarfigure}>
-          <Image src={selectedImg} alt="기본이미지" width={160} height={160} />
+          {!selectedImg ? (
+            <UserImg />
+          ) : (
+            <Image
+              src={selectedImg}
+              alt="기본이미지"
+              width={160}
+              height={160}
+            />
+          )}
+
           <input type="file" onChange={previewImg} />
         </label>
       </div>
@@ -132,7 +142,7 @@ function EditProfile({ closeModal }: any) {
       <div
         onClick={() => {
           const answer = window.confirm(
-            "수정된 내용이 저장되지 않습니다. 그래도 나가시겠습니까?"
+            "수정된 내용이 저장되지 않습니다. 그래도 나가시겠습니까?",
           );
           if (!answer) return;
           closeModal();
