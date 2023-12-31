@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase-config";
 import Link from "next/link";
-import SelectGender from "@/components/ui/Radio";
+import SelectGender from "@/components/ui/SelectGender";
 // import defaultImg1 from "../../../public/assets/defaultImg.png";
 // import styles from "./login.module.css";
 
@@ -83,6 +83,7 @@ function page() {
                 type="email"
                 id="email"
                 name="email"
+                placeholder="이메일을 입력해주세요"
                 value={email}
                 onChange={handleEmailInput}
               />
@@ -99,6 +100,7 @@ function page() {
                 type="password"
                 id="password"
                 name="password"
+                placeholder="비밀번호를 입력해주세요"
                 value={password}
                 onChange={handlePasswordInput}
               />
@@ -115,12 +117,17 @@ function page() {
                 type="text"
                 id="nickname"
                 name="nickname"
+                placeholder="닉네임을 입력해주세요"
                 value={nickname}
                 onChange={handleNickNameInput}
               />
             </div>
             <div className="relative mb-4">
-              <SelectGender gender={gender} setGender={setGender} />
+              <SelectGender
+                gender={gender}
+                setGender={setGender}
+                textAlign={"text-left"}
+              />
             </div>
             <div className="relative mb-4">
               <label

@@ -9,6 +9,7 @@ import { useRecoilState } from "recoil";
 function UserImg() {
   const [user, setUser] = useRecoilState(userState);
   const userImg = user.userImg;
+  console.log(user);
 
   return (
     <>

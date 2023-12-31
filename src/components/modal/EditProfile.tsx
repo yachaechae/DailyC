@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styles from "./edit-profile.module.css";
-import SelectGender from "../ui/Radio";
+import SelectGender from "../ui/SelectGender";
 import defaultImg from "@assets/defaultImg.png";
 import Image from "next/image";
 import { TfiClose } from "react-icons/tfi";
@@ -111,7 +111,7 @@ function EditProfile({ closeModal }: any) {
       <SelectGender
         gender={gender}
         setGender={setGender}
-        userProfile={profile}
+        textAlign={"text-center"}
       />
       <div className={styles.height}>
         <label htmlFor="height">키</label>

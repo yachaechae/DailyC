@@ -5,7 +5,6 @@ import { supabase } from "@/lib/supabase-config";
 import Link from "next/link";
 import { useRecoilState } from "recoil";
 import { isLoginState } from "@/recoil/state";
-import ScrollToTopBtn from "@/components/layout/ScrollToTopBtn";
 
 function page() {
   const router = useRouter();
@@ -56,6 +55,7 @@ function page() {
               type="email"
               id="email"
               name="email"
+              placeholder="이메일을 입력해주세요"
               value={email}
               onChange={handleEmailInput}
             />
@@ -72,21 +72,11 @@ function page() {
               type="password"
               id="password"
               name="password"
+              placeholder="비밀번호를 입력해주세요"
               value={password}
               onChange={handlePasswordInput}
             />
           </div>
-          {/* <div className="relative mb-4">
-          <label htmlFor="nickname" className="leading-7 text-sm text-gray-600">
-            닉네임
-          </label>
-          <input
-            type="text"
-            id="nickname"
-            name="nickname"
-            className="w-full bg-white rounded border border-gray-300 focus:border-deepOrange focus:ring-2 focus:ring-lightOrange text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
-          />
-        </div> */}
           <button
             className="w-full rounded border-0 bg-orange px-8 py-2 text-lg text-white hover:bg-deepOrange focus:outline-none"
             type="submit"
