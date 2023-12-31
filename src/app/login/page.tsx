@@ -5,6 +5,7 @@ import { supabase } from "@/lib/supabase-config";
 import Link from "next/link";
 import { useRecoilState } from "recoil";
 import { isLoginState } from "@/recoil/state";
+import ScrollToTopBtn from "@/components/layout/ScrollToTopBtn";
 
 function page() {
   const router = useRouter();
@@ -40,7 +41,7 @@ function page() {
   };
 
   return (
-    <div className="container flex h-[calc(100vh-75px)] items-center justify-center">
+    <div className="container  flex h-[calc(100vh-75px)] items-center justify-center">
       <div className=" flex w-full flex-col rounded-lg bg-gray-100 p-8 md:w-1/2 lg:w-2/6">
         <h2 className="title-font mb-5 text-center text-lg font-medium text-gray-900">
           로그인
@@ -99,6 +100,9 @@ function page() {
           </Link>
         </div>
       </div>
+      {/* <ScrollToTopBtn />
+      <div className="h-[2500px] w-[600px] bg-orange" />
+      <div className="h-[2500px] w-[600px] bg-orange" /> */}
     </div>
   );
 }

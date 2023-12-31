@@ -3,7 +3,7 @@ import GetProfile from "@/components/profile/GetProfile";
 
 export default function Home() {
   return (
-    <div className="container xl w-full items-center flex flex-col gap-5 h-[calc(100vh-75px)] justify-center">
+    <div className="xl container flex h-[calc(100vh-75px)] w-full flex-col items-center justify-center gap-5">
       {/* 유저정보 확인 버튼 */}
       <GetUserBtn />
       <GetProfile />
