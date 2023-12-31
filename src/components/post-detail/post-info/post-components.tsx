@@ -6,37 +6,34 @@ import {
   tagsState,
 } from "@/app/state/state";
 import HrComponents from "@/components/ui/hr";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import PostDetailTitle from "./items/post-title";
 import PostDetailInfo from "./items/post-info";
 import PostDetailImage from "./items/post-image";
 import PostDetailContent from "./items/post-content";
 import PostDetailTag from "./items/post-tag";
+import { getUser } from "@/utils/auth";
 
 const postComponents = ({ postData }: { postData: any[] | null }) => {
   const [inputs, setInputs] = useRecoilState(inputsState);
   const [tags, setTags] = useRecoilState(tagsState);
   const [tagList, setTagList] = useRecoilState(tagListState);
   const [postDataId, setPostDataId] = useRecoilState(postDataState);
+  const [userProfile, setUserProfile] = useState<any>({});
+  const [checkUser, setCheckUser] = useState(false);
 
-  useEffect(() => {
+  const getProfile = async () => {
+    const user = await getUser();
+
     if (postData !== null) {
-      console.log(postData[0]);
-      // setInputs({
-      //   ...inputs,
-      //   gender: postData[0].gender,
-      //   height: postData[0].height,
-      //   title: postData[0].title,
-      //   content: postData[0].content,
-      // });
-      // setTags([...tags, ...postData[0].tags]);
-      // for (let i = 0; i < postData[0].tags.length; i++) {
-      //   if (!tagList.includes(postData[0].tags[i])) {
-      //     setTagList([...tagList, postData[0].tags[i]]);
-      //   }
-      // }
+      console.log(postData[0].writedId);
+      console.log(user?.id);
+      if (postData[0].writedId === user?.id) setCheckUser(true);
     }
+  };
+  useEffect(() => {
+    getProfile();
   }, []);
 
   return (
@@ -55,6 +52,10 @@ const postComponents = ({ postData }: { postData: any[] | null }) => {
           <PostDetailTag tags={postData[0].tags} />
           <HrComponents mt={50} mb={30} />
           <PostDetailContent content={postData[0].content} />
+          {checkUser ? <>참</> : <></>}
+          {/* <Link href="/login">
+            <button>로그인화면</button>
+          </Link> */}
         </div>
       ) : (
         <>데이터가 없습니다</>

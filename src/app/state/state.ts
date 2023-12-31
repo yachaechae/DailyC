@@ -1,5 +1,12 @@
 import { atom } from "recoil";
-import { inputsKey, postDataKey, tagItemKey, tagListKey, tagsKey } from "./key";
+import {
+  inputsKey,
+  postDataKey,
+  tagItemKey,
+  tagListKey,
+  tagsKey,
+  writeUserKey,
+} from "./key";
 import uuid from "react-uuid";
 
 // 글 작성 - inputs
@@ -7,7 +14,7 @@ export const inputsState = atom<inputsType>({
   key: inputsKey,
   default: {
     id: uuid(),
-    gender: "woman",
+    gender: "Woman",
     height: "",
     title: "",
     content: "",
@@ -36,4 +43,13 @@ export const tagListState = atom<string[]>({
 export const postDataState = atom<string>({
   key: postDataKey,
   default: "",
+});
+
+// 글 작성 유저 정보
+export const writeUserState = atom<writeUserType>({
+  key: writeUserKey,
+  default: {
+    id: "",
+    email: "",
+  },
 });

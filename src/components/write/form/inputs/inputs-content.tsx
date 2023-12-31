@@ -14,7 +14,7 @@ export const InputContent = () => {
   return (
     <div className="flex flex-col gap-[10px]">
       <label htmlFor="content">
-        제목
+        내용
         <span className="text-red-500 text-xs pl-[10px]">* 필수</span>
       </label>
       <input

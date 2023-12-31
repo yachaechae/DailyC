@@ -1,19 +1,22 @@
 import { inputsState } from "@/app/state/state";
-import { ChangeEvent } from "react";
+import { supabase } from "@/lib/supabase-config";
+import { getUser } from "@/utils/auth";
+import { ChangeEvent, useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 
 export const InputGender = () => {
   const [inputs, setInputs] = useRecoilState(inputsState);
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleChangeRadio = (e: ChangeEvent<HTMLInputElement>) => {
+    console.log(inputs.gender);
     setInputs({
       ...inputs,
-      [e.target.name]: e.target.value,
+      gender: e.target.id,
     });
   };
 
   return (
     <div className="flex flex-col gap-[10px]">
-      <label htmlFor="woman">
+      <label htmlFor="gender">
         성별
         <span className="text-red-500 text-xs pl-[10px]">* 필수</span>
       </label>
@@ -22,23 +25,23 @@ export const InputGender = () => {
           <input
             type="radio"
             name="gender"
-            id="woman"
-            value="woman"
-            checked={inputs.gender === "woman"}
-            onChange={handleChange}
+            id="Woman"
+            value={inputs.gender}
+            checked={inputs.gender === "Woman"}
+            onChange={handleChangeRadio}
           />
-          <label htmlFor="woman">여자</label>
+          <label htmlFor="Woman">여자</label>
         </div>
         <div className="flex gap-[10px]">
           <input
             type="radio"
             name="gender"
-            id="man"
-            value="man"
-            checked={inputs.gender === "man"}
-            onChange={handleChange}
+            id="Man"
+            value={inputs.gender}
+            checked={inputs.gender === "Man"}
+            onChange={handleChangeRadio}
           />
-          <label htmlFor="man">남자</label>
+          <label htmlFor="Man">남자</label>
         </div>
       </div>
     </div>

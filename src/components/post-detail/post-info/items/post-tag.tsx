@@ -5,13 +5,14 @@ const PostDetailTag = ({ tags }: { tags: string[] }) => {
 
   useEffect(() => {
     setDetailTags(tags);
-    console.log(tags);
   }, []);
 
   return (
     <div className="detailTagsBtnWrap">
-      {detailTags.map((tag) => (
-        <div className="detailTagsBtn">{tag}</div>
+      {detailTags.map((tag, idx) => (
+        <div className="detailTagsBtn" key={idx}>
+          {tag}
+        </div>
       ))}
     </div>
   );

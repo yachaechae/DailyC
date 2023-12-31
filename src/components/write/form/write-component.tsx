@@ -1,21 +1,39 @@
 "use client";
 
 import Nav from "@/app/main/Nav/Nav";
-import { inputsState, tagsState } from "@/app/state/state";
+import { inputsState, tagsState, writeUserState } from "@/app/state/state";
 import "@/app/write/write.style.css";
 import HrComponents from "@/components/ui/hr";
 import { supabase } from "@/lib/supabase-config";
-import { ChangeEvent, FormEvent, useRef, useState } from "react";
+import { ChangeEvent, FormEvent, useEffect, useRef, useState } from "react";
 import { useRecoilState } from "recoil";
 import { InputContent, InputGender, InputHeight, InputTitle } from "./inputs";
 import { InputTags } from "./tags";
+import { getUser } from "@/utils/auth";
+import { useRouter } from "next/navigation";
 
 const WriteComponentPage = () => {
-  // TODO: 유저 아이디랑 아이디 받을것
-  const [writedId, setWritedId] = useState("123");
-  const [writedName, setWritedName] = useState("tjdsksro90@gmail.com");
+  const router = useRouter();
+  const [writeUser, setWriteUser] = useRecoilState(writeUserState);
   const [inputs, setInputs] = useRecoilState(inputsState);
   const [tags, setTags] = useRecoilState(tagsState);
+
+  const getProfile = async () => {
+    const user = await getUser();
+    console.log(user);
+    setInputs({
+      ...inputs,
+      gender: user?.user_metadata?.gender,
+      height: user?.user_metadata?.height,
+    });
+    setWriteUser({
+      id: user?.id,
+      email: user?.email,
+    });
+  };
+  useEffect(() => {
+    getProfile();
+  }, []);
 
   const mainImg = useRef<any>(null);
   const [mainImgFile, setMainImgFile] = useState<File>();
@@ -56,7 +74,7 @@ const WriteComponentPage = () => {
   const handleUploadMainImg = async (selectedFile: File, check: boolean) => {
     const { error, data } = await supabase.storage
       .from("images")
-      .upload(`posts/${writedName}/${inputs.id}/mainImg`, selectedFile, {
+      .upload(`posts/${writeUser.email}/${inputs.id}/mainImg`, selectedFile, {
         cacheControl: "3600",
         upsert: check,
       });
@@ -70,7 +88,7 @@ const WriteComponentPage = () => {
   const handleDownMainImg = async () => {
     const { data } = supabase.storage
       .from("images")
-      .getPublicUrl(`posts/${writedName}/${inputs.id}/mainImg`);
+      .getPublicUrl(`posts/${writeUser.email}/${inputs.id}/mainImg`);
 
     setMainImgPreview(data.publicUrl);
     selectedMain = data.publicUrl;
@@ -266,7 +284,7 @@ const WriteComponentPage = () => {
     if (mainImgpreview === "") return alert("메인 사진은 필수입니다.");
     await getMainImgArr(true);
     await getSubImgArr();
-    addPost();
+    await addPost();
   };
 
   const addPost = async () => {
@@ -280,8 +298,8 @@ const WriteComponentPage = () => {
           title: inputs.title,
           content: inputs.content,
           tags: tags,
-          writedId: writedId,
-          writedName: writedName,
+          writedId: writeUser.id,
+          writedName: writeUser.email,
           mainImg: selectedMain,
           subImg: selectedSubArray,
         },
@@ -291,6 +309,8 @@ const WriteComponentPage = () => {
     if (error) console.log("Error creating a post", error);
     else {
       console.log("Post created successfully", data);
+      alert("글 작성 완료");
+      router.push(`/posts/${data[0].id}`);
     }
   };
 
@@ -341,10 +361,10 @@ const WriteComponentPage = () => {
     console.log(selectedFile);
     const { data: dataDist, error: errorDist } = await supabase.storage
       .from("images")
-      .remove([`posts/${writedName}/${inputs.id}/${subImg}`]);
+      .remove([`posts/${writeUser.email}/${inputs.id}/${subImg}`]);
     const { error, data } = await supabase.storage
       .from("images")
-      .upload(`posts/${writedName}/${inputs.id}/${subImg}`, selectedFile, {
+      .upload(`posts/${writeUser.email}/${inputs.id}/${subImg}`, selectedFile, {
         cacheControl: "3600",
         upsert: false,
       });
@@ -358,7 +378,7 @@ const WriteComponentPage = () => {
   const handleDownSubImg = async (subImg: string) => {
     const { data } = supabase.storage
       .from("images")
-      .getPublicUrl(`posts/${writedName}/${inputs.id}/${subImg}`);
+      .getPublicUrl(`posts/${writeUser.email}/${inputs.id}/${subImg}`);
 
     selectedSubArray.push(data.publicUrl);
   };

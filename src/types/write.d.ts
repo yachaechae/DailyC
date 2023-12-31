@@ -20,3 +20,8 @@ declare type postType = {
   mainImg: string;
   subImg: string[];
 };
+
+declare type writeUserType = {
+  id: string | undefined;
+  email: string | undefined;
+};

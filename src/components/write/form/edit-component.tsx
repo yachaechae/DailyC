@@ -6,6 +6,7 @@ import {
   postDataState,
   tagListState,
   tagsState,
+  writeUserState,
 } from "@/app/state/state";
 import "@/app/write/write.style.css";
 import HrComponents from "@/components/ui/hr";
@@ -14,11 +15,11 @@ import { ChangeEvent, FormEvent, useEffect, useRef, useState } from "react";
 import { useRecoilState } from "recoil";
 import { InputContent, InputGender, InputHeight, InputTitle } from "./inputs";
 import { InputTags } from "./tags";
+import { useRouter } from "next/navigation";
 
 const EditComponentPage = ({ postData }: { postData: any[] | null }) => {
-  // TODO: 유저 아이디랑 아이디 받을것
-  const [writedId, setWritedId] = useState("123");
-  const [writedName, setWritedName] = useState("tjdsksro90@gmail.com");
+  const router = useRouter();
+  const [writeUser, setWriteUser] = useRecoilState(writeUserState);
   const [inputs, setInputs] = useRecoilState(inputsState);
   const [tags, setTags] = useRecoilState(tagsState);
   const [tagList, setTagList] = useRecoilState(tagListState);
@@ -40,6 +41,10 @@ const EditComponentPage = ({ postData }: { postData: any[] | null }) => {
           setTagList([...tagList, postData[0].tags[i]]);
         }
       }
+      setWriteUser({
+        id: postData[0].writedId,
+        email: postData[0].writedName,
+      });
     }
   }, []);
 
@@ -82,7 +87,7 @@ const EditComponentPage = ({ postData }: { postData: any[] | null }) => {
   const handleUploadMainImg = async (selectedFile: File, check: boolean) => {
     const { error, data } = await supabase.storage
       .from("images")
-      .upload(`posts/${writedName}/${postDataId}/mainImg`, selectedFile, {
+      .upload(`posts/${writeUser.email}/${postDataId}/mainImg`, selectedFile, {
         cacheControl: "3600",
         upsert: check,
       });
@@ -96,7 +101,7 @@ const EditComponentPage = ({ postData }: { postData: any[] | null }) => {
   const handleDownMainImg = async () => {
     const { data } = supabase.storage
       .from("images")
-      .getPublicUrl(`posts/${writedName}/${postDataId}/mainImg`);
+      .getPublicUrl(`posts/${writeUser.email}/${postDataId}/mainImg`);
 
     setMainImgPreview(data.publicUrl);
     selectedMain = data.publicUrl;
@@ -292,7 +297,7 @@ const EditComponentPage = ({ postData }: { postData: any[] | null }) => {
     if (mainImgpreview === "") return alert("메인 사진은 필수입니다.");
     await getMainImgArr(true);
     await getSubImgArr();
-    editPost();
+    await editPost();
   };
   // editPOst 다른 부분
   const editPost = async () => {
@@ -306,8 +311,8 @@ const EditComponentPage = ({ postData }: { postData: any[] | null }) => {
         title: inputs.title,
         content: inputs.content,
         tags: tags,
-        writedId: writedId,
-        writedName: writedName,
+        writedId: writeUser.id,
+        writedName: writeUser.email,
         mainImg: selectedMain,
         subImg: selectedSubArray,
         update_at: date,
@@ -318,6 +323,8 @@ const EditComponentPage = ({ postData }: { postData: any[] | null }) => {
     if (error) console.log("Error creating a post", error);
     else {
       console.log("Post created successfully", data);
+      alert("글 수정 완료");
+      router.push(`/posts/${data[0].id}`);
     }
   };
 
@@ -368,13 +375,17 @@ const EditComponentPage = ({ postData }: { postData: any[] | null }) => {
     console.log(selectedFile);
     const { data: dataDist, error: errorDist } = await supabase.storage
       .from("images")
-      .remove([`posts/${writedName}/${postDataId}/${subImg}`]);
+      .remove([`posts/${writeUser.email}/${postDataId}/${subImg}`]);
     const { error, data } = await supabase.storage
       .from("images")
-      .upload(`posts/${writedName}/${postDataId}/${subImg}`, selectedFile, {
-        cacheControl: "3600",
-        upsert: false,
-      });
+      .upload(
+        `posts/${writeUser.email}/${postDataId}/${subImg}`,
+        selectedFile,
+        {
+          cacheControl: "3600",
+          upsert: false,
+        }
+      );
     if (error) console.log("Error creating a Sub Image", error);
     else {
       console.log("Sub Image created successfully", data);
@@ -385,7 +396,7 @@ const EditComponentPage = ({ postData }: { postData: any[] | null }) => {
   const handleDownSubImg = async (subImg: string) => {
     const { data } = supabase.storage
       .from("images")
-      .getPublicUrl(`posts/${writedName}/${postDataId}/${subImg}`);
+      .getPublicUrl(`posts/${writeUser.email}/${postDataId}/${subImg}`);
 
     selectedSubArray.push(data.publicUrl);
   };
