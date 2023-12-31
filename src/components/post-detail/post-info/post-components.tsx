@@ -14,21 +14,17 @@ import PostDetailImage from "./items/post-image";
 import PostDetailContent from "./items/post-content";
 import PostDetailTag from "./items/post-tag";
 import { getUser } from "@/utils/auth";
+import PostLikeAndBook from "./items/post-like-and-book";
+import PostEditAndDelete from "./items/post-edit-and-delete";
 
 const postComponents = ({ postData }: { postData: any[] | null }) => {
-  const [inputs, setInputs] = useRecoilState(inputsState);
-  const [tags, setTags] = useRecoilState(tagsState);
-  const [tagList, setTagList] = useRecoilState(tagListState);
-  const [postDataId, setPostDataId] = useRecoilState(postDataState);
-  const [userProfile, setUserProfile] = useState<any>({});
   const [checkUser, setCheckUser] = useState(false);
 
   const getProfile = async () => {
     const user = await getUser();
 
     if (postData !== null) {
-      console.log(postData[0].writedId);
-      console.log(user?.id);
+      console.log(postData[0].writedId, "비교", user?.id);
       if (postData[0].writedId === user?.id) setCheckUser(true);
     }
   };
@@ -43,7 +39,10 @@ const postComponents = ({ postData }: { postData: any[] | null }) => {
         <div className="container w-full mt-16">
           <PostDetailTitle title={postData[0].title} />
           <HrComponents mt={50} mb={20} />
-          <PostDetailInfo createAt={postData[0].create_at} />
+          <PostDetailInfo
+            createAt={postData[0].create_at}
+            updateAt={postData[0].update_at}
+          />
           <HrComponents mt={20} mb={20} />
           <PostDetailImage
             main={postData[0].mainImg}
@@ -52,10 +51,15 @@ const postComponents = ({ postData }: { postData: any[] | null }) => {
           <PostDetailTag tags={postData[0].tags} />
           <HrComponents mt={50} mb={30} />
           <PostDetailContent content={postData[0].content} />
-          {checkUser ? <>참</> : <></>}
-          {/* <Link href="/login">
-            <button>로그인화면</button>
-          </Link> */}
+          <HrComponents mt={30} mb={30} />
+          {checkUser ? (
+            <>
+              <PostEditAndDelete postId={postData[0].id} />
+              <PostLikeAndBook />
+            </>
+          ) : (
+            <></>
+          )}
         </div>
       ) : (
         <>데이터가 없습니다</>
