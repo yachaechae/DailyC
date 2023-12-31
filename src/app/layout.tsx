@@ -11,46 +11,35 @@ const jua = Jua({ weight: "400", subsets: ["latin"] });
 const judson = Judson({ weight: "400", subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "DailyC",
-  description: "오늘의 코디",
+	title: "DailyC",
+	description: "오늘의 코디",
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  return (
-    <html lang="en">
-      <body className={jua.className}>
-        <RecoilProvider>
-          <GetProfile />
-          <header className="h-[75px] flex items-center shadow-[0_4px_4px_rgba(0,0,0,0.25)]">
-            <div className="container w-full flex justify-between items-center">
-              <Link
-                href={"/"}
-                className="flex items-center relative text-orange text-3xl gap-2"
-              >
-                <Image
-                  src="/logo.svg"
-                  alt="Next.js Logo"
-                  width={50}
-                  height={50}
-                  priority
-                />
-                DailyC
-              </Link>
-              <ul className="flex gap-8 text-2xl">
-                <Link href={"/profilepage"}>
-                  <li>마이페이지</li>
-                </Link>
-                <LoginAndLogoutBtn />
-              </ul>
-            </div>
-          </header>
-          {children}
-        </RecoilProvider>
-      </body>
-    </html>
-  );
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+	return (
+		<html lang="en">
+			<body className={jua.className}>
+				<RecoilProvider>
+					<header className="h-[75px] flex items-center shadow-[0_4px_4px_rgba(0,0,0,0.25)]">
+						<div className="container w-full flex justify-between items-center">
+							<Link href={"/"} className="flex items-center relative text-orange text-3xl gap-2">
+								<Image src="/logo.svg" alt="Next.js Logo" width={50} height={50} priority />
+								DailyC
+							</Link>
+							<ul className="flex gap-8 text-2xl">
+								<Link href={"/write"}>
+									<li>글쓰기</li>
+								</Link>
+								<Link href={"/profilepage"}>
+									<li>마이페이지</li>
+								</Link>
+								<LoginAndLogoutBtn />
+							</ul>
+						</div>
+					</header>
+					{children}
+				</RecoilProvider>
+			</body>
+		</html>
+	);
 }
