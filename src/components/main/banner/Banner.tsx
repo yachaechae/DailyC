@@ -1,8 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import ArrowBackIosNewOutlinedIcon from "@mui/icons-material/ArrowBackIosNewOutlined";
-import { ArrowForwardIosOutlined } from "@mui/icons-material";
-import { SlideImg, Slider, SliderWrapper } from "./st-banner";
+import { ArrowBackIosRounded, ArrowForwardIosRounded } from "@mui/icons-material";
 
 const images = ["../assets/001.png", "../assets/002.png", "../assets/003.png"];
 
@@ -24,8 +22,9 @@ const Banner = () => {
 	}, [currentIndex]);
 	return (
 		<div className="relative w-screen m-auto overflow-hidden">
-			<ArrowBackIosNewOutlinedIcon
-				className="absolute top-1/2 left-4 -translate-y-1/2 border-none bg-white bg-opacity-75  p-3 cursor-pointer text-5xl z-10"
+			<ArrowBackIosRounded
+				className="absolute top-1/2 left-4 -translate-y-1/2 border-none bg-white bg-opacity-75  p-3 cursor-pointer z-10"
+				sx={{ fontSize: 50 }}
 				onClick={prevSlide}
 			/>
 			<div
@@ -41,8 +40,9 @@ const Banner = () => {
 					/>
 				))}
 			</div>
-			<ArrowForwardIosOutlined
-				className="absolute top-1/2 right-4 -translate-y-1/2 border-none bg-white bg-opacity-75  p-3 cursor-pointer text-5xl z-10"
+			<ArrowForwardIosRounded
+				className="absolute top-1/2 right-4 -translate-y-1/2 border-none bg-white bg-opacity-75  p-3 cursor-pointer z-10"
+				sx={{ fontSize: 50 }}
 				onClick={nextSlide}
 			/>
 		</div>
