@@ -65,21 +65,21 @@ function page() {
 
   return (
     <>
-      <div className="container flex justify-center items-center h-[calc(100vh-75px)]">
-        <div className="lg:w-2/6 md:w-1/2 bg-gray-100 rounded-lg p-8 flex flex-col w-full ">
-          <h2 className="text-gray-900 text-lg font-medium title-font mb-5 text-center">
+      <div className="container flex h-[calc(100vh-75px)] items-center justify-center">
+        <div className="flex w-full flex-col rounded-lg bg-gray-100 p-8 md:w-1/2 lg:w-2/6 ">
+          <h2 className="title-font mb-5 text-center text-lg font-medium text-gray-900">
             회원가입
           </h2>
           <form onSubmit={handleSignupForm}>
             <div className="relative mb-4">
               <label
                 htmlFor="email"
-                className="leading-7 text-sm text-gray-600"
+                className="text-sm leading-7 text-gray-600"
               >
                 이메일
               </label>
               <input
-                className="w-full bg-white rounded border border-gray-300 focus:border-deepOrange focus:ring-2 focus:ring-lightOrange text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+                className="w-full rounded border border-gray-300 bg-white px-3 py-1 text-base leading-8 text-gray-700 outline-none transition-colors duration-200 ease-in-out focus:border-deepOrange focus:ring-2 focus:ring-lightOrange"
                 type="email"
                 id="email"
                 name="email"
@@ -90,12 +90,12 @@ function page() {
             <div className="relative mb-4">
               <label
                 htmlFor="password"
-                className="leading-7 text-sm text-gray-600"
+                className="text-sm leading-7 text-gray-600"
               >
                 비밀번호
               </label>
               <input
-                className="w-full bg-white rounded border border-gray-300 focus:border-deepOrange focus:ring-2 focus:ring-lightOrange text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+                className="w-full rounded border border-gray-300 bg-white px-3 py-1 text-base leading-8 text-gray-700 outline-none transition-colors duration-200 ease-in-out focus:border-deepOrange focus:ring-2 focus:ring-lightOrange"
                 type="password"
                 id="password"
                 name="password"
@@ -106,12 +106,12 @@ function page() {
             <div className="relative mb-4">
               <label
                 htmlFor="nickname"
-                className="leading-7 text-sm text-gray-600"
+                className="text-sm leading-7 text-gray-600"
               >
                 닉네임
               </label>
               <input
-                className="w-full bg-white rounded border border-gray-300 focus:border-deepOrange focus:ring-2 focus:ring-lightOrange text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+                className="w-full rounded border border-gray-300 bg-white px-3 py-1 text-base leading-8 text-gray-700 outline-none transition-colors duration-200 ease-in-out focus:border-deepOrange focus:ring-2 focus:ring-lightOrange"
                 type="text"
                 id="nickname"
                 name="nickname"
@@ -125,12 +125,12 @@ function page() {
             <div className="relative mb-4">
               <label
                 htmlFor="height"
-                className="leading-7 text-sm text-gray-600"
+                className="text-sm leading-7 text-gray-600"
               >
                 키
               </label>
               <input
-                className="w-full bg-white rounded border border-gray-300 focus:border-deepOrange focus:ring-2 focus:ring-lightOrange text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+                className="w-full rounded border border-gray-300 bg-white px-3 py-1 text-base leading-8 text-gray-700 outline-none transition-colors duration-200 ease-in-out focus:border-deepOrange focus:ring-2 focus:ring-lightOrange"
                 type="number"
                 id="height"
                 name="height"
@@ -139,15 +139,15 @@ function page() {
               />
             </div>
             <button
-              className="text-white bg-orange border-0 py-2 px-8 focus:outline-none hover:bg-deepOrange rounded text-lg w-full"
+              className="w-full rounded border-0 bg-orange px-8 py-2 text-lg text-white hover:bg-deepOrange focus:outline-none"
               type="submit"
             >
               회원가입
             </button>
           </form>
-          <div className="flex justify-end w-full">
+          <div className="flex w-full justify-end">
             <Link href={"/login"} legacyBehavior>
-              <a className="text-xs text-gray-500 mt-3">로그인</a>
+              <a className="mt-3 text-xs text-gray-500">로그인</a>
             </Link>
           </div>
         </div>
