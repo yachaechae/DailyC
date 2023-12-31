@@ -7,8 +7,8 @@ export async function getAllPosts() {
   return posts;
 }
 
-export async function getEventByPostId(id: string) {
-  const { data, error } = await supabase.from("posts").select().eq("id", id);
+export async function getEventByPost(item: string, id: string) {
+  const { data, error } = await supabase.from("posts").select().eq(item, id);
 
   if (error) console.log("Error creating a posts data", error);
   return data;

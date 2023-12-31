@@ -1,8 +1,8 @@
-import { getEventByPostId } from "@/api/write";
+import { getEventByPost } from "@/api/write";
 import PostDetailPage from "@/components/post-detail/post-detail";
 
 async function fetchData(params: { id: string }) {
-  const data = await getEventByPostId(params.id);
+  const data = await getEventByPost("id", params.id);
   return data;
 }
 
