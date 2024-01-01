@@ -15,7 +15,7 @@ function page() {
   // const [checkPassword, setCheckPassword] = useState<string>("");
   const [nickname, setNickname] = useState<string>("");
   const [gender, setGender] = useState<string>("");
-  const [height, setHeight] = useState<number>(0);
+  const [height, setHeight] = useState<string>("");
   // const defaultImg = defaultImg1;
 
   const handleEmailInput = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -35,7 +35,8 @@ function page() {
   };
 
   const handleHeightInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setHeight(parseInt(e.target.value));
+    console.log("타입----", typeof e.target.value);
+    setHeight(e.target.value);
   };
 
   const handleSignupForm = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -64,7 +65,7 @@ function page() {
   };
 
   return (
-    <>
+    <div>
       <div className="container flex h-[calc(100vh-75px)] items-center justify-center">
         <div className="flex w-full flex-col rounded-lg bg-gray-100 p-8 md:w-1/2 lg:w-2/6 ">
           <h2 className="title-font mb-5 text-center text-lg font-medium text-gray-900">
@@ -137,10 +138,11 @@ function page() {
                 키
               </label>
               <input
-                className="w-full rounded border border-gray-300 bg-white px-3 py-1 text-base leading-8 text-gray-700 outline-none transition-colors duration-200 ease-in-out focus:border-deepOrange focus:ring-2 focus:ring-lightOrange"
+                className="w-full appearance-none rounded border border-gray-300 bg-white px-3 py-1 text-base leading-8 text-gray-700 outline-none transition-colors duration-200 ease-in-out focus:border-deepOrange focus:ring-2 focus:ring-lightOrange"
                 type="number"
                 id="height"
                 name="height"
+                placeholder="키를 입력해주세요"
                 value={height}
                 onChange={handleHeightInput}
               />
@@ -159,7 +161,7 @@ function page() {
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 }
 
