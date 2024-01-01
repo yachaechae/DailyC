@@ -13,7 +13,7 @@ import uuid from "react-uuid";
 export const inputsState = atom<inputsType>({
   key: inputsKey,
   default: {
-    id: uuid(),
+    id: 0,
     gender: "Woman",
     height: "",
     title: "",

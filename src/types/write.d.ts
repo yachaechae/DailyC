@@ -1,5 +1,5 @@
 declare type inputsType = {
-  id: string;
+  id: number;
   gender: string;
   height: string;
   title: string;
@@ -7,7 +7,7 @@ declare type inputsType = {
 };
 
 declare type postType = {
-  id: string;
+  id: number;
   gender: string;
   height: string;
   title: string;
