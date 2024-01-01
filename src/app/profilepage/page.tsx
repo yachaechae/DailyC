@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React from "react";
 import Layout from "./profileLayout";
 import { useRecoilValue } from "recoil";
 import { userState } from "@/recoil/state";

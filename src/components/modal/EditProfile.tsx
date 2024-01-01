@@ -84,64 +84,68 @@ function EditProfile({ closeModal }: any) {
     fetchData();
   }, []);
   return (
-    <div className={styles.warpper}>
-      <div>
-        <label className={styles.avatarfigure}>
-          <Image src={selectedImg} alt="기본이미지" width={160} height={160} />
-          <input type="file" onChange={previewImg} />
-        </label>
-      </div>
-      <div className={styles.nickname}>
-        <input
-          defaultValue={profileNickname}
-          type="text"
-          onChange={nicknameHandler}
-        />
-      </div>
-      <SelectGender
-        gender={gender}
-        setGender={setGender}
-        userProfile={profile}
-      />
-      <div className={styles.height}>
-        <label htmlFor="height">키</label>
-        <input
-          defaultValue={profileHeight}
-          id="height"
-          type="number"
-          onChange={tallHandler}
-          placeholder="숫자만 입력 가능합니다!"
-        />
-      </div>
-      <button
-        onClick={() => {
-          if (gender === "") {
-            alert("성별을 선택해 주세요!");
-            return false;
-          }
-          const answer = window.confirm("이대로 수정하시겠습니까?");
-          if (!answer) return;
-          updateUserData();
+    <form
+      onSubmit={(e: React.FormEvent<HTMLFormElement>) => {
+        if (gender === "") {
+          alert("성별을 선택해 주세요!");
+          return false;
+        }
+        const answer = window.confirm("이대로 수정하시겠습니까?");
+        if (!answer) return;
+        updateUserData();
 
-          closeModal();
-        }}
-        className={styles.btn}
-      >
-        수정 완료!
-      </button>
-      <div
-        onClick={() => {
-          const answer = window.confirm(
-            "수정된 내용이 저장되지 않습니다. 그래도 나가시겠습니까?"
-          );
-          if (!answer) return;
-          closeModal();
-        }}
-        className={styles.closebtn}
-      >
-        <TfiClose size={30} />
+        closeModal();
+      }}
+    >
+      <div className={styles.warpper}>
+        <div>
+          <label className={styles.avatarfigure}>
+            <Image
+              src={selectedImg}
+              alt="기본이미지"
+              width={160}
+              height={160}
+            />
+            <input type="file" onChange={previewImg} />
+          </label>
+        </div>
+        <div className={styles.nickname}>
+          <input
+            defaultValue={profileNickname}
+            type="text"
+            onChange={nicknameHandler}
+          />
+        </div>
+        <SelectGender
+          gender={gender}
+          setGender={setGender}
+          userProfile={profile}
+        />
+        <div className={styles.height}>
+          <label htmlFor="height">키</label>
+          <input
+            defaultValue={profileHeight}
+            id="height"
+            type="number"
+            onChange={tallHandler}
+            placeholder="숫자만 입력 가능합니다!"
+          />
+        </div>
+        <button className={styles.btn}>수정 완료!</button>
+        <div
+          onClick={() => {
+            const answer = window.confirm(
+              "수정된 내용이 저장되지 않습니다. 그래도 나가시겠습니까?"
+            );
+            if (!answer) return;
+            closeModal();
+          }}
+          className={styles.closebtn}
+        >
+          <TfiClose size={30} />
+        </div>
       </div>
-    </div>
+    </form>
   );
 }
 
