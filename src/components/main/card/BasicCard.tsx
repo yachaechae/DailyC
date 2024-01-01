@@ -56,7 +56,7 @@ export default function BasicCard({ rank, data }: { rank?: string; data: postTyp
 					<p className={` text-3xl text-white drop-shadow-[0_1px_5px_rgba(0,0,0,0.7)] truncate`}>
 						{data.title}
 					</p>
-					<span className={` text-lg`}>{data.tags.join("# ")}</span>
+					<span className={` text-lg`}>{data.tags?.join("# ")}</span>
 				</div>
 			</div>
 			<CardHeader

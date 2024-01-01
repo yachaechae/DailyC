@@ -1,19 +1,9 @@
+"use client"
 import { getEventByPost } from "@/api/write";
-import CategoryList from "@/components/category/CategoryList";
 import BasicCard from "@/components/main/card/BasicCard";
 import Nav from "@/components/main/nav/Nav";
 import React from "react";
-
-// async function fetchData(params: { id: string }) {
-// 	const data = await getEventByPost("id", params.id);
-// 	return data;
-// }
-
-// export default async function PostDetail({ params }: { params?: any; children?: React.ReactNode }) {
-// 	const postData = await fetchData(params);
-
-// 	return <PostDetailPage postData={postData} />;
-// }
+import { RecoilRoot } from "recoil";
 
 async function fetchData(params: { id: string }) {
 	try {
@@ -32,7 +22,11 @@ async function fetchData(params: { id: string }) {
 
 export default async function CategoryDetail({ params }: { params?: any; children?: React.ReactNode }) {
 	const postData = await fetchData(params);
-	console.log(postData);
 
-	return <CategoryList postData={postData}></CategoryList>;
+	return <RecoilRoot>
+	<Nav />
+	<div className="container mt-[5rem] flex gap-6">
+		{postData}
+	</div>
+</RecoilRoot>;
 }
