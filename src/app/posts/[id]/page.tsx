@@ -1,7 +1,7 @@
 import { getEventByPost } from "@/api/write";
 import PostDetailPage from "@/components/post-detail/post-detail";
 
-async function fetchData(params: { id: string }) {
+async function fetchData(params: { id: number }) {
   const data = await getEventByPost("id", params.id);
   return data;
 }
@@ -9,10 +9,9 @@ async function fetchData(params: { id: string }) {
 export default async function PostDetail({
   params,
 }: {
-  params?: any;
-  children?: React.ReactNode;
+  params: { id: number };
 }) {
   const postData = await fetchData(params);
 
-  return <PostDetailPage postData={postData} />;
+  return <PostDetailPage postData={postData} params={params.id} />;
 }
