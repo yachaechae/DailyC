@@ -8,7 +8,7 @@ import { useRecoilState } from "recoil";
 function GetProfile() {
   const [user, setUser] = useRecoilState(userState);
   const [profile, setProfile] = useState<any>({});
-  const [userImgUrl, setUserImgUrl] = useState<string>("");
+
 
   const getUserInfo = async () => {
     const data = await getUser();
@@ -19,13 +19,10 @@ function GetProfile() {
     getUserInfo();
   }, []);
 
-  const makeUserImgUrl = () => {
-    const imgUrl: string = URL.createObjectURL(profile.user_metadata?.userImg);
-    setUserImgUrl(imgUrl);
-  };
+
 
   useEffect(() => {
-    // makeUserImgUrl();
+ 
     if (profile) {
       setUser({
         id: profile.id,
@@ -34,12 +31,13 @@ function GetProfile() {
         height: profile.user_metadata?.height,
         gender: profile.user_metadata?.gender,
         userImg: profile.user_metadata?.userImg,
-        // userImg: userImgUrl,
+ 
       });
     } else {
       return;
     }
   }, [profile]);
+  console.log(user)
 
   return <></>;
 }

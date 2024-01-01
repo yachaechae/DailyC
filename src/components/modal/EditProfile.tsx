@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styles from "./edit-profile.module.css";
 import SelectGender from "../ui/SelectGender";
 import Image from "next/image";
@@ -8,10 +8,11 @@ import { getUser } from "@/utils/auth";
 import { useRecoilState } from "recoil";
 import { userState } from "@/recoil/state";
 import UserImg from "../profile/UserImg";
+import uuid from "react-uuid";
 
 function EditProfile({ closeModal }: any) {
   const [gender, setGender] = useState<string>("");
-  const [file, setFile] = useState<any>({});
+  const [file, setFile] = useState<any>();
   const [profile, setProfile] = useState<any>({});
   const [user, setUser] = useRecoilState(userState);
 
@@ -47,10 +48,36 @@ function EditProfile({ closeModal }: any) {
     setSelectedImg(imgUrl);
   };
 
+  async function uploadFile(file: any) {
+    try {
+      if (file) {
+      const { data, error } = await supabase.storage
+        .from("avatars")
+        .upload(`/users/${user.id}/${selectedImg}`, file, {
+          cacheControl: "3600",
+          upsert: false
+        });
+    } else {
+      return null;
+    }
+    } catch (error) {
+      console.log("error", error)
+      alert("사진변경중 오류 발생")
+    }
+    
+  }
+
+  
+
   const updateUserData = async () => {
+    try {
+      const { data: avatarImg } = supabase
+  .storage
+  .from('avatars')
+  .getPublicUrl(`users/${user.id}/${selectedImg}`)
     const updatedHeight = tall === undefined ? profileHeight : tall;
     const updatedNickname = nickname === undefined ? profileNickname : nickname;
-    const updatedImg = selectedImg !== undefined ? selectedImg : profileImg;
+    const updatedImg = avatarImg?.publicUrl !== undefined ? avatarImg?.publicUrl : profileImg;
     // const updatedFile = file !== undefined ? file : null;
     console.log("file ------ ", file);
     if (!file) return;
@@ -71,7 +98,14 @@ function EditProfile({ closeModal }: any) {
       gender: gender,
       userImg: updatedImg,
     });
+    } catch (error) {
+      console.log("error",error)
+      alert("수정중 문제가 발생하였습니다.")
+    }
   };
+ 
+
+  
 
   useEffect(() => {
     const fetchData = async () => {
@@ -86,7 +120,21 @@ function EditProfile({ closeModal }: any) {
   }, []);
 
   return (
-    <div className={styles.warpper}>
+    <form
+      onSubmit={(e: React.FormEvent<HTMLFormElement>) => {
+        if (gender === "") {
+          alert("성별을 선택해 주세요!");
+          return false;
+        }
+        const answer = window.confirm("이대로 수정하시겠습니까?");
+        if (!answer) return;
+        uploadFile(file);
+        updateUserData();
+
+        closeModal();
+      }}
+    >
+      <div className={styles.warpper}>
       <div>
         <label className={styles.avatarfigure}>
           {!selectedImg ? (
@@ -99,61 +147,48 @@ function EditProfile({ closeModal }: any) {
               height={160}
             />
           )}
-          <input type="file" onChange={previewImg} />
+          <input type="file" onChange={previewImg}/>
         </label>
       </div>
-      <div className={styles.nickname}>
-        <input
-          defaultValue={profileNickname}
-          type="text"
-          onChange={nicknameHandler}
+        <div className={styles.nickname}>
+          <input
+            defaultValue={profileNickname}
+            type="text"
+            onChange={nicknameHandler}
+          />
+        </div>
+        <SelectGender
+          gender={gender}
+          setGender={setGender}
+          userProfile={profile}
+          textAlign={"text-center"}
         />
-      </div>
-      <SelectGender
-        gender={gender}
-        setGender={setGender}
-        textAlign={"text-center"}
-      />
-      <div className={styles.height}>
-        <label htmlFor="height">키</label>
-        <input
-          defaultValue={profileHeight}
-          id="height"
-          type="number"
-          onChange={tallHandler}
-          placeholder="숫자만 입력 가능합니다!"
-        />
-      </div>
-      <button
-        onClick={() => {
-          if (gender === "") {
-            alert("성별을 선택해 주세요!");
-            return false;
-          }
-          const answer = window.confirm("이대로 수정하시겠습니까?");
-          if (!answer) return;
-          updateUserData();
-
-          closeModal();
-        }}
-        className={styles.btn}
-      >
-        수정 완료!
-      </button>
-      <div
-        onClick={() => {
-          const answer = window.confirm(
-            "수정된 내용이 저장되지 않습니다. 그래도 나가시겠습니까?",
-          );
-          if (!answer) return;
-          closeModal();
-        }}
-        className={styles.closebtn}
-      >
-        <TfiClose size={30} />
-      </div>
+        <div className={styles.height}>
+          <label htmlFor="height">키</label>
+          <input
+            defaultValue={profileHeight}
+            id="height"
+            type="number"
+            onChange={tallHandler}
+            placeholder="숫자만 입력 가능합니다!"
+          />
+        </div>
+        <button className={styles.btn}>수정 완료!</button>
+        <div
+          onClick={() => {
+            const answer = window.confirm(
+              "수정된 내용이 저장되지 않습니다. 그래도 나가시겠습니까?"
+            );
+            if (!answer) return;
+            closeModal();
+          }}
+          className={styles.closebtn}
+        >
+          <TfiClose size={30} />
+        </div>
     </div>
-  );
+    </form>
+  )
 }
 
 export default EditProfile;
