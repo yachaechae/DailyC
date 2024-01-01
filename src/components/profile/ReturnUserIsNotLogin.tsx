@@ -8,18 +8,18 @@ type Props = {
   children: React.ReactNode;
 };
 
-function UserReturn({ children }: Props) {
+function ReturnUserIsNotLogin({ children }: Props) {
   const router = useRouter();
   const [user, setUser] = useRecoilState(userState);
 
   useEffect(() => {
     if (!user.email) {
-      router.push("/");
+      router.push("/login");
       return alert("로그인 후 이용 가능합니다.");
     }
   }, []);
 
-  return <>{!user.email ? "" : { children }}</>;
+  return <>{!user.email ? "" : children}</>;
 }
 
-export default UserReturn;
+export default ReturnUserIsNotLogin;

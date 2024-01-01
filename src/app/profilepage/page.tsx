@@ -1,7 +1,7 @@
 import React from "react";
 import Layout from "./profileLayout";
 import Mycard from "@/components/profile-cards/Mycard";
-import UserReturn from "@/components/profile/UserReturn";
+import UserReturn from "@/components/profile/ReturnUserIsNotLogin";
 
 function ProfilePage() {
   return (
