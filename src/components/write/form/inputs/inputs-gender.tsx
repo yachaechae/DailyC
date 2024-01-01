@@ -25,23 +25,23 @@ export const InputGender = () => {
           <input
             type="radio"
             name="gender"
-            id="Woman"
+            id="woman"
             value={inputs.gender}
             checked={inputs.gender === "Woman"}
             onChange={handleChangeRadio}
           />
-          <label htmlFor="Woman">여자</label>
+          <label htmlFor="woman">여자</label>
         </div>
         <div className="flex gap-[10px]">
           <input
             type="radio"
             name="gender"
-            id="Man"
+            id="man"
             value={inputs.gender}
             checked={inputs.gender === "Man"}
             onChange={handleChangeRadio}
           />
-          <label htmlFor="Man">남자</label>
+          <label htmlFor="man">남자</label>
         </div>
       </div>
     </div>

@@ -12,11 +12,11 @@ export default function Nav() {
 					<Link href={"/category"} className="custom-category-item">
 						<li>ALL</li>
 					</Link>
-					<Link href={"/category/women"} className="custom-category-item">
-						<li>WOMEN</li>
+					<Link href={"/category/woman"} className="custom-category-item">
+						<li>WOMAN</li>
 					</Link>
-					<Link href={"/category/men"} className="custom-category-item">
-						<li>MEN</li>
+					<Link href={"/category/man"} className="custom-category-item">
+						<li>MAN</li>
 					</Link>
 				</ul>
 			</div>
