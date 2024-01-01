@@ -5,11 +5,12 @@ import { ArrowBackIosRounded, ArrowForwardIosRounded } from "@mui/icons-material
 import { IconButton } from "@mui/material";
 import { getAllPosts } from "@/api/write";
 
-export default async function Popular() {
-	console.log("render");
+async function fetchData() {
 	try {
 		const postData: postType[] = await getAllPosts();
-		console.log(postData);
+		return postData.map((post) => {
+			return <BasicCard data={post} />;
+		});
 	} catch (error) {
 		return (
 			<>
@@ -17,13 +18,10 @@ export default async function Popular() {
 			</>
 		);
 	}
-	// useEffect(() => {
-	// 	const fetchData = getAllPosts();
-	// 	fetchData.then((data ) => {
-	// 		data === null;
-	// 		postData = data;
-	// 	});
-	// }, []);
+}
+
+export default async function Popular() {
+	const postData = await fetchData();
 
 	return (
 		<>
@@ -34,10 +32,11 @@ export default async function Popular() {
 					<ArrowBackIosRounded sx={{ fontSize: 40 }} color="primary" />
 				</IconButton>
 				<div className="w-full flex justify-between">
-					<BasicCard rank="first" />
+					{postData}
+					{/* <BasicCard rank="first" />
 					<BasicCard rank="second" />
 					<BasicCard rank="third" />
-					<BasicCard rank="" />
+					<BasicCard rank="" /> */}
 				</div>
 				<IconButton>
 					<ArrowForwardIosRounded sx={{ fontSize: 40 }} color="primary" />
