@@ -22,13 +22,12 @@ function UserImg({ size }: props) {
         </Avatar>
       ) : (
           <Image
-            className={`w-[${size}px] h-[${size}px] rounded-full object-cover`}
+            className={`h-full rounded-full object-cover overflow-hidden`}
             src={userImg}
             alt="테스트"
             width={size}
             height={size}
           />
-          
       )}
     </>
   );
