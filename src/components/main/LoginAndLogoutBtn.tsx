@@ -21,6 +21,10 @@ function LoginAndLogoutBtn() {
     }
   };
 
+  useEffect(() => {
+    getisLogin();
+  }, [isLogin]);
+
   const hendleLogout = () => {
     if (isLogin === false) return alert("로그인된 이메일이 없습니다.");
     logout();

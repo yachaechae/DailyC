@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styles from "./edit-profile.module.css";
-import SelectGender from "../ui/Radio";
-import defaultImg from "../../../public/assets/defaultImg.png";
+import SelectGender from "../ui/SelectGender";
 import Image from "next/image";
 import { TfiClose } from "react-icons/tfi";
 import { supabase } from "@/lib/supabase-config";
@@ -12,7 +11,7 @@ import UserImg from "../profile/UserImg";
 
 function EditProfile({ closeModal }: any) {
   const [gender, setGender] = useState<string>("");
-  const [file, setFile] = useState(null);
+  const [file, setFile] = useState<any>({});
   const [profile, setProfile] = useState<any>({});
   const [user, setUser] = useRecoilState(userState);
 
@@ -41,7 +40,6 @@ function EditProfile({ closeModal }: any) {
 
   const previewImg = (event: any) => {
     const imgFile = event.target.files[0];
-
     setFile(imgFile);
     // 프리뷰 구현
     // File -> Url 형식으로 변환
@@ -53,12 +51,16 @@ function EditProfile({ closeModal }: any) {
     const updatedHeight = tall === undefined ? profileHeight : tall;
     const updatedNickname = nickname === undefined ? profileNickname : nickname;
     const updatedImg = selectedImg !== undefined ? selectedImg : profileImg;
+    // const updatedFile = file !== undefined ? file : null;
+    console.log("file ------ ", file);
+    if (!file) return;
     const { data, error } = await supabase.auth.updateUser({
       data: {
-        userImg: `${updatedImg}`,
-        nickname: `${updatedNickname}`,
-        height: `${updatedHeight}`,
-        gender: `${gender}`,
+        // userImg: file,
+        userImg: updatedImg,
+        nickname: updatedNickname,
+        height: updatedHeight,
+        gender: gender,
       },
     });
     setUser({
@@ -70,7 +72,6 @@ function EditProfile({ closeModal }: any) {
       userImg: updatedImg,
     });
   };
-  console.log(user);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -78,11 +79,12 @@ function EditProfile({ closeModal }: any) {
       setProfile(user);
       setTall(user?.user_metadata?.height || "");
       setNickname(user?.user_metadata?.nickname || "");
-      setSelectedImg(user?.user_metadata?.userImg || defaultImg);
+      setSelectedImg(user?.user_metadata?.userImg || null);
     };
 
     fetchData();
   }, []);
+
   return (
     <form
       onSubmit={(e: React.FormEvent<HTMLFormElement>) => {
@@ -98,17 +100,21 @@ function EditProfile({ closeModal }: any) {
       }}
     >
       <div className={styles.warpper}>
-        <div>
-          <label className={styles.avatarfigure}>
+      <div>
+        <label className={styles.avatarfigure}>
+          {!selectedImg ? (
+            <UserImg />
+          ) : (
             <Image
               src={selectedImg}
               alt="기본이미지"
               width={160}
               height={160}
             />
-            <input type="file" onChange={previewImg} />
-          </label>
-        </div>
+          )}
+          <input type="file" onChange={previewImg} />
+        </label>
+      </div>
         <div className={styles.nickname}>
           <input
             defaultValue={profileNickname}
@@ -120,6 +126,7 @@ function EditProfile({ closeModal }: any) {
           gender={gender}
           setGender={setGender}
           userProfile={profile}
+          textAlign={"text-center"}
         />
         <div className={styles.height}>
           <label htmlFor="height">키</label>
@@ -144,9 +151,9 @@ function EditProfile({ closeModal }: any) {
         >
           <TfiClose size={30} />
         </div>
-      </div>
+    </div>
     </form>
-  );
+  )
 }
 
 export default EditProfile;

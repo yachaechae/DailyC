@@ -25,11 +25,11 @@ export default function RootLayout({
       <body className={jua.className}>
         <RecoilProvider>
           <GetProfile />
-          <header className="h-[75px] flex items-center shadow-[0_4px_4px_rgba(0,0,0,0.25)]">
-            <div className="container w-full flex justify-between items-center">
+          <header className="flex h-[75px] items-center shadow-[0_4px_4px_rgba(0,0,0,0.25)]">
+            <div className="container flex w-full items-center justify-between">
               <Link
                 href={"/"}
-                className="flex items-center relative text-orange text-3xl gap-2"
+                className="relative flex items-center gap-2 text-3xl text-orange"
               >
                 <Image
                   src="/logo.svg"
