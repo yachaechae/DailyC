@@ -27,7 +27,7 @@ export const InputGender = () => {
             name="gender"
             id="woman"
             value={inputs.gender}
-            checked={inputs.gender === "Woman"}
+            checked={inputs.gender === "woman"}
             onChange={handleChangeRadio}
           />
           <label htmlFor="woman">여자</label>
@@ -38,7 +38,7 @@ export const InputGender = () => {
             name="gender"
             id="man"
             value={inputs.gender}
-            checked={inputs.gender === "Man"}
+            checked={inputs.gender === "man"}
             onChange={handleChangeRadio}
           />
           <label htmlFor="man">남자</label>
