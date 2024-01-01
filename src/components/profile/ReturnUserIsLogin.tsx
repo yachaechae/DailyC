@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect } from "react";
 import { useRecoilState } from "recoil";
-import { userState } from "@/recoil/state";
+import { isLoginState } from "@/recoil/state";
 import { useRouter } from "next/navigation";
 
 type Props = {
@@ -10,16 +10,16 @@ type Props = {
 
 function ReturnUserIsLogin({ children }: Props) {
   const router = useRouter();
-  const [user, setUser] = useRecoilState(userState);
+  const [isLogin, setIsLogin] = useRecoilState(isLoginState);
 
   useEffect(() => {
-    if (user.email === "") {
+    if (isLogin === true) {
       router.push("/");
       return alert("이미 로그인 되어 있습니다.");
     }
   }, []);
 
-  return <>{user.email === "" ? "" : children}</>;
+  return <>{isLogin === true ? "" : children}</>;
 }
 
 export default ReturnUserIsLogin;

@@ -9,21 +9,7 @@ import { isLoginState } from "@/recoil/state";
 
 function LoginAndLogoutBtn() {
   const router = useRouter();
-
   const [isLogin, setIsLogin] = useRecoilState(isLoginState);
-
-  const getisLogin = async () => {
-    const user = await getUser();
-    if (!!user) {
-      setIsLogin(true);
-    } else {
-      setIsLogin(false);
-    }
-  };
-
-  useEffect(() => {
-    getisLogin();
-  }, [isLogin]);
 
   const hendleLogout = () => {
     if (isLogin === false) return alert("로그인된 이메일이 없습니다.");
