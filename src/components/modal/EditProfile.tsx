@@ -11,7 +11,7 @@ import UserImg from "../profile/UserImg";
 
 function EditProfile({ closeModal }: any) {
   const [gender, setGender] = useState<string>("");
-  const [file, setFile] = useState(null);
+  const [file, setFile] = useState<any>({});
   const [profile, setProfile] = useState<any>({});
   const [user, setUser] = useRecoilState(userState);
 
@@ -40,11 +40,9 @@ function EditProfile({ closeModal }: any) {
 
   const previewImg = (event: any) => {
     const imgFile = event.target.files[0];
-
     setFile(imgFile);
     // 프리뷰 구현
     // File -> Url 형식으로 변환
-    console.log("imgFile : ", imgFile);
     const imgUrl: any = URL.createObjectURL(imgFile);
     setSelectedImg(imgUrl);
   };
@@ -53,8 +51,12 @@ function EditProfile({ closeModal }: any) {
     const updatedHeight = tall === undefined ? profileHeight : tall;
     const updatedNickname = nickname === undefined ? profileNickname : nickname;
     const updatedImg = selectedImg !== undefined ? selectedImg : profileImg;
+    // const updatedFile = file !== undefined ? file : null;
+    console.log("file ------ ", file);
+    if (!file) return;
     const { data, error } = await supabase.auth.updateUser({
       data: {
+        // userImg: file,
         userImg: updatedImg,
         nickname: updatedNickname,
         height: updatedHeight,
