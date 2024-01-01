@@ -8,7 +8,7 @@ import { Typography } from "@mui/material";
 import { Jua } from "next/font/google";
 const jua = Jua({ weight: "400", subsets: ["latin"] });
 
-export default function SelectGender({ gender, setGender, userProfile }: any) {
+export default function SelectGender({ gender, setGender, textAlign }: any) {
   const genderHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     setGender(e.target.value);
   };
@@ -16,7 +16,7 @@ export default function SelectGender({ gender, setGender, userProfile }: any) {
   return (
     <FormControl>
       <FormLabel id="demo-row-radio-buttons-group-label">
-        <p className={`${jua.className} text-center text-xl`}>성별</p>
+        <p className={`${jua.className} ${textAlign} text-xl`}>성별</p>
       </FormLabel>
       <RadioGroup
         row

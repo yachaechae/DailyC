@@ -6,7 +6,6 @@ import { useRecoilState } from "recoil";
 import { userState } from "@/recoil/state";
 function ProfileInfo({ showModal }: any) {
   const [user, setUser] = useRecoilState(userState);
-  console.log(user);
   return (
     <div className={styles.warpper}>
       <div className={styles.avatarfigure}>
