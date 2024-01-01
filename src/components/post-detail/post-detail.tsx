@@ -3,10 +3,16 @@
 import { RecoilRoot } from "recoil";
 import PostComponentPage from "./post-info/post-components";
 
-const PostDetailPage = ({ postData }: { postData: any[] | null }) => {
+const PostDetailPage = ({
+  postData,
+  params,
+}: {
+  postData: any[] | null;
+  params: number;
+}) => {
   return (
     <RecoilRoot>
-      <PostComponentPage postData={postData} />
+      <PostComponentPage postData={postData} params={params} />
     </RecoilRoot>
   );
 };

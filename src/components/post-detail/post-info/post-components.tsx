@@ -17,15 +17,22 @@ import { getUser } from "@/utils/auth";
 import PostLikeAndBook from "./items/post-like-and-book";
 import PostEditAndDelete from "./items/post-edit-and-delete";
 
-const postComponents = ({ postData }: { postData: any[] | null }) => {
+const postComponents = ({
+  postData,
+  params,
+}: {
+  postData: any[] | null;
+  params: number;
+}) => {
   const [checkUser, setCheckUser] = useState(false);
+  const [userId, setUserId] = useState<string | undefined>("");
 
   const getProfile = async () => {
     const user = await getUser();
 
     if (postData !== null) {
-      console.log(postData[0].writedId, "비교", user?.id);
-      if (postData[0].writedId === user?.id) setCheckUser(true);
+      setUserId(user?.id);
+      if (postData[0].writedId === userId) setCheckUser(true);
     }
   };
   useEffect(() => {
@@ -55,10 +62,12 @@ const postComponents = ({ postData }: { postData: any[] | null }) => {
           {checkUser ? (
             <>
               <PostEditAndDelete postId={postData[0].id} />
-              <PostLikeAndBook />
             </>
           ) : (
-            <></>
+            <>
+              <PostEditAndDelete postId={postData[0].id} />
+              <PostLikeAndBook params={params} userId={userId} />
+            </>
           )}
         </div>
       ) : (

@@ -6,12 +6,7 @@ async function fetchData(params: { id: string }) {
   return data;
 }
 
-export default async function EditPage({
-  params,
-}: {
-  params?: any;
-  children?: React.ReactNode;
-}) {
+export default async function EditPage({ params }: { params?: any }) {
   const postData = await fetchData(params);
   return <EditFormPage postData={postData} />;
 }
