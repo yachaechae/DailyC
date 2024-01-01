@@ -8,7 +8,7 @@ export default function Home() {
       {/* 유저정보 확인 버튼 */}
       <GetUserBtn />
       <GetProfile />
-      <UserImg fontSize={120} />
+      <UserImg size={120} />
     </div>
   );
 }

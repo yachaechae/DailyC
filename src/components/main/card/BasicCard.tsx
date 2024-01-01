@@ -72,7 +72,7 @@ export default function BasicCard({ rank }: { rank: string }) {
       </div>
       <CardHeader
         className="bg-gray-300 px-3 py-2"
-        avatar={<UserImg fontSize={35} />}
+        avatar={<UserImg size={35} />}
         action={
           <IconButton
             aria-label="add to favorites"

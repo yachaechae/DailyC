@@ -9,7 +9,7 @@ function ProfileInfo({ showModal }: any) {
   return (
     <div className={styles.warpper}>
       <div className={styles.avatarfigure}>
-        <UserImg fontSize={120} />
+        <UserImg size={120} />
       </div>
       <div className={styles.nickname}>{user.nickname}</div>
       <div className={styles.email}>{user.email}</div>
