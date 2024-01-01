@@ -6,23 +6,27 @@ import Image from "next/image";
 import React from "react";
 import { useRecoilState } from "recoil";
 
-function UserImg() {
+type props = {
+  fontSize: number;
+};
+
+function UserImg({ fontSize }: props) {
   const [user, setUser] = useRecoilState(userState);
   const userImg = user?.userImg;
 
   return (
     <>
       {!userImg ? (
-        <Avatar sx={{ bgcolor: "white", width: 120, height: 120 }}>
-          <AccountCircle color="primary" sx={{ fontSize: 120 }} />
+        <Avatar sx={{ bgcolor: "white", width: fontSize, height: fontSize }}>
+          <AccountCircle color="primary" sx={{ fontSize: fontSize }} />
         </Avatar>
       ) : (
         <Image
-          className="h-[120px] w-[120px] rounded-full"
+          className="h-[fontSizepx] w-[fontSizepx] rounded-full"
           src={userImg}
           alt="테스트"
-          width={120}
-          height={120}
+          width={fontSize}
+          height={fontSize}
         />
       )}
     </>

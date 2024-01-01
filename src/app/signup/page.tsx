@@ -127,7 +127,7 @@ function page() {
               <SelectGender
                 gender={gender}
                 setGender={setGender}
-                textAlign="text-left"
+                textAlign={"text-left"}
               />
             </div>
             <div className="relative mb-4">

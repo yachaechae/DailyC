@@ -36,7 +36,9 @@ function EditProfile({ closeModal }: any) {
 
   const [tall, setTall] = useState<string>(profileHeight);
   const [nickname, setNickname] = useState<string>(profileNickname);
-  const [selectedImg, setSelectedImg] = useState<any>(<UserImg />);
+  const [selectedImg, setSelectedImg] = useState<any>(
+    <UserImg fontSize={120} />,
+  );
 
   const previewImg = (event: any) => {
     const imgFile = event.target.files[0];
@@ -90,7 +92,7 @@ function EditProfile({ closeModal }: any) {
       <div>
         <label className={styles.avatarfigure}>
           {!selectedImg ? (
-            <UserImg />
+            <UserImg fontSize={120} />
           ) : (
             <Image
               src={selectedImg}
