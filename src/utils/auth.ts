@@ -14,14 +14,3 @@ export const getUser = async () => {
   } = await supabase.auth.getUser();
   return user;
 };
-
-// export const getIsLogin = async () => {
-//   const {
-//     data: { user },
-//   } = await supabase.auth.getUser();
-//   if (!user) {
-//     return false;
-//   } else {
-//     return true;
-//   }
-// };

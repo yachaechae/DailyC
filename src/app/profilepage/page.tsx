@@ -1,19 +1,20 @@
-"use client";
-
 import React from "react";
 import Layout from "./profileLayout";
 import Mycard from "@/components/profile-cards/Mycard";
+import UserReturn from "@/components/profile/UserReturn";
 
 function ProfilePage() {
   return (
     <>
-      <Layout />
-      <div className="flex justify-center flex-row mt-[50px] gap-[30px] w-[1000px] ml-auto mr-auto flex-wrap ">
-        <Mycard />
-        <Mycard />
-        <Mycard />
-        <Mycard />
-      </div>
+      <UserReturn>
+        <Layout />
+        <div className="ml-auto mr-auto mt-[50px] flex w-[1000px] flex-row flex-wrap justify-center gap-[30px] ">
+          <Mycard />
+          <Mycard />
+          <Mycard />
+          <Mycard />
+        </div>
+      </UserReturn>
     </>
   );
 }
