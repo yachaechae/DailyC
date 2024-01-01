@@ -10,10 +10,13 @@ export async function getAllPosts(): Promise<postType[]> {
 	return posts;
 }
 
-export async function getEventByPost(item: string, id: string) {
-	const { data, error } = await supabase.from("posts").select().eq(item, id);
+export async function getEventByPost(item: string, id: string): Promise<postType[]> {
+	const { data, error } = await supabase.from("posts").select().eq(item, id).returns<postType[]>();
 
-	if (error) console.log("Error creating a posts data", error);
+	if (error || null) {
+		console.log("Error creating a posts data", error);
+		throw new Error("error while fetching posts data");
+	}
 	return data;
 }
 
