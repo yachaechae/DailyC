@@ -18,7 +18,7 @@ function UserImg({ size }: props) {
     <>
       {!userImg ? (
         <Avatar sx={{ bgcolor: "white", width: size, height: size }}>
-          <AccountCircle color="primary" sx={{ size: size }} />
+          <AccountCircle color="primary" sx={{ fontSize: size }} />
         </Avatar>
       ) : (
         <Image
