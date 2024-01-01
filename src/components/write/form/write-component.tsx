@@ -292,7 +292,7 @@ const WriteComponentPage = () => {
       .from("posts")
       .insert([
         {
-          id: inputs.id,
+          // id: inputs.id,
           gender: inputs.gender,
           height: inputs.height,
           title: inputs.title,
