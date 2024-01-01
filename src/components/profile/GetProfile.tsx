@@ -37,7 +37,7 @@ function GetProfile() {
       return;
     }
   }, [profile]);
-  
+  console.log(user)
 
   return <></>;
 }

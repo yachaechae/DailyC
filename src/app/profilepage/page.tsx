@@ -13,7 +13,7 @@ function ProfilePage() {
  
   const fetchMyPosts = async () => {
     try {
-      const myPosts = await getEventByPost('writedId', user.id);
+      const myPosts = await getEventByPost('writedId', +user.id);
       console.log('My posts:', myPosts);
       setPosts(myPosts)
     } catch (error) {

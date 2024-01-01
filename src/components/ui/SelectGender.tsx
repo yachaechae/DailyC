@@ -1,3 +1,4 @@
+// "use client";
 import * as React from "react";
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
@@ -29,7 +30,7 @@ export default function SelectGender({ gender, setGender, textAlign }: any) {
           value="man"
           control={<Radio color="default" />}
           label={
-            <Typography>
+            <Typography component="div">
               <p className={jua.className}>남성</p>
             </Typography>
           }
@@ -38,7 +39,7 @@ export default function SelectGender({ gender, setGender, textAlign }: any) {
           value="woman"
           control={<Radio color="default" />}
           label={
-            <Typography>
+            <Typography component="div">
               <p className={jua.className}>여성</p>
             </Typography>
           }
