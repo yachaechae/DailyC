@@ -21,13 +21,13 @@ function UserImg({ size }: props) {
           <AccountCircle color="primary" sx={{ fontSize: size }} />
         </Avatar>
       ) : (
-        <Image
-          className={`w-[${size}px] h-[${size}px] rounded-full`}
-          src={userImg}
-          alt="테스트"
-          width={size}
-          height={size}
-        />
+          <Image
+            className={`h-full rounded-full object-cover overflow-hidden`}
+            src={userImg}
+            alt="테스트"
+            width={size}
+            height={size}
+          />
       )}
     </>
   );
