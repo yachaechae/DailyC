@@ -6,8 +6,8 @@ import { useRecoilValue } from "recoil";
 import { userState } from "@/recoil/state";
 import { getEventByPost } from "@/api/write";
 import Mycard from "@/components/profile-cards/Mycard";
-import UserReturn from "@/components/profile/ReturnUserIsNotLogin";
 import Link from "next/link";
+import ReturnUserIsNotLogin from "@/components/profile/ReturnUserIsNotLogin";
 
 function ProfilePage() {
   const [posts, setPosts] = useState<any[] | null>([]);
@@ -26,7 +26,7 @@ function ProfilePage() {
     fetchMyPosts();
   }, []);
   return (
-    <UserReturn>
+    <ReturnUserIsNotLogin>
       <Layout />
       <div className="ml-auto mr-auto mt-[50px] flex w-[1000px] flex-row flex-wrap justify-center gap-[30px] ">
         {posts?.length === 0 && (
@@ -44,7 +44,7 @@ function ProfilePage() {
           );
         })}
       </div>
-    </UserReturn>
+    </ReturnUserIsNotLogin>
   );
 }
 
