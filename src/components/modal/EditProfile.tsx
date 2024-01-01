@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styles from "./edit-profile.module.css";
 import SelectGender from "../ui/SelectGender";
 import Image from "next/image";
@@ -8,10 +8,11 @@ import { getUser } from "@/utils/auth";
 import { useRecoilState } from "recoil";
 import { userState } from "@/recoil/state";
 import UserImg from "../profile/UserImg";
+import uuid from "react-uuid";
 
 function EditProfile({ closeModal }: any) {
   const [gender, setGender] = useState<string>("");
-  const [file, setFile] = useState<any>({});
+  const [file, setFile] = useState<any>();
   const [profile, setProfile] = useState<any>({});
   const [user, setUser] = useRecoilState(userState);
 
@@ -37,6 +38,7 @@ function EditProfile({ closeModal }: any) {
   const [tall, setTall] = useState<string>(profileHeight);
   const [nickname, setNickname] = useState<string>(profileNickname);
   const [selectedImg, setSelectedImg] = useState<any>(<UserImg />);
+  
 
   const previewImg = (event: any) => {
     const imgFile = event.target.files[0];
@@ -47,10 +49,36 @@ function EditProfile({ closeModal }: any) {
     setSelectedImg(imgUrl);
   };
 
+  async function uploadFile(file: any) {
+    try {
+      if (file) {
+      const { data, error } = await supabase.storage
+        .from("avatars")
+        .upload(`/users/${user.id}/${selectedImg}`, file, {
+          cacheControl: "3600",
+          upsert: false
+        });
+    } else {
+      return null;
+    }
+    } catch (error) {
+      console.log("error", error)
+      alert("사진변경중 오류 발생")
+    }
+    
+  }
+
+  
+
   const updateUserData = async () => {
+    try {
+      const { data: avatarImg } = supabase
+  .storage
+  .from('avatars')
+  .getPublicUrl(`users/${user.id}/${selectedImg}`)
     const updatedHeight = tall === undefined ? profileHeight : tall;
     const updatedNickname = nickname === undefined ? profileNickname : nickname;
-    const updatedImg = selectedImg !== undefined ? selectedImg : profileImg;
+    const updatedImg = avatarImg?.publicUrl !== undefined ? avatarImg?.publicUrl : profileImg;
     // const updatedFile = file !== undefined ? file : null;
     console.log("file ------ ", file);
     if (!file) return;
@@ -71,7 +99,14 @@ function EditProfile({ closeModal }: any) {
       gender: gender,
       userImg: updatedImg,
     });
+    } catch (error) {
+      console.log("error",error)
+      alert("수정중 문제가 발생하였습니다.")
+    }
   };
+ 
+
+  
 
   useEffect(() => {
     const fetchData = async () => {
@@ -94,6 +129,7 @@ function EditProfile({ closeModal }: any) {
         }
         const answer = window.confirm("이대로 수정하시겠습니까?");
         if (!answer) return;
+        uploadFile(file);
         updateUserData();
 
         closeModal();
@@ -112,7 +148,7 @@ function EditProfile({ closeModal }: any) {
               height={160}
             />
           )}
-          <input type="file" onChange={previewImg} />
+          <input type="file" onChange={previewImg}/>
         </label>
       </div>
         <div className={styles.nickname}>

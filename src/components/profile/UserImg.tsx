@@ -13,7 +13,7 @@ function UserImg() {
   return (
     <>
       {!userImg ? (
-        <Avatar sx={{ bgcolor: "white", width: 120, height: 120 }}>
+        <Avatar sx={{ bgcolor: "white", width: 110, height: 120 }}>
           <AccountCircle color="primary" sx={{ fontSize: 120 }} />
         </Avatar>
       ) : (
