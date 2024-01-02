@@ -30,10 +30,13 @@ export default function BasicCard({
   const [liked, setLiked] = useState(false);
   const [bookmark, setBookmark] = useState(false);
 
-  const handleLikeClick = () => {
+  const handleLikeClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
     setLiked(!liked);
   };
-  const handleBookmarkClick = () => {
+
+  const handleBookmarkClick = (event: React.MouseEvent<HTMLDivElement>) => {
+    event.preventDefault();
     setBookmark(!bookmark);
   };
   const colorData: { [key: string]: string } = {
@@ -66,7 +69,7 @@ export default function BasicCard({
           <CardMedia
             component="img"
             image={data.mainImg}
-            className="min-h-[310px]"
+            className="h-[310px]"
           ></CardMedia>
           <div className="absolute bottom-0 left-0 hidden w-full bg-slate-50 bg-opacity-50 p-4 transition duration-200 ease-out group-hover:block group-hover:ease-in">
             <p
@@ -74,13 +77,13 @@ export default function BasicCard({
             >
               {data.title}
             </p>
-            <span className={` text-lg`}>{data.tags?.join("# ")}</span>
+            <span className={` text-lg`}>#{data.tags?.join(" #")}</span>
           </div>
         </div>
         <CardHeader
           className="h-fit bg-gray-300 px-2 py-2"
           avatar={
-            <div className="h-[35px] w-[35px]">
+            <div className="h-[35px]">
               <UserImg size={35} />
             </div>
           }
@@ -94,7 +97,7 @@ export default function BasicCard({
             </IconButton>
           }
           title={
-            <div className={`${judson.className} max-w-120px w-full`}>
+            <div className={`${judson.className} w-32 truncate`}>
               {data.writedName}
             </div>
           }
