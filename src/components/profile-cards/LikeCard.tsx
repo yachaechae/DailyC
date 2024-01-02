@@ -12,39 +12,68 @@ import OrangeIcon from "@/icon/OrangeIcon";
 import { AccountCircle } from "@mui/icons-material";
 import { Jua, Judson } from "next/font/google";
 import UserImg from "../profile/UserImg";
+import Link from "next/link";
 
 const judson = Judson({ weight: "400", subsets: ["latin"] });
 const jua = Jua({ weight: "400", subsets: ["latin"] });
 
-export default function LikeCard() {
+type Props = {
+  title: string;
+  mainImg: string;
+  tags: [];
+  height: string;
+  writedName: string;
+  postId: number;
+};
+
+export default function LikeCard({
+  title,
+  mainImg,
+  tags,
+  height,
+  writedName,
+  postId,
+}: Props) {
   const [liked, setLiked] = useState(false);
 
   const handleLikeClick = () => {
-    // 눌렀을 때 좋아요 취소 되면서 리스트에서 삭제
+    const answer = window.confirm("취소 하시겠습니까?");
+    if (!answer) return null;
   };
   return (
-    <Card className="w-[250px] rounded-[15px]">
-      <div className="relative group">
-        <CardMedia
-          component="img"
-          image="http://placekitten.com/200/300"
-        ></CardMedia>
-        <div className="absolute w-full bottom-0 left-0 bg-slate-50 bg-opacity-50 p-4 hidden group-hover:block transition duration-200 ease-out group-hover:ease-in">
+    <Card className="w-[270px] rounded-[15px]">
+      <div className="group relative">
+        <Link href={`/posts/${postId}`}>
+          <CardMedia
+            className="w-[270]px h-[370px]"
+            component="img"
+            image={mainImg}
+          ></CardMedia>
+        </Link>
+        <div className="absolute bottom-0 left-0 hidden w-full bg-slate-50 bg-opacity-50 p-4 transition duration-200 ease-out group-hover:block group-hover:ease-in">
           <p
-            className={` text-3xl text-white drop-shadow-[0_1px_5px_rgba(0,0,0,0.7)] truncate`}
+            className={` truncate text-3xl text-white drop-shadow-[0_1px_5px_rgba(0,0,0,0.7)]`}
           >
-            편안 데일리룩 편안 데일리룩
+            {title}
           </p>
-          <span className={` text-lg`}>#트레이닝 # 편안 #집앞</span>
+          <span className={` text-lg`}>
+            {!tags && ""}
+            {tags.map((tag) => {
+              return ` #${tag}`;
+            })}
+          </span>
         </div>
       </div>
       <CardHeader
-        className="bg-gray-300 py-2 px-3"
-        avatar={<div className="h-[35px]">
-				<UserImg size={35} />
-			  </div>}
+        className="bg-gray-300 px-3 py-2"
+        avatar={
+          <div className="h-[35px]">
+            <UserImg size={35} />
+          </div>
+        }
         action={
           <IconButton
+            onClick={handleLikeClick}
             aria-label="add to favorites"
             className={liked ? "liked" : ""}
           >
@@ -52,10 +81,12 @@ export default function LikeCard() {
           </IconButton>
         }
         title={
-          <Typography className={`${judson.className}`}>유저이름</Typography>
+          <Typography className={`${judson.className}`}>
+            {writedName}
+          </Typography>
         }
         subheader={
-          <Typography className={`${judson.className}`}>180cm</Typography>
+          <Typography className={`${judson.className}`}>{height}cm</Typography>
         }
       />
     </Card>

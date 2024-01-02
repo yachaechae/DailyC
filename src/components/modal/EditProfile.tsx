@@ -51,61 +51,56 @@ function EditProfile({ closeModal }: any) {
   async function uploadFile(file: any) {
     try {
       if (file) {
-      const { data, error } = await supabase.storage
-        .from("avatars")
-        .upload(`/users/${user.id}/${selectedImg}`, file, {
-          cacheControl: "3600",
-          upsert: false
-        });
-    } else {
-      return null;
-    }
+        const { data, error } = await supabase.storage
+          .from("avatars")
+          .upload(`/users/${user.id}/${selectedImg}`, file, {
+            cacheControl: "3600",
+            upsert: false,
+          });
+      } else {
+        return null;
+      }
     } catch (error) {
-      console.log("error", error)
-      alert("사진변경중 오류 발생")
+      console.log("error", error);
+      alert("사진변경중 오류 발생");
     }
-    
   }
-
-  
 
   const updateUserData = async () => {
     try {
-      const { data: avatarImg } = supabase
-  .storage
-  .from('avatars')
-  .getPublicUrl(`users/${user.id}/${selectedImg}`)
-    const updatedHeight = tall === undefined ? profileHeight : tall;
-    const updatedNickname = nickname === undefined ? profileNickname : nickname;
-    const updatedImg = avatarImg?.publicUrl !== undefined ? avatarImg?.publicUrl : profileImg;
-    // const updatedFile = file !== undefined ? file : null;
-    console.log("file ------ ", file);
-    if (!file) return;
-    const { data, error } = await supabase.auth.updateUser({
-      data: {
-        // userImg: file,
-        userImg: updatedImg,
+      const { data: avatarImg } = supabase.storage
+        .from("avatars")
+        .getPublicUrl(`users/${user.id}/${selectedImg}`);
+      const updatedHeight = tall === undefined ? profileHeight : tall;
+      const updatedNickname =
+        nickname === undefined ? profileNickname : nickname;
+      const updatedImg =
+        avatarImg?.publicUrl !== undefined ? avatarImg?.publicUrl : profileImg;
+      // const updatedFile = file !== undefined ? file : null;
+      console.log("file ------ ", file);
+      if (!file) return;
+      const { data, error } = await supabase.auth.updateUser({
+        data: {
+          // userImg: file,
+          userImg: updatedImg,
+          nickname: updatedNickname,
+          height: updatedHeight,
+          gender: gender,
+        },
+      });
+      setUser({
+        id: profile.id,
+        email: profile.email,
         nickname: updatedNickname,
         height: updatedHeight,
         gender: gender,
-      },
-    });
-    setUser({
-      id: profile.id,
-      email: profile.email,
-      nickname: updatedNickname,
-      height: updatedHeight,
-      gender: gender,
-      userImg: updatedImg,
-    });
+        userImg: updatedImg,
+      });
     } catch (error) {
-      console.log("error",error)
-      alert("수정중 문제가 발생하였습니다.")
+      console.log("error", error);
+      alert("수정중 문제가 발생하였습니다.");
     }
   };
- 
-
-  
 
   useEffect(() => {
     const fetchData = async () => {
@@ -135,21 +130,21 @@ function EditProfile({ closeModal }: any) {
       }}
     >
       <div className={styles.warpper}>
-      <div>
-        <label className={styles.avatarfigure}>
-          {!selectedImg ? (
-            <UserImg size={120} />
-          ) : (
-            <Image
-              src={selectedImg}
-              alt="기본이미지"
-              width={160}
-              height={160}
-            />
-          )}
-          <input type="file" onChange={previewImg}/>
-        </label>
-      </div>
+        <div>
+          <label className={styles.avatarfigure}>
+            {!selectedImg ? (
+              <UserImg size={120} />
+            ) : (
+              <Image
+                src={selectedImg}
+                alt="기본이미지"
+                width={160}
+                height={160}
+              />
+            )}
+            <input type="file" onChange={previewImg} />
+          </label>
+        </div>
         <div className={styles.nickname}>
           <input
             defaultValue={profileNickname}
@@ -177,7 +172,7 @@ function EditProfile({ closeModal }: any) {
         <div
           onClick={() => {
             const answer = window.confirm(
-              "수정된 내용이 저장되지 않습니다. 그래도 나가시겠습니까?"
+              "수정된 내용이 저장되지 않습니다. 그래도 나가시겠습니까?",
             );
             if (!answer) return;
             closeModal();
@@ -186,9 +181,9 @@ function EditProfile({ closeModal }: any) {
         >
           <TfiClose size={30} />
         </div>
-    </div>
+      </div>
     </form>
-  )
+  );
 }
 
 export default EditProfile;
