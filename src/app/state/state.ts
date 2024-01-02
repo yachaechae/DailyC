@@ -14,7 +14,7 @@ export const inputsState = atom<inputsType>({
   key: inputsKey,
   default: {
     id: 0,
-    gender: "Woman",
+    gender: "woman",
     height: "",
     title: "",
     content: "",
