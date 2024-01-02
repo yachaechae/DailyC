@@ -43,11 +43,15 @@ export default function RootLayout({
                   DailyC
                 </Link>
                 <GoToBtn />
+                <ScrollToTopBtn />
+                <Loading />
               </div>
             </header>
             {children}
-            <ScrollToTopBtn />
-            <Loading />
+            <footer className="mt-10 flex h-24 w-full flex-col items-center justify-center bg-gray-200 text-gray-600">
+              <div>@DAILY C</div>
+              <div>대표 : 서지훈 | 윤창근 | 윤호준 | 임세현</div>
+            </footer>
           </GetProfile>
         </RecoilProvider>
       </body>

@@ -24,8 +24,8 @@ const EditComponentPage = ({ postData }: { postData: any[] | null }) => {
   const [tags, setTags] = useRecoilState(tagsState);
   const [tagList, setTagList] = useRecoilState(tagListState);
   const [postDataId, setPostDataId] = useRecoilState(postDataState);
-  const [likes, setLikes] = useState<string[]>([])
-  const [bookmarks, setBookmarks] = useState<string[]>([])
+  const [likes, setLikes] = useState<string[]>([]);
+  const [bookmarks, setBookmarks] = useState<string[]>([]);
 
   useEffect(() => {
     if (postData !== null) {
@@ -37,7 +37,7 @@ const EditComponentPage = ({ postData }: { postData: any[] | null }) => {
         title: postData[0].title,
         content: postData[0].content,
       });
-      setTags([...tags, ...postData[0].tags]);
+      setTags(postData[0].tags);
       for (let i = 0; i < postData[0].tags.length; i++) {
         if (!tagList.includes(postData[0].tags[i])) {
           setTagList([...tagList, postData[0].tags[i]]);
@@ -47,9 +47,9 @@ const EditComponentPage = ({ postData }: { postData: any[] | null }) => {
         id: postData[0].writedId,
         email: postData[0].writedName,
       });
-      console.log(postData[0].likes)
-      setLikes(postData[0].likes)
-      setBookmarks(postData[0].bookmarks)
+      console.log(postData[0].likes);
+      setLikes(postData[0].likes);
+      setBookmarks(postData[0].bookmarks);
     }
   }, [postData]);
 
@@ -81,32 +81,59 @@ const EditComponentPage = ({ postData }: { postData: any[] | null }) => {
     setMainImgPreview("");
   };
 
-  const getMainImgArr = async (check: boolean) => {
-    if (mainImgFile !== undefined)
-      await handleUploadMainImg(mainImgFile, check);
+  const getTodayDate = () => {
+    let today = new Date();
+    let customToday = `${today.getFullYear()}-${
+      today.getMonth() + 1
+    }-${today.getDate()}-${today.getHours()}-${today.getMinutes()}-${today.getSeconds()}`;
+    console.log(today); // 출력 결과 : Tue Mar 30 2021 22:52:39 GMT+0900 (대한민국 표준시)
+    console.log(typeof customToday);
+    return customToday;
+  };
+
+  const getMainImgArr = async () => {
+    if (mainImgFile !== undefined) await handleUploadMainImg(mainImgFile);
     else {
       if (mainImgpreview !== "") selectedMain = mainImgpreview;
     }
   };
 
-  const handleUploadMainImg = async (selectedFile: File, check: boolean) => {
+  const removeImgStorage = async (imgName: string) => {
+    console.log(writeUser.email, "writeUser.email");
+    console.log(postDataId, "postDataId");
+    console.log(imgName, "imgName");
+    const { data, error } = await supabase.storage
+      .from("images")
+      .remove([`posts/${writeUser.email}/${postDataId}/${imgName}`]);
+    if (error) console.log("Error remove Image", error);
+    console.log("Post remove Image successfully ", data);
+  };
+
+  const handleUploadMainImg = async (selectedFile: File) => {
+    let customToday = getTodayDate();
     const { error, data } = await supabase.storage
       .from("images")
-      .upload(`posts/${writeUser.email}/${postDataId}/mainImg`, selectedFile, {
-        cacheControl: "3600",
-        upsert: check,
-      });
+      .upload(
+        `posts/${writeUser.email}/${postDataId}/mainImg_${customToday}`,
+        selectedFile,
+        {
+          cacheControl: "3600",
+          upsert: false,
+        },
+      );
     if (error) console.log("Error creating a Main Image", error);
     else {
       console.log("Main Image created successfully", data);
-      await handleDownMainImg();
+      await handleDownMainImg(customToday);
     }
   };
 
-  const handleDownMainImg = async () => {
+  const handleDownMainImg = async (customToday: string) => {
     const { data } = supabase.storage
       .from("images")
-      .getPublicUrl(`posts/${writeUser.email}/${postDataId}/mainImg`);
+      .getPublicUrl(
+        `posts/${writeUser.email}/${postDataId}/mainImg_${customToday}`,
+      );
 
     setMainImgPreview(data.publicUrl);
     selectedMain = data.publicUrl;
@@ -133,7 +160,7 @@ const EditComponentPage = ({ postData }: { postData: any[] | null }) => {
 
   const handleChangeSubImg = async (
     e: ChangeEvent<HTMLInputElement>,
-    value: number
+    value: number,
   ) => {
     if (e.target.files !== null) {
       const file = e.target.files[0];
@@ -143,6 +170,7 @@ const EditComponentPage = ({ postData }: { postData: any[] | null }) => {
         switch (value) {
           case 1:
             setSubImgFile1(file);
+            console.log(file);
             reader.onloadend = () => {
               setSubImgPreview1(reader.result as string);
             };
@@ -297,13 +325,33 @@ const EditComponentPage = ({ postData }: { postData: any[] | null }) => {
     }
   };
 
+  const removeStorageImg = async () => {
+    let arr: (string | null)[] = [
+      mainImgpreview,
+      subImgpreview1,
+      subImgpreview2,
+      subImgpreview3,
+      subImgpreview4,
+      subImgpreview5,
+    ];
+
+    for (let i = 0; i < arr.length; i++) {
+      let splitItem = arr[i]?.split("/");
+      if (splitItem && splitItem[11]) {
+        await removeImgStorage(splitItem[11]);
+      }
+    }
+  };
+
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (mainImgpreview === "") return alert("메인 사진은 필수입니다.");
-    await getMainImgArr(true);
+    await removeStorageImg();
+    await getMainImgArr();
     await getSubImgArr();
     await editPost();
   };
+
   // editPOst 다른 부분
   const editPost = async () => {
     const date = new Date(Date.now());
@@ -322,7 +370,7 @@ const EditComponentPage = ({ postData }: { postData: any[] | null }) => {
         subImg: selectedSubArray,
         update_at: date,
         likes,
-        bookmarks
+        bookmarks,
       })
       .eq("id", postDataId)
       .select();
@@ -379,19 +427,19 @@ const EditComponentPage = ({ postData }: { postData: any[] | null }) => {
   };
 
   const handleUploadSubImg = async (selectedFile: File, subImg: string) => {
-    console.log(selectedFile);
-    const { data: dataDist, error: errorDist } = await supabase.storage
-      .from("images")
-      .remove([`posts/${writeUser.email}/${postDataId}/${subImg}`]);
+    let customToday = getTodayDate();
+    // const { data: dataDist, error: errorDist } = await supabase.storage
+    //   .from("images")
+    //   .remove([`posts/${writeUser.email}/${postDataId}/${subImg}_${customToday}`]);
     const { error, data } = await supabase.storage
       .from("images")
       .upload(
-        `posts/${writeUser.email}/${postDataId}/${subImg}`,
+        `posts/${writeUser.email}/${postDataId}/${subImg}_${customToday}`,
         selectedFile,
         {
           cacheControl: "3600",
           upsert: false,
-        }
+        },
       );
     if (error) console.log("Error creating a Sub Image", error);
     else {
@@ -408,7 +456,6 @@ const EditComponentPage = ({ postData }: { postData: any[] | null }) => {
     selectedSubArray.push(data.publicUrl);
   };
 
-  // ------------- 새로 추가 ----------------
   useEffect(() => {
     if (postData !== null) {
       setMainImgPreview(postData[0].mainImg);
@@ -422,13 +469,11 @@ const EditComponentPage = ({ postData }: { postData: any[] | null }) => {
     }
   }, []);
 
-  // ------------- 새로 추가 ----------------
-
   return (
     <>
       <Nav />
       {postData !== null ? (
-        <div className="container w-full mt-16">
+        <div className="container mt-16 w-full">
           <h2 className="text-3xl">코디 작성</h2>
           <HrComponents mt={50} mb={50} />
           <form className="flex flex-col gap-[30px]" onSubmit={handleSubmit}>
@@ -440,7 +485,7 @@ const EditComponentPage = ({ postData }: { postData: any[] | null }) => {
             <div className="flex flex-col gap-[10px]">
               <label>
                 메인 사진
-                <span className="text-red-500 text-xs pl-[10px]">* 필수</span>
+                <span className="pl-[10px] text-xs text-red-500">* 필수</span>
               </label>
               <div className="writeFileWrap">
                 <div className="writeFileList">
@@ -461,7 +506,9 @@ const EditComponentPage = ({ postData }: { postData: any[] | null }) => {
                       </p>
                       <button
                         type="button"
-                        onClick={previewDelete}
+                        onClick={() => {
+                          previewDelete(), removeStorageImg();
+                        }}
                         className="delBtn"
                       >
                         X
@@ -496,7 +543,9 @@ const EditComponentPage = ({ postData }: { postData: any[] | null }) => {
                       </p>
                       <button
                         type="button"
-                        onClick={() => previewSubDelete(1)}
+                        onClick={() => {
+                          previewSubDelete(1), removeStorageImg();
+                        }}
                         className="delBtn"
                       >
                         X
@@ -527,7 +576,9 @@ const EditComponentPage = ({ postData }: { postData: any[] | null }) => {
                         </p>{" "}
                         <button
                           type="button"
-                          onClick={() => previewSubDelete(2)}
+                          onClick={() => {
+                            previewSubDelete(2), removeStorageImg();
+                          }}
                           className="delBtn"
                         >
                           X
@@ -561,7 +612,9 @@ const EditComponentPage = ({ postData }: { postData: any[] | null }) => {
                         </p>{" "}
                         <button
                           type="button"
-                          onClick={() => previewSubDelete(3)}
+                          onClick={() => {
+                            previewSubDelete(3), removeStorageImg();
+                          }}
                           className="delBtn"
                         >
                           X
@@ -595,7 +648,9 @@ const EditComponentPage = ({ postData }: { postData: any[] | null }) => {
                         </p>{" "}
                         <button
                           type="button"
-                          onClick={() => previewSubDelete(4)}
+                          onClick={() => {
+                            previewSubDelete(4), removeStorageImg();
+                          }}
                           className="delBtn"
                         >
                           X
@@ -629,7 +684,9 @@ const EditComponentPage = ({ postData }: { postData: any[] | null }) => {
                         </p>{" "}
                         <button
                           type="button"
-                          onClick={() => previewSubDelete(5)}
+                          onClick={() => {
+                            previewSubDelete(5), removeStorageImg();
+                          }}
                           className="delBtn"
                         >
                           X

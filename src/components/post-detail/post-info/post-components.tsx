@@ -23,6 +23,7 @@ const postComponents = ({
   const [user, setUser] = useRecoilState(userState);
 
   useEffect(() => {
+    console.log(postData, "여기다 이놈아");
     if (postData !== null) {
       if (postData[0].writedId === user.id) setCheckUser(true);
     }
@@ -32,7 +33,7 @@ const postComponents = ({
     <>
       <Nav />
       {postData !== null ? (
-        <div className="container relative w-full mt-16">
+        <div className="container relative mt-16 w-full">
           <PostDetailTitle title={postData[0].title} />
           <HrComponents mt={50} mb={20} />
           <PostDetailInfo
