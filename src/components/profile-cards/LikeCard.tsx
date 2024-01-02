@@ -24,14 +24,14 @@ export default function LikeCard() {
   };
   return (
     <Card className="w-[250px] rounded-[15px]">
-      <div className="relative group">
+      <div className="group relative">
         <CardMedia
           component="img"
           image="http://placekitten.com/200/300"
         ></CardMedia>
-        <div className="absolute w-full bottom-0 left-0 bg-slate-50 bg-opacity-50 p-4 hidden group-hover:block transition duration-200 ease-out group-hover:ease-in">
+        <div className="absolute bottom-0 left-0 hidden w-full bg-slate-50 bg-opacity-50 p-4 transition duration-200 ease-out group-hover:block group-hover:ease-in">
           <p
-            className={` text-3xl text-white drop-shadow-[0_1px_5px_rgba(0,0,0,0.7)] truncate`}
+            className={` truncate text-3xl text-white drop-shadow-[0_1px_5px_rgba(0,0,0,0.7)]`}
           >
             편안 데일리룩 편안 데일리룩
           </p>
@@ -39,10 +39,12 @@ export default function LikeCard() {
         </div>
       </div>
       <CardHeader
-        className="bg-gray-300 py-2 px-3"
-        avatar={<div className="h-[35px]">
-				<UserImg size={35} />
-			  </div>}
+        className="bg-gray-300 px-3 py-2"
+        avatar={
+          <div className="h-[35px] w-[35px]">
+            <UserImg size={35} />
+          </div>
+        }
         action={
           <IconButton
             aria-label="add to favorites"
