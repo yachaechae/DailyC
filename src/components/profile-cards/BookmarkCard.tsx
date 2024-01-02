@@ -6,28 +6,45 @@ import { useState } from "react";
 import Card from "@mui/material/Card";
 import CardHeader from "@mui/material/CardHeader";
 import CardMedia from "@mui/material/CardMedia";
-import IconButton from "@mui/material/IconButton";
-import OrangeIcon from "@/icon/OrangeIcon";
 import { Bookmark, BookmarkBorder } from "@mui/icons-material";
 import { Jua, Judson } from "next/font/google";
 import UserImg from "@/components/profile/UserImg";
+import Link from "next/link";
 
 const jua = Jua({ weight: "400", subsets: ["latin"] });
 const judson = Judson({ weight: "400", subsets: ["latin"] });
 
-export default function BookmarkCard() {
+type Props = {
+  title: string;
+  mainImg: string;
+  tags: [];
+  height: string;
+  writedName: string;
+  postId: number;
+};
+
+export default function BookmarkCard({
+  title,
+  mainImg,
+  tags,
+  height,
+  writedName,
+  postId,
+}: Props) {
   const [liked, setLiked] = useState(false);
   const [bookmark, setBookmark] = useState(false);
 
   const handleBookmarkClick = () => {
-    // 북마크 취소 기능
+    const answer = window.confirm("취소 하시겠습니까?");
+    if (!answer) return null;
+    // 눌렀을 때 취소
   };
 
   return (
-    <Card className="w-[250px] rounded-[15px]">
+    <Card className="relative w-[250px] rounded-[15px]">
       <div className={`${jua.className} group relative `}>
-        <div className="absolute top-1 flex w-full flex-row-reverse justify-between">
-          <div onClick={handleBookmarkClick} className="cursor-pointer ">
+        <div className=" absolute top-1 flex w-full flex-row-reverse justify-between">
+          <div onClick={handleBookmarkClick} className="cursor-pointer">
             {bookmark ? (
               <BookmarkBorder sx={{ fontSize: 48 }} />
             ) : (
@@ -35,17 +52,25 @@ export default function BookmarkCard() {
             )}
           </div>
         </div>
-        <CardMedia
-          component="img"
-          image="http://placekitten.com/200/300"
-        ></CardMedia>
+        <Link href={`/posts/${postId}`}>
+          <CardMedia
+            className="w-[250]px h-[370px]"
+            component="img"
+            image={mainImg}
+          ></CardMedia>
+        </Link>
         <div className="absolute bottom-0 left-0 hidden w-full bg-slate-50 bg-opacity-50 p-4 transition duration-200 ease-out group-hover:block group-hover:ease-in">
           <p
             className={` truncate text-3xl text-white drop-shadow-[0_1px_5px_rgba(0,0,0,0.7)]`}
           >
-            편안 데일리룩 편안 데일리룩
+            {title}
           </p>
-          <span className={` text-lg`}>#트레이닝 # 편안 #집앞</span>
+          <span className={` text-lg`}>
+            {!tags && ""}
+            {tags?.map((tag) => {
+              return ` #${tag}`;
+            })}
+          </span>
         </div>
       </div>
       <CardHeader
@@ -55,8 +80,8 @@ export default function BookmarkCard() {
             <UserImg size={35} />
           </div>
         }
-        title={<div className={`${judson.className}`}>유저이름</div>}
-        subheader={<div className={`${judson.className}`}>180cm</div>}
+        title={<div className={`${judson.className}`}>{writedName}</div>}
+        subheader={<div className={`${judson.className}`}>{height}cm</div>}
       />
     </Card>
   );

@@ -15,7 +15,7 @@ export async function getAllPosts(): Promise<postType[]> {
 
 export async function getEventByPost(
   item: string,
-  id: number
+  id: number | string,
 ): Promise<postType[]> {
   const { data, error } = await supabase
     .from("posts")
@@ -39,7 +39,11 @@ export async function getEventByPostDelete(item: string, id: number) {
 
 // 좋아요, 북마크 기능
 // 좋아요, 북마크 해당 포스트 가져오기
-export async function getEventByTable(table: string, item: string, id: number) {
+export async function getEventByTable(
+  table: string,
+  item: string,
+  id: number | string,
+) {
   const { data, error } = await supabase.from(table).select().eq(item, id);
 
   if (error) console.log("Error table data", error);
@@ -50,7 +54,7 @@ export async function getEventByTable(table: string, item: string, id: number) {
 export async function getEventByTableAdd(
   table: string,
   post_id: number,
-  user_id: string
+  user_id: string,
 ) {
   const { data, error } = await supabase
     .from(table)
@@ -72,7 +76,7 @@ export async function getEventByTableAdd(
 export async function getEventByTableDelete(
   table: string,
   item: string,
-  id: number
+  id: number,
 ) {
   const { data, error } = await supabase.from(table).delete().eq(item, id);
 
@@ -87,7 +91,7 @@ export async function getEventByTableFetch(
   tableName: string,
   selectedItem: string,
   item: string,
-  id: number
+  id: number,
 ) {
   const { data, error } = await supabase
     .from(tableName)
@@ -105,7 +109,7 @@ export async function getEventByTableLikesUpdate(
   tableName: string,
   updateData: string[],
   item: string,
-  id: number
+  id: number,
 ) {
   const { data, error } = await supabase
     .from(tableName)
@@ -124,7 +128,7 @@ export async function getEventByTableBookmarksUpdate(
   tableName: string,
   updateData: string[],
   item: string,
-  id: number
+  id: number,
 ) {
   const { data, error } = await supabase
     .from(tableName)
