@@ -95,9 +95,6 @@ function page() {
             </Link>
           </div>
         </div>
-        {/* <ScrollToTopBtn />
-      <div className="h-[2500px] w-[600px] bg-orange" />
-      <div className="h-[2500px] w-[600px] bg-orange" /> */}
       </div>
     </ReturnUserIsLogin>
   );
