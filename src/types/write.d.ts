@@ -19,6 +19,8 @@ declare type postType = {
   tags: string[];
   mainImg: string;
   subImg: string[];
+  likes:string[];
+  bookmarks:string[];
 };
 
 declare type writeUserType = {

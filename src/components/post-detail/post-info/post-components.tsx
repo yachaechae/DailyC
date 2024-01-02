@@ -26,7 +26,7 @@ const postComponents = ({
     if (postData !== null) {
       if (postData[0].writedId === user.id) setCheckUser(true);
     }
-  }, [user]);
+  }, [user, postData]);
 
   return (
     <>
