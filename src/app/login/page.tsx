@@ -48,7 +48,6 @@ function page() {
     }
 
     if (error) {
-      console.log("!!");
       console.error("error : ", error);
       setIsLogin(false);
       return alert(error.message);

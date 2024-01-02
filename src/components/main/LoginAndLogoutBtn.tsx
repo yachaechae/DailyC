@@ -32,10 +32,12 @@ function LoginAndLogoutBtn() {
     <>
       {!isLogin ? (
         <Link href={"/login"}>
-          <li>로그인</li>
+          <li className="hover:text-orange">로그인</li>
         </Link>
       ) : (
-        <button onClick={hendleLogout}>로그아웃</button>
+        <button className="hover:text-orange" onClick={hendleLogout}>
+          로그아웃
+        </button>
       )}
     </>
   );
