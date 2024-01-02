@@ -20,7 +20,6 @@ const WriteComponentPage = () => {
 
   const getProfile = async () => {
     const user = await getUser();
-    console.log(user);
     setInputs({
       ...inputs,
       gender: user?.user_metadata?.gender,
@@ -84,7 +83,7 @@ const WriteComponentPage = () => {
         {
           cacheControl: "3600",
           upsert: false,
-        },
+        }
       );
     if (error) console.log("Error creating a Main Image", error);
     else {
@@ -123,7 +122,7 @@ const WriteComponentPage = () => {
 
   const handleChangeSubImg = async (
     e: ChangeEvent<HTMLInputElement>,
-    value: number,
+    value: number
   ) => {
     if (e.target.files !== null) {
       const file = e.target.files[0];
@@ -347,8 +346,6 @@ const WriteComponentPage = () => {
     let customToday = `${today.getFullYear()}-${
       today.getMonth() + 1
     }-${today.getDate()}-${today.getHours()}-${today.getMinutes()}-${today.getSeconds()}`;
-    console.log(today); // 출력 결과 : Tue Mar 30 2021 22:52:39 GMT+0900 (대한민국 표준시)
-    console.log(typeof customToday);
     return customToday;
   };
 
@@ -398,7 +395,7 @@ const WriteComponentPage = () => {
   const handleUploadSubImg = async (
     selectedFile: File,
     subImg: string,
-    id: number,
+    id: number
   ) => {
     console.log(selectedFile);
     let customToday = getTodayDate();
@@ -413,7 +410,7 @@ const WriteComponentPage = () => {
         {
           cacheControl: "3600",
           upsert: false,
-        },
+        }
       );
     if (error) console.log("Error creating a Sub Image", error);
     else {
@@ -425,7 +422,7 @@ const WriteComponentPage = () => {
   const handleDownSubImg = async (
     subImg: string,
     id: number,
-    customToday: string,
+    customToday: string
   ) => {
     const { data } = supabase.storage
       .from("images")

@@ -7,7 +7,6 @@ import { useRecoilState } from "recoil";
 export const InputGender = () => {
   const [inputs, setInputs] = useRecoilState(inputsState);
   const handleChangeRadio = (e: ChangeEvent<HTMLInputElement>) => {
-    console.log(inputs.gender);
     setInputs({
       ...inputs,
       gender: e.target.id,

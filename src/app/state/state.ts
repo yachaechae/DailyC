@@ -1,5 +1,6 @@
-import { atom } from "recoil";
+import { atom, selector } from "recoil";
 import {
+  postKey,
   inputsKey,
   postDataKey,
   tagItemKey,
@@ -7,7 +8,31 @@ import {
   tagsKey,
   writeUserKey,
 } from "./key";
-import uuid from "react-uuid";
+
+// 글 정보 전체
+export const postState = atom<postType>({
+  key: postKey,
+  default: {
+    id: 0,
+    gender: "",
+    height: "",
+    title: "",
+    content: "",
+    create_at: "",
+    update_at: null,
+    writedId: "",
+    writedName: "",
+    tags: [],
+    mainImg: "",
+    subImg: [],
+    likes: [],
+    bookmarks: [],
+  },
+});
+export const postStateArr = atom<postType[]>({
+  key: "postArrKey",
+  default: [],
+});
 
 // 글 작성 - inputs
 export const inputsState = atom<inputsType>({

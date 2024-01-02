@@ -29,17 +29,14 @@ const PostLikeAndBook = ({ params }: { params: number }) => {
   const [bookCheck, setBookCheck] = useState(false);
 
   useEffect(() => {
-    console.log(user, "idInfo");
     getByLikeAndBookAll(params);
   }, [user]);
 
   useEffect(() => {
-    console.log("이펙트 들어옴", likedArr);
     if (likeCheck) getByLikeArr();
   }, [likedArr]);
 
   useEffect(() => {
-    console.log("이펙트 들어옴", bookmarkArr);
     if (bookCheck) getByBookArr();
   }, [bookmarkArr]);
 

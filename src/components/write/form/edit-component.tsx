@@ -4,6 +4,7 @@ import Nav from "@/components/main/nav/Nav";
 import {
   inputsState,
   postDataState,
+  postState,
   tagListState,
   tagsState,
   writeUserState,
@@ -16,8 +17,15 @@ import { useRecoilState } from "recoil";
 import { InputContent, InputGender, InputHeight, InputTitle } from "./inputs";
 import { InputTags } from "./tags";
 import { useRouter } from "next/navigation";
+import { getEventByPost } from "@/api/write";
 
-const EditComponentPage = ({ postData }: { postData: any[] | null }) => {
+const EditComponentPage = ({
+  postData,
+  params,
+}: {
+  postData: any[] | null;
+  params: number;
+}) => {
   const router = useRouter();
   const [writeUser, setWriteUser] = useRecoilState(writeUserState);
   const [inputs, setInputs] = useRecoilState(inputsState);
@@ -26,36 +34,82 @@ const EditComponentPage = ({ postData }: { postData: any[] | null }) => {
   const [postDataId, setPostDataId] = useRecoilState(postDataState);
   const [likes, setLikes] = useState<string[]>([]);
   const [bookmarks, setBookmarks] = useState<string[]>([]);
+  const [postDataing, setPostDating] = useRecoilState(postState);
 
-  useEffect(() => {
-    if (postData !== null) {
-      setPostDataId(postData[0].id);
-      setInputs({
-        ...inputs,
-        gender: postData[0].gender,
-        height: postData[0].height,
-        title: postData[0].title,
-        content: postData[0].content,
-      });
-      setTags(postData[0].tags);
-      for (let i = 0; i < postData[0].tags.length; i++) {
-        if (!tagList.includes(postData[0].tags[i])) {
-          setTagList([...tagList, postData[0].tags[i]]);
-        }
-      }
-      setWriteUser({
-        id: postData[0].writedId,
-        email: postData[0].writedName,
-      });
-      console.log(postData[0].likes);
-      setLikes(postData[0].likes);
-      setBookmarks(postData[0].bookmarks);
-    }
-  }, [postData]);
+  const [postDataWrap, setPostDataWrap] = useRecoilState(postState);
+  const [postDataSupa, setPostDataSupa] = useState<postType[]>([]);
 
   const mainImg = useRef<any>(null);
   const [mainImgFile, setMainImgFile] = useState<File>();
   const [mainImgpreview, setMainImgPreview] = useState<string | null>("");
+  const subImg1 = useRef<any>(null);
+  const subImg2 = useRef<any>(null);
+  const subImg3 = useRef<any>(null);
+  const subImg4 = useRef<any>(null);
+  const subImg5 = useRef<any>(null);
+  const [subImgFile1, setSubImgFile1] = useState<File>();
+  const [subImgFile2, setSubImgFile2] = useState<File>();
+  const [subImgFile3, setSubImgFile3] = useState<File>();
+  const [subImgFile4, setSubImgFile4] = useState<File>();
+  const [subImgFile5, setSubImgFile5] = useState<File>();
+  const [subImgpreview1, setSubImgPreview1] = useState<string | null>("");
+  const [subImgpreview2, setSubImgPreview2] = useState<string | null>("");
+  const [subImgpreview3, setSubImgPreview3] = useState<string | null>("");
+  const [subImgpreview4, setSubImgPreview4] = useState<string | null>("");
+  const [subImgpreview5, setSubImgPreview5] = useState<string | null>("");
+  // const [beforePreivew, setBeforePreivew] = useState<string[]>([]);
+
+  useEffect(() => {
+    async function fetchData(params: number) {
+      const data: postType[] = await getEventByPost("id", params);
+      setPostDataSupa(data);
+    }
+    fetchData(params);
+  }, [postData]);
+
+  useEffect(() => {
+    if (postDataSupa.length > 0 && postData) {
+      setPostDataId(postData[0].id);
+      setInputs({
+        ...inputs,
+        gender: postDataSupa[0].gender,
+        height: postDataSupa[0].height,
+        title: postDataSupa[0].title,
+        content: postDataSupa[0].content,
+      });
+      setTags(postDataSupa[0].tags);
+      for (let i = 0; i < postDataSupa[0].tags.length; i++) {
+        if (!tagList.includes(postDataSupa[0].tags[i])) {
+          setTagList([...tagList, postDataSupa[0].tags[i]]);
+        }
+      }
+      setWriteUser({
+        id: postDataSupa[0].writedId,
+        email: postDataSupa[0].writedName,
+      });
+      setLikes(postDataSupa[0].likes);
+      setBookmarks(postDataSupa[0].bookmarks);
+      setMainImgPreview(postDataSupa[0].mainImg);
+      // setBeforePreivew([ // 이미지 삭제 때문에 고민..
+      //   ...beforePreivew,
+      //   postDataSupa[0].mainImg,
+      //   ...postDataSupa[0].subImg,
+      // ]);
+      if (postDataSupa[0].subImg.length > 0) {
+        if (postDataSupa[0].subImg[0])
+          setSubImgPreview1(postDataSupa[0].subImg[0]);
+        if (postDataSupa[0].subImg[1])
+          setSubImgPreview2(postDataSupa[0].subImg[1]);
+        if (postDataSupa[0].subImg[2])
+          setSubImgPreview3(postDataSupa[0].subImg[2]);
+        if (postDataSupa[0].subImg[3])
+          setSubImgPreview4(postDataSupa[0].subImg[3]);
+        if (postDataSupa[0].subImg[4])
+          setSubImgPreview5(postDataSupa[0].subImg[4]);
+      }
+    }
+  }, [postDataSupa]);
+
   let selectedMain: string | null = "";
 
   const handleChangeImg = async (e: ChangeEvent<HTMLInputElement>) => {
@@ -86,8 +140,6 @@ const EditComponentPage = ({ postData }: { postData: any[] | null }) => {
     let customToday = `${today.getFullYear()}-${
       today.getMonth() + 1
     }-${today.getDate()}-${today.getHours()}-${today.getMinutes()}-${today.getSeconds()}`;
-    console.log(today); // 출력 결과 : Tue Mar 30 2021 22:52:39 GMT+0900 (대한민국 표준시)
-    console.log(typeof customToday);
     return customToday;
   };
 
@@ -99,9 +151,6 @@ const EditComponentPage = ({ postData }: { postData: any[] | null }) => {
   };
 
   const removeImgStorage = async (imgName: string) => {
-    console.log(writeUser.email, "writeUser.email");
-    console.log(postDataId, "postDataId");
-    console.log(imgName, "imgName");
     const { data, error } = await supabase.storage
       .from("images")
       .remove([`posts/${writeUser.email}/${postDataId}/${imgName}`]);
@@ -119,7 +168,7 @@ const EditComponentPage = ({ postData }: { postData: any[] | null }) => {
         {
           cacheControl: "3600",
           upsert: false,
-        },
+        }
       );
     if (error) console.log("Error creating a Main Image", error);
     else {
@@ -132,35 +181,18 @@ const EditComponentPage = ({ postData }: { postData: any[] | null }) => {
     const { data } = supabase.storage
       .from("images")
       .getPublicUrl(
-        `posts/${writeUser.email}/${postDataId}/mainImg_${customToday}`,
+        `posts/${writeUser.email}/${postDataId}/mainImg_${customToday}`
       );
 
     setMainImgPreview(data.publicUrl);
     selectedMain = data.publicUrl;
-    console.log(selectedMain, "selectedMain");
   };
 
   let selectedSubArray: string[] = [];
 
-  const subImg1 = useRef<any>(null);
-  const subImg2 = useRef<any>(null);
-  const subImg3 = useRef<any>(null);
-  const subImg4 = useRef<any>(null);
-  const subImg5 = useRef<any>(null);
-  const [subImgFile1, setSubImgFile1] = useState<File>();
-  const [subImgFile2, setSubImgFile2] = useState<File>();
-  const [subImgFile3, setSubImgFile3] = useState<File>();
-  const [subImgFile4, setSubImgFile4] = useState<File>();
-  const [subImgFile5, setSubImgFile5] = useState<File>();
-  const [subImgpreview1, setSubImgPreview1] = useState<string | null>("");
-  const [subImgpreview2, setSubImgPreview2] = useState<string | null>("");
-  const [subImgpreview3, setSubImgPreview3] = useState<string | null>("");
-  const [subImgpreview4, setSubImgPreview4] = useState<string | null>("");
-  const [subImgpreview5, setSubImgPreview5] = useState<string | null>("");
-
   const handleChangeSubImg = async (
     e: ChangeEvent<HTMLInputElement>,
-    value: number,
+    value: number
   ) => {
     if (e.target.files !== null) {
       const file = e.target.files[0];
@@ -170,7 +202,6 @@ const EditComponentPage = ({ postData }: { postData: any[] | null }) => {
         switch (value) {
           case 1:
             setSubImgFile1(file);
-            console.log(file);
             reader.onloadend = () => {
               setSubImgPreview1(reader.result as string);
             };
@@ -337,7 +368,9 @@ const EditComponentPage = ({ postData }: { postData: any[] | null }) => {
 
     for (let i = 0; i < arr.length; i++) {
       let splitItem = arr[i]?.split("/");
+      console.log(splitItem);
       if (splitItem && splitItem[11]) {
+        console.log(splitItem[11]);
         await removeImgStorage(splitItem[11]);
       }
     }
@@ -346,7 +379,7 @@ const EditComponentPage = ({ postData }: { postData: any[] | null }) => {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (mainImgpreview === "") return alert("메인 사진은 필수입니다.");
-    await removeStorageImg();
+    // await removeStorageImg(); // 사진 삭제 기능 다시 봐야함
     await getMainImgArr();
     await getSubImgArr();
     await editPost();
@@ -439,7 +472,7 @@ const EditComponentPage = ({ postData }: { postData: any[] | null }) => {
         {
           cacheControl: "3600",
           upsert: false,
-        },
+        }
       );
     if (error) console.log("Error creating a Sub Image", error);
     else {
@@ -455,19 +488,6 @@ const EditComponentPage = ({ postData }: { postData: any[] | null }) => {
 
     selectedSubArray.push(data.publicUrl);
   };
-
-  useEffect(() => {
-    if (postData !== null) {
-      setMainImgPreview(postData[0].mainImg);
-      if (postData[0].subImg.length > 0) {
-        if (postData[0].subImg[0]) setSubImgPreview1(postData[0].subImg[0]);
-        if (postData[0].subImg[1]) setSubImgPreview2(postData[0].subImg[1]);
-        if (postData[0].subImg[2]) setSubImgPreview3(postData[0].subImg[2]);
-        if (postData[0].subImg[3]) setSubImgPreview4(postData[0].subImg[3]);
-        if (postData[0].subImg[4]) setSubImgPreview5(postData[0].subImg[4]);
-      }
-    }
-  }, []);
 
   return (
     <>
@@ -506,9 +526,7 @@ const EditComponentPage = ({ postData }: { postData: any[] | null }) => {
                       </p>
                       <button
                         type="button"
-                        onClick={() => {
-                          previewDelete(), removeStorageImg();
-                        }}
+                        onClick={previewDelete}
                         className="delBtn"
                       >
                         X
@@ -543,9 +561,7 @@ const EditComponentPage = ({ postData }: { postData: any[] | null }) => {
                       </p>
                       <button
                         type="button"
-                        onClick={() => {
-                          previewSubDelete(1), removeStorageImg();
-                        }}
+                        onClick={() => previewSubDelete(1)}
                         className="delBtn"
                       >
                         X
