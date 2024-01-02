@@ -24,6 +24,8 @@ const EditComponentPage = ({ postData }: { postData: any[] | null }) => {
   const [tags, setTags] = useRecoilState(tagsState);
   const [tagList, setTagList] = useRecoilState(tagListState);
   const [postDataId, setPostDataId] = useRecoilState(postDataState);
+  const [likes, setLikes] = useState<string[]>([])
+  const [bookmarks, setBookmarks] = useState<string[]>([])
 
   useEffect(() => {
     if (postData !== null) {
@@ -45,8 +47,11 @@ const EditComponentPage = ({ postData }: { postData: any[] | null }) => {
         id: postData[0].writedId,
         email: postData[0].writedName,
       });
+      console.log(postData[0].likes)
+      setLikes(postData[0].likes)
+      setBookmarks(postData[0].bookmarks)
     }
-  }, []);
+  }, [postData]);
 
   const mainImg = useRef<any>(null);
   const [mainImgFile, setMainImgFile] = useState<File>();
@@ -316,6 +321,8 @@ const EditComponentPage = ({ postData }: { postData: any[] | null }) => {
         mainImg: selectedMain,
         subImg: selectedSubArray,
         update_at: date,
+        likes,
+        bookmarks
       })
       .eq("id", postDataId)
       .select();

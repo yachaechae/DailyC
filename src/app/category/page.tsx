@@ -1,4 +1,3 @@
-
 import { getAllPosts } from "@/api/write";
 import BasicCard from "@/components/main/card/BasicCard";
 import Nav from "@/components/main/nav/Nav";
@@ -7,7 +6,6 @@ import React from "react";
 async function fetchData() {
 	try {
 		const postData: postType[] = await getAllPosts();
-		console.log(postData)
 		return postData.map((post) => {
 			return <BasicCard data={post} />;
 		});

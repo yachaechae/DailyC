@@ -31,7 +31,7 @@ export default async function Popular() {
 				<IconButton>
 					<ArrowBackIosRounded sx={{ fontSize: 40 }} color="primary" />
 				</IconButton>
-				<div className="w-full flex justify-between">
+				<div className="w-full flex gap-4">
 					{postData}
 					{/* <BasicCard rank="first" />
 					<BasicCard rank="second" />

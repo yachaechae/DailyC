@@ -1,6 +1,5 @@
 "use client";
 
-import { RecoilRoot } from "recoil";
 import PostComponentPage from "./post-info/post-components";
 
 const PostDetailPage = ({
@@ -10,11 +9,7 @@ const PostDetailPage = ({
   postData: any[] | null;
   params: number;
 }) => {
-  return (
-    <RecoilRoot>
-      <PostComponentPage postData={postData} params={params} />
-    </RecoilRoot>
-  );
+  return <PostComponentPage postData={postData} params={params} />;
 };
 
 export default PostDetailPage;

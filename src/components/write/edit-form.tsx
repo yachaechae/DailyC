@@ -5,11 +5,7 @@ import { RecoilRoot } from "recoil";
 import EditComponentPage from "./form/edit-component";
 
 const EditFormPage = ({ postData }: { postData: any[] | null }) => {
-  return (
-    <RecoilRoot>
-      <EditComponentPage postData={postData} />
-    </RecoilRoot>
-  );
+  return <EditComponentPage postData={postData} />;
 };
 
 export default EditFormPage;
