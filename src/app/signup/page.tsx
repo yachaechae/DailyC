@@ -5,6 +5,8 @@ import { supabase } from "@/lib/supabase-config";
 import Link from "next/link";
 import SelectGender from "@/components/ui/SelectGender";
 import ReturnUserIsLogin from "@/components/profile/ReturnUserIsLogin";
+import { openLoadingState } from "@/recoil/state";
+import { useRecoilState } from "recoil";
 // import defaultImg1 from "../../../public/assets/defaultImg.png";
 // import styles from "./login.module.css";
 
@@ -13,11 +15,10 @@ function page() {
 
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
-  // const [checkPassword, setCheckPassword] = useState<string>("");
   const [nickname, setNickname] = useState<string>("");
   const [gender, setGender] = useState<string>("");
   const [height, setHeight] = useState<string>("");
-  // const defaultImg = defaultImg1;
+  const [openLoading, setOpenLoading] = useRecoilState(openLoadingState);
 
   const handleEmailInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
@@ -26,10 +27,6 @@ function page() {
   const handlePasswordInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPassword(e.target.value);
   };
-
-  // const handleCheckPasswordInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   setCheckPassword(e.target.value);
-  // };
 
   const handleNickNameInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNickname(e.target.value);
@@ -42,6 +39,7 @@ function page() {
 
   const handleSignupForm = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setOpenLoading(true);
 
     const { data, error } = await supabase.auth.signUp({
       email,
@@ -58,11 +56,13 @@ function page() {
 
     if (error) {
       console.error("error : ", error);
+      setOpenLoading(false);
       return alert(error.message);
     }
 
     alert("회원가입 성공");
     router.push("/login");
+    setOpenLoading(false);
   };
 
   return (
@@ -156,7 +156,11 @@ function page() {
             </button>
           </form>
           <div className="flex w-full justify-end">
-            <Link href={"/login"} legacyBehavior>
+            <Link
+              href={"/login"}
+              onClick={() => setOpenLoading(true)}
+              legacyBehavior
+            >
               <a className="mt-3 text-xs text-gray-500">로그인</a>
             </Link>
           </div>
