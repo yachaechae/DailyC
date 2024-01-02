@@ -1,21 +1,15 @@
 import Nav from "@/components/main/nav/Nav";
-import {
-  inputsState,
-  postDataState,
-  tagListState,
-  tagsState,
-} from "@/app/state/state";
 import HrComponents from "@/components/ui/hr";
-import React, { useEffect, useState } from "react";
+import { userState } from "@/recoil/state";
+import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
-import PostDetailTitle from "./items/post-title";
-import PostDetailInfo from "./items/post-info";
-import PostDetailImage from "./items/post-image";
 import PostDetailContent from "./items/post-content";
-import PostDetailTag from "./items/post-tag";
-import { getUser } from "@/utils/auth";
-import PostLikeAndBook from "./items/post-like-and-book";
 import PostEditAndDelete from "./items/post-edit-and-delete";
+import PostDetailImage from "./items/post-image";
+import PostDetailInfo from "./items/post-info";
+import PostLikeAndBook from "./items/post-like-and-book";
+import PostDetailTag from "./items/post-tag";
+import PostDetailTitle from "./items/post-title";
 
 const postComponents = ({
   postData,
@@ -25,25 +19,20 @@ const postComponents = ({
   params: number;
 }) => {
   const [checkUser, setCheckUser] = useState(false);
-  const [userId, setUserId] = useState<string | undefined>("");
 
-  const getProfile = async () => {
-    const user = await getUser();
+  const [user, setUser] = useRecoilState(userState);
 
-    if (postData !== null) {
-      setUserId(user?.id);
-      if (postData[0].writedId === userId) setCheckUser(true);
-    }
-  };
   useEffect(() => {
-    getProfile();
-  }, []);
+    if (postData !== null) {
+      if (postData[0].writedId === user.id) setCheckUser(true);
+    }
+  }, [user]);
 
   return (
     <>
       <Nav />
       {postData !== null ? (
-        <div className="container w-full mt-16">
+        <div className="container relative w-full mt-16">
           <PostDetailTitle title={postData[0].title} />
           <HrComponents mt={50} mb={20} />
           <PostDetailInfo
@@ -62,11 +51,11 @@ const postComponents = ({
           {checkUser ? (
             <>
               <PostEditAndDelete postId={postData[0].id} />
+              <PostLikeAndBook params={params} />
             </>
           ) : (
             <>
-              <PostEditAndDelete postId={postData[0].id} />
-              <PostLikeAndBook params={params} userId={userId} />
+              <PostLikeAndBook params={params} />
             </>
           )}
         </div>

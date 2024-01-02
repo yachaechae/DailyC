@@ -5,11 +5,7 @@ import { RecoilRoot } from "recoil";
 import WriteComponentPage from "./form/write-component";
 
 const WriteFormPage = () => {
-  return (
-    <RecoilRoot>
-      <WriteComponentPage />
-    </RecoilRoot>
-  );
+  return <WriteComponentPage />;
 };
 
 export default WriteFormPage;
