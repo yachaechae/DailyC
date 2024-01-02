@@ -25,7 +25,6 @@ export default function RootLayout({
     <html lang="en">
       <body className={jua.className}>
         <RecoilProvider>
-          <GetProfile />
           <header className="flex h-[75px] items-center shadow-[0_4px_4px_rgba(0,0,0,0.25)]">
             <div className="container flex w-full items-center justify-between">
               <Link
