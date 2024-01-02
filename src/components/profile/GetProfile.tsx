@@ -36,6 +36,19 @@ function GetProfile() {
     }
   }, [profile]);
 
+  // EditProfile.tsx
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     const user = await getUser();
+  //     setProfile(user);
+  //     setTall(user?.user_metadata?.height || "");
+  //     setNickname(user?.user_metadata?.nickname || "");
+  //     setSelectedImg(user?.user_metadata?.userImg || null);
+  //   };
+
+  //   fetchData();
+  // }, []);
+
   return <></>;
 }
 
