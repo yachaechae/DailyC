@@ -39,7 +39,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 						</div>
 					</header>
 					{children}
-					<footer className="h-24 flex flex-col items-center justify-center bg-gray-200 text-gray-600">
+					<footer className="w-full h-24 mt-10 flex flex-col items-center justify-center bg-gray-200 text-gray-600">
 						<div>@DAILY C</div>
 						<div>대표 : 서지훈 | 윤창근 | 윤호준 | 임세현</div>
 					</footer>

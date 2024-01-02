@@ -20,10 +20,13 @@ export default function BasicCard({ rank, data }: { rank?: string; data: postTyp
 	const [liked, setLiked] = useState(false);
 	const [bookmark, setBookmark] = useState(false);
 
-	const handleLikeClick = () => {
+	const handleLikeClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+		event.preventDefault();
 		setLiked(!liked);
 	};
-	const handleBookmarkClick = () => {
+
+	const handleBookmarkClick = (event: React.MouseEvent<HTMLDivElement>) => {
+		event.preventDefault();
 		setBookmark(!bookmark);
 	};
 	const colorData: { [key: string]: string } = {
@@ -58,7 +61,7 @@ export default function BasicCard({ rank, data }: { rank?: string; data: postTyp
 						<p className={` text-3xl text-white drop-shadow-[0_1px_5px_rgba(0,0,0,0.7)] truncate`}>
 							{data.title}
 						</p>
-						<span className={` text-lg`}>{data.tags?.join("# ")}</span>
+						<span className={` text-lg`}>#{data.tags?.join(" #")}</span>
 					</div>
 				</div>
 				<CardHeader
@@ -77,7 +80,7 @@ export default function BasicCard({ rank, data }: { rank?: string; data: postTyp
 							<OrangeIcon liked={liked} width={35} />
 						</IconButton>
 					}
-					title={<div className={`${judson.className} max-w-120px w-full`}>{data.writedName}</div>}
+					title={<div className={`${judson.className} w-32 truncate`}>{data.writedName}</div>}
 					subheader={<div className={`${judson.className}`}>{data.height}</div>}
 				/>
 			</Card>
