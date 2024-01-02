@@ -18,3 +18,13 @@
   z-index: 1;
   display: flex;
 }
+
+.modalPost {
+  margin-top: 60px;
+  padding: 0;
+  border: none;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+  display: flex;
+  max-width: 100%;
+}
