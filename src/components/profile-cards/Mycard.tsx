@@ -30,7 +30,7 @@ export default function Mycard({ title, mainImg, tags }: Props) {
             </p>
             <span className={` text-lg`}>
               {!tags && ""}
-              {tags.map((tag) => {
+              {tags?.map((tag) => {
                 return ` #${tag}`;
               })}
             </span>

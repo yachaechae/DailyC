@@ -39,6 +39,7 @@ function FetchMyPosts() {
           return (
             <Link href={`/posts/${post.id}`}>
               <Mycard
+                key={post.id}
                 title={post.title}
                 mainImg={post.mainImg}
                 tags={post.tags}

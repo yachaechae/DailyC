@@ -58,7 +58,7 @@ export default function LikeCard({
           </p>
           <span className={` text-lg`}>
             {!tags && ""}
-            {tags.map((tag) => {
+            {tags?.map((tag) => {
               return ` #${tag}`;
             })}
           </span>

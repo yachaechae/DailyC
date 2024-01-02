@@ -66,7 +66,7 @@ export default function BookmarkCard({
           </p>
           <span className={` text-lg`}>
             {!tags && ""}
-            {tags.map((tag) => {
+            {tags?.map((tag) => {
               return ` #${tag}`;
             })}
           </span>
