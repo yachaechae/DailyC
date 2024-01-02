@@ -6,7 +6,7 @@ export default function Home() {
     <div className="xl container flex h-[calc(100vh-75px)] w-full flex-col items-center justify-center gap-5">
       {/* 유저정보 확인 버튼 */}
       <GetUserBtn />
-      <div className="h-[120px]">
+      <div className="h-[120px] w-[120px]">
         <UserImg size={120} />
       </div>
     </div>

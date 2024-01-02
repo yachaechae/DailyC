@@ -29,7 +29,28 @@ function ScrollToTopBtn() {
 
   return (
     <button
-      className="absolute bottom-[20px] right-[20px] flex h-[40px] w-[40px] cursor-pointer items-center justify-center rounded-full bg-orange p-[10px] text-xs text-white shadow-md transition-all duration-200 ease-in-out hover:scale-125"
+      className="
+      fixed
+      bottom-[20px] 
+      right-[20px] 
+      flex 
+      h-[40px] 
+      w-[40px] 
+      scale-0 
+      cursor-pointer 
+      items-center 
+      justify-center 
+      rounded-full 
+      bg-orange 
+      p-[10px] 
+      text-xs 
+      text-white 
+      shadow-md 
+      transition-all 
+      duration-200 
+      ease-in-out
+      hover:scale-125
+      "
       ref={scrollToTopBtnRef}
       onClick={handleScrollToTop}
     >
