@@ -2,7 +2,7 @@
 import React, { useEffect } from "react";
 import { useRecoilState } from "recoil";
 import { isLoginState } from "@/recoil/state";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 type Props = {
   children: React.ReactNode;
@@ -10,14 +10,7 @@ type Props = {
 
 function ReturnUserIsNotLogin({ children }: Props) {
   const router = useRouter();
-  const pathname = usePathname();
-  const searchParams = useSearchParams();
-
   const [isLogin, setIsLogin] = useRecoilState(isLoginState);
-
-  // 작업중---------------------
-  console.log("params....:", pathname);
-  console.log("searchParams....:", searchParams);
 
   useEffect(() => {
     if (isLogin === false) {
@@ -25,7 +18,7 @@ function ReturnUserIsNotLogin({ children }: Props) {
       if (confirm("로그인 페이지로 이동하시겠습니까?")) {
         return router.push("/login");
       } else {
-        return router.push("/");
+        return router.back();
       }
     }
   }, []);
