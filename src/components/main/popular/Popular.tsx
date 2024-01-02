@@ -1,4 +1,3 @@
-"use client";
 import React from "react";
 import BasicCard from "../card/BasicCard";
 import { ArrowBackIosRounded, ArrowForwardIosRounded } from "@mui/icons-material";
@@ -7,8 +6,9 @@ import { getAllPosts } from "@/api/write";
 
 async function fetchData() {
 	try {
-		const postData: postType[] = await getAllPosts();
-		return postData.map((post) => {
+		const data: postType[] = await getAllPosts();
+
+		return data.map((post) => {
 			return <BasicCard data={post} />;
 		});
 	} catch (error) {
@@ -22,7 +22,6 @@ async function fetchData() {
 
 export default async function Popular() {
 	const postData = await fetchData();
-
 	return (
 		<>
 			<h2 className="mb-14 text-4xl">인기 코디</h2>
@@ -31,7 +30,7 @@ export default async function Popular() {
 				<IconButton>
 					<ArrowBackIosRounded sx={{ fontSize: 40 }} color="primary" />
 				</IconButton>
-				<div className="w-full flex gap-4">
+				<div className="w-full flex gap-4 overflow-hidden">
 					{postData}
 					{/* <BasicCard rank="first" />
 					<BasicCard rank="second" />
