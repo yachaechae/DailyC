@@ -1,12 +1,16 @@
 import * as React from "react";
-const OrangeIcon = (props) => {
-	const topFill = props.liked ? "fill-top" : "fill-white";
-	const leafFill = props.liked ? "fill-leaf" : "fill-white";
-	const deepOrangeFill = props.liked ? "fill-deepOrange" : "fill-slate-100";
-	const orangeFill = props.liked ? "fill-orange" : "fill-white";
+type propsType = {
+	width: number;
+	liked: boolean;
+};
+const OrangeIcon = ({ liked, width }: { liked: boolean | string; width: number }) => {
+	const topFill = liked ? "fill-top" : "fill-white";
+	const leafFill = liked ? "fill-leaf" : "fill-white";
+	const deepOrangeFill = liked ? "fill-deepOrange" : "fill-slate-100";
+	const orangeFill = liked ? "fill-orange" : "fill-white";
 
 	return (
-		<svg xmlns="http://www.w3.org/2000/svg" viewBox="0.00 0.00 488.00 488.00" {...props}>
+		<svg xmlns="http://www.w3.org/2000/svg" viewBox="0.00 0.00 488.00 488.00" width={width}>
 			<g strokeWidth={2} fill="none" strokeLinecap="butt">
 				<path
 					stroke="#000"
@@ -29,7 +33,7 @@ const OrangeIcon = (props) => {
 					d="   M 267.51 19.34   C 263.18 26.83 258.85 35.31 255.35 43.89   Q 251.33 53.73 248.26 63.11   Q 239.34 90.33 237.10 117.26   Q 237.06 117.72 237.52 117.72   L 253.51 117.82   A 0.75 0.74 -87.0 0 0 254.25 117.15   Q 259.34 69.19 281.42 29.43   A 1.32 1.31 32.2 0 0 281.03 27.73   L 268.90 19.04   A 0.96 0.96 0.0 0 0 267.51 19.34"
 				/>
 				<path
-					stroke={0}
+					stroke={"0"}
 					vectorEffect="non-scaling-stroke"
 					d="   M 233.97 132.41   Q 229.29 133.37 220.29 136.39   Q 182.02 149.25 152.89 172.99   Q 123.70 196.79 106.77 228.84   C 89.40 261.73 84.28 299.04 91.68 335.16   Q 95.08 351.72 101.54 365.96   Q 106.90 377.77 110.53 383.76   Q 112.92 387.71 115.66 391.93   Q 118.40 396.17 121.20 399.85   Q 145.30 431.51 179.71 451.28   Q 201.44 463.76 226.01 471.43   Q 226.47 471.99 227.49 471.90   Q 229.15 471.75 230.04 473.19"
 				/>

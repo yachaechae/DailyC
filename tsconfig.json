@@ -28,7 +28,7 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "src/icon/OrangeIcon.jsx"
+    "src/icon/OrangeIcon.tsx"
   ],
   "exclude": ["node_modules"]
 }

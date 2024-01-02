@@ -74,7 +74,7 @@ export default function BasicCard({ rank, data }: { rank?: string; data: postTyp
 							onClick={handleLikeClick}
 							className={liked ? "liked" : ""}
 						>
-							<OrangeIcon width={35} liked={liked}></OrangeIcon>
+							<OrangeIcon liked={liked} width={35} />
 						</IconButton>
 					}
 					title={<div className={`${judson.className} max-w-120px w-full`}>{data.writedName}</div>}
