@@ -39,6 +39,7 @@ export default function LikeCard({
   const handleLikeClick = () => {
     const answer = window.confirm("취소 하시겠습니까?");
     if (!answer) return null;
+    // 눌렀을 때 취소
   };
   return (
     <Card className="w-[270px] rounded-[15px]">
