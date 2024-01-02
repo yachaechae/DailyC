@@ -133,7 +133,9 @@ function EditProfile({ closeModal }: any) {
         <div>
           <label className={styles.avatarfigure}>
             {!selectedImg ? (
-              <UserImg size={120} />
+              <div className="h-[120px] w-[120px]">
+                <UserImg size={120} />
+              </div>
             ) : (
               <Image
                 src={selectedImg}

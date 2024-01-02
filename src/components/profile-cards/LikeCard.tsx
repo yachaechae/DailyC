@@ -56,7 +56,7 @@ export default function LikeCard({
       <CardHeader
         className="bg-gray-300 px-3 py-2"
         avatar={
-          <div className="h-[35px]">
+          <div className="h-[35px] w-[35px]">
             <UserImg size={35} />
           </div>
         }

@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase-config";
 import Link from "next/link";
 import SelectGender from "@/components/ui/SelectGender";
+import ReturnUserIsLogin from "@/components/profile/ReturnUserIsLogin";
 // import defaultImg1 from "../../../public/assets/defaultImg.png";
 // import styles from "./login.module.css";
 
@@ -65,8 +66,8 @@ function page() {
   };
 
   return (
-    <div>
-      <div className="container flex h-[calc(100vh-75px)] items-center justify-center">
+    <ReturnUserIsLogin>
+      <div className="container flex h-[calc(100vh-75px)] min-h-[700px] items-center justify-center">
         <div className="flex w-full flex-col rounded-lg bg-gray-100 p-8 md:w-1/2 lg:w-2/6 ">
           <h2 className="title-font mb-5 text-center text-lg font-medium text-gray-900">
             회원가입
@@ -161,7 +162,7 @@ function page() {
           </div>
         </div>
       </div>
-    </div>
+    </ReturnUserIsLogin>
   );
 }
 
