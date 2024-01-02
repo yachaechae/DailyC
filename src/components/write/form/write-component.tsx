@@ -302,6 +302,8 @@ const WriteComponentPage = () => {
           writedName: writeUser.email,
           mainImg: selectedMain,
           subImg: selectedSubArray,
+          likes: [],
+          bookmarks: [],
         },
       ])
       .select();

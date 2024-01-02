@@ -2,7 +2,7 @@ import { getEventByPostDelete } from "@/api/write";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
-const PostEditAndDelete = ({ postId }: { postId: string }) => {
+const PostEditAndDelete = ({ postId }: { postId: number }) => {
   const router = useRouter();
 
   const handleClick = async (path: string) => {
