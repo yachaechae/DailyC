@@ -14,7 +14,7 @@ function ReturnUserIsLogin({ children }: Props) {
 
   useEffect(() => {
     if (isLogin === true) {
-      router.push("/");
+      router.back();
       return alert("이미 로그인 되어 있습니다.");
     }
   }, []);
