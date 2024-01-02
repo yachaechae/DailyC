@@ -10,44 +10,36 @@ function GetProfile() {
   const [user, setUser] = useRecoilState(userState);
   const [profile, setProfile] = useState<any>(null);
 
-  const getUserInfo = async () => {
-    const data = await getUser();
-    setProfile(data);
-  };
-
   useEffect(() => {
-    getUserInfo();
-  }, [isLogin]);
+    const fetchData = async () => {
+      try {
+        const userProfile = await getUser();
+        if (userProfile) {
+          setProfile(userProfile);
+          setIsLogin(true);
+          setUser({
+            id: userProfile.id,
+            email: userProfile.email || "",
+            nickname: userProfile.user_metadata?.nickname || "",
+            height: userProfile.user_metadata?.height || "",
+            gender: userProfile.user_metadata?.gender || "",
+            userImg: userProfile.user_metadata?.userImg || "",
+          });
+        } else {
+          setIsLogin(false);
+        }
+      } catch (error) {
+        console.error("Error fetching user profile:", error);
+        setIsLogin(false);
+      }
+    };
 
-  useEffect(() => {
-    if (!!profile) {
-      setIsLogin(true);
-      setUser({
-        id: profile.id,
-        email: profile.email,
-        nickname: profile.user_metadata?.nickname,
-        height: profile.user_metadata?.height,
-        gender: profile.user_metadata?.gender,
-        userImg: profile.user_metadata?.userImg,
-      });
-    } else {
-      setIsLogin(false);
-      return;
-    }
-  }, [profile]);
+    fetchData();
+  }, []);
 
-  // EditProfile.tsx
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     const user = await getUser();
-  //     setProfile(user);
-  //     setTall(user?.user_metadata?.height || "");
-  //     setNickname(user?.user_metadata?.nickname || "");
-  //     setSelectedImg(user?.user_metadata?.userImg || null);
-  //   };
-
-  //   fetchData();
-  // }, []);
+  console.log("user---", user);
+  console.log("profile---", profile);
+  console.log("isLogin---", isLogin);
 
   return <></>;
 }

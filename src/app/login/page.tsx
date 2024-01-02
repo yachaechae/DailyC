@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase-config";
 import Link from "next/link";
 import { useRecoilState } from "recoil";
-import { isLoginState } from "@/recoil/state";
+import { isLoginState, userState } from "@/recoil/state";
 import ReturnUserIsLogin from "@/components/profile/ReturnUserIsLogin";
 
 function page() {
@@ -13,6 +13,7 @@ function page() {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [isLogin, setIsLogin] = useRecoilState(isLoginState);
+  const [user, setUser] = useRecoilState(userState);
 
   const handleEmailInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
@@ -30,14 +31,28 @@ function page() {
       password,
     });
 
-    if (error) {
-      console.error("error : ", error);
-      return alert(error.message);
+    const userProfile = data?.user;
+
+    if (userProfile) {
+      setUser({
+        id: userProfile.id,
+        email: userProfile.email || "",
+        nickname: userProfile.user_metadata?.nickname || "",
+        height: userProfile.user_metadata?.height || "",
+        gender: userProfile.user_metadata?.gender || "",
+        userImg: userProfile.user_metadata?.userImg || "",
+      });
+      alert("로그인 되었습니다.");
+      setIsLogin(true);
+      router.push("/");
     }
 
-    alert("로그인 되었습니다.");
-    setIsLogin(true);
-    router.push("/");
+    if (error) {
+      console.log("!!");
+      console.error("error : ", error);
+      setIsLogin(false);
+      return alert(error.message);
+    }
   };
 
   return (

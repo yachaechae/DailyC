@@ -36,6 +36,7 @@ function ScrollToTopBtn() {
       flex 
       h-[40px] 
       w-[40px] 
+      scale-0 
       cursor-pointer 
       items-center 
       justify-center 
@@ -47,7 +48,7 @@ function ScrollToTopBtn() {
       shadow-md 
       transition-all 
       duration-200 
-      ease-in-out 
+      ease-in-out
       hover:scale-125
       "
       ref={scrollToTopBtnRef}
