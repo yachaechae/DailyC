@@ -82,11 +82,7 @@ export default function BasicCard({
         </div>
         <CardHeader
           className="h-fit bg-gray-300 px-2 py-2"
-          avatar={
-            <div className="h-[35px]">
-              <UserImg size={35} />
-            </div>
-          }
+          avatar={<div className="h-[35px]">{/* <UserImg size={35} /> */}</div>}
           action={
             <IconButton
               aria-label="add to favorites"

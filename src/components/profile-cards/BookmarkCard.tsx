@@ -65,11 +65,9 @@ export default function BookmarkCard({
       </div>
       <CardHeader
         className="bg-gray-300 px-3 py-2"
-        avatar={
-          <div className="h-[35px] w-[35px]">
-            <UserImg size={35} />
-          </div>
-        }
+        // avatar={
+        //   <div className="h-[35px] w-[35px]">{/* <UserImg size={35} /> */}</div>
+        // }
         title={<div className={`${judson.className}`}>{writedName}</div>}
         subheader={<div className={`${judson.className}`}>{height}cm</div>}
       />

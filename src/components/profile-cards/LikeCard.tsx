@@ -53,11 +53,9 @@ export default function LikeCard({
       </div>
       <CardHeader
         className="bg-gray-300 px-3 py-2"
-        avatar={
-          <div className="h-[35px] w-[35px]">
-            <UserImg size={35} />
-          </div>
-        }
+        // avatar={
+        //   <div className="h-[35px] w-[35px]">{/* <UserImg size={35} /> */}</div>
+        // }
         action={
           <IconButton
             aria-label="add to favorites"
