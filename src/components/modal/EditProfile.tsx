@@ -8,7 +8,6 @@ import { getUser } from "@/utils/auth";
 import { useRecoilState } from "recoil";
 import { userState } from "@/recoil/state";
 import UserImg from "../profile/UserImg";
-import uuid from "react-uuid";
 
 function EditProfile({ closeModal }: any) {
   const [gender, setGender] = useState<string>("");
@@ -117,9 +116,10 @@ function EditProfile({ closeModal }: any) {
   return (
     <form
       onSubmit={(e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
         if (gender === "") {
           alert("성별을 선택해 주세요!");
-          return false;
+          return null;
         }
         const answer = window.confirm("이대로 수정하시겠습니까?");
         if (!answer) return;

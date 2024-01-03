@@ -7,8 +7,15 @@ import { getEventByPost } from "@/api/write";
 import Mycard from "@/components/profile-cards/Mycard";
 import Link from "next/link";
 
+type Post = {
+  id: number;
+  title: string;
+  mainImg: string;
+  tags: any;
+};
+
 function FetchMyPosts() {
-  const [posts, setPosts] = useState<any[] | null>([]);
+  const [posts, setPosts] = useState<Post[] | null>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const user = useRecoilValue(userState);
 
@@ -21,6 +28,9 @@ function FetchMyPosts() {
       setIsLoading(false);
     } catch (error) {
       console.error("Error fetching my posts:", error);
+      alert("불러오는 도중 문제가 발생하였습니다.");
+    } finally {
+      setIsLoading(false);
     }
   };
   useEffect(() => {
@@ -31,15 +41,14 @@ function FetchMyPosts() {
   }
   return (
     <>
-      <div className="ml-auto mr-auto mt-[50px] flex w-[1200px] flex-row flex-wrap justify-center gap-[30px] ">
+      <div className="my-[50px] ml-auto mr-auto flex w-[1200px] flex-row flex-wrap justify-center gap-[30px] ">
         {posts?.length === 0 && (
           <p className="text-2xl">등록된 코디가 없습니다!</p>
         )}
         {posts?.map((post) => {
           return (
-            <Link href={`/posts/${post.id}`}>
+            <Link key={post.id} href={`/posts/${post.id}`}>
               <Mycard
-                key={post.id}
                 title={post.title}
                 mainImg={post.mainImg}
                 tags={post.tags}
