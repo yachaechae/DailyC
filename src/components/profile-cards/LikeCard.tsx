@@ -5,7 +5,6 @@ import Card from "@mui/material/Card";
 import CardHeader from "@mui/material/CardHeader";
 import CardMedia from "@mui/material/CardMedia";
 import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
 import OrangeIcon from "@/icon/OrangeIcon";
 import { Jua, Judson } from "next/font/google";
 import UserImg from "../profile/UserImg";
@@ -68,14 +67,8 @@ export default function LikeCard({
             <OrangeIcon width={35} liked={!liked}></OrangeIcon>
           </IconButton>
         }
-        title={
-          <Typography className={`${judson.className}`}>
-            {writedName}
-          </Typography>
-        }
-        subheader={
-          <Typography className={`${judson.className}`}>{height}cm</Typography>
-        }
+        title={<div className={`${judson.className}`}>{writedName}</div>}
+        subheader={<div className={`${judson.className}`}>{height}cm</div>}
       />
     </Card>
   );
