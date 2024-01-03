@@ -18,6 +18,7 @@ import { InputContent, InputGender, InputHeight, InputTitle } from "./inputs";
 import { InputTags } from "./tags";
 import { useRouter } from "next/navigation";
 import { getEventByPost } from "@/api/write";
+import { openLoadingState } from "@/recoil/state";
 
 const EditComponentPage = ({
   postData,
@@ -58,6 +59,7 @@ const EditComponentPage = ({
   const [subImgpreview4, setSubImgPreview4] = useState<string | null>("");
   const [subImgpreview5, setSubImgPreview5] = useState<string | null>("");
   // const [beforePreivew, setBeforePreivew] = useState<string[]>([]);
+  const [openLoading, setOpenLoading] = useRecoilState(openLoadingState);
 
   useEffect(() => {
     async function fetchData(params: number) {
@@ -168,7 +170,7 @@ const EditComponentPage = ({
         {
           cacheControl: "3600",
           upsert: false,
-        }
+        },
       );
     if (error) console.log("Error creating a Main Image", error);
     else {
@@ -181,7 +183,7 @@ const EditComponentPage = ({
     const { data } = supabase.storage
       .from("images")
       .getPublicUrl(
-        `posts/${writeUser.email}/${postDataId}/mainImg_${customToday}`
+        `posts/${writeUser.email}/${postDataId}/mainImg_${customToday}`,
       );
 
     setMainImgPreview(data.publicUrl);
@@ -192,7 +194,7 @@ const EditComponentPage = ({
 
   const handleChangeSubImg = async (
     e: ChangeEvent<HTMLInputElement>,
-    value: number
+    value: number,
   ) => {
     if (e.target.files !== null) {
       const file = e.target.files[0];
@@ -380,6 +382,7 @@ const EditComponentPage = ({
     e.preventDefault();
     if (mainImgpreview === "") return alert("메인 사진은 필수입니다.");
     // await removeStorageImg(); // 사진 삭제 기능 다시 봐야함
+    setOpenLoading(true);
     await getMainImgArr();
     await getSubImgArr();
     await editPost();
@@ -472,7 +475,7 @@ const EditComponentPage = ({
         {
           cacheControl: "3600",
           upsert: false,
-        }
+        },
       );
     if (error) console.log("Error creating a Sub Image", error);
     else {
