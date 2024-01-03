@@ -1,6 +1,8 @@
 import "@/app/posts/post-detail.style.css";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import ModalPost from "@/components/modal/ModalPost";
+import { useRecoilState } from "recoil";
+import { postState, postStateArr } from "@/app/state/state";
 
 type postImgType = {
   main: string;
@@ -22,6 +24,8 @@ const PostDetailImage = ({ main, sub }: postImgType) => {
   const [selectedImg, setSelectedImg] = useState(main);
   const [countIndex, setCountIndex] = useState(0);
 
+  const [postDataSupa, setPostDataSupa] = useRecoilState(postStateArr);
+
   const toggleActive = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
     idx: number,
@@ -30,6 +34,13 @@ const PostDetailImage = ({ main, sub }: postImgType) => {
     setCountIndex(idx);
     setSelectedImg(img);
   };
+
+  useEffect(() => {
+    if (postDataSupa.length > 0) {
+      setImgArray([postDataSupa[0].mainImg, ...postDataSupa[0].subImg]);
+      setSelectedImg(postDataSupa[0].mainImg);
+    }
+  }, [postDataSupa]);
 
   return (
     <div className="detailImgWrap">

@@ -12,15 +12,15 @@ declare type postType = {
   height: string;
   title: string;
   content: string;
-  create_at: Date;
-  update_at: Date | null;
+  create_at: string;
+  update_at: string | null;
   writedId: string;
   writedName: string;
   tags: string[];
   mainImg: string;
   subImg: string[];
-  likes:string[];
-  bookmarks:string[];
+  likes: string[];
+  bookmarks: string[];
 };
 
 declare type writeUserType = {

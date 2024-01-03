@@ -20,7 +20,6 @@ const WriteComponentPage = () => {
 
   const getProfile = async () => {
     const user = await getUser();
-    console.log(user);
     setInputs({
       ...inputs,
       gender: user?.user_metadata?.gender,
@@ -34,6 +33,10 @@ const WriteComponentPage = () => {
   useEffect(() => {
     getProfile();
   }, []);
+
+  // useEffect(()=>{
+
+  // },[inputs])
 
   const mainImg = useRef<any>(null);
   const [mainImgFile, setMainImgFile] = useState<File>();
@@ -63,32 +66,36 @@ const WriteComponentPage = () => {
     setMainImgPreview("");
   };
 
-  const getMainImgArr = async (check: boolean) => {
-    if (mainImgFile !== undefined)
-      await handleUploadMainImg(mainImgFile, check);
+  const getMainImgArr = async (id: number) => {
+    if (mainImgFile !== undefined) await handleUploadMainImg(mainImgFile, id);
     else {
       if (mainImgpreview !== "") selectedMain = mainImgpreview;
     }
   };
 
-  const handleUploadMainImg = async (selectedFile: File, check: boolean) => {
+  const handleUploadMainImg = async (selectedFile: File, id: number) => {
+    let customToday = getTodayDate();
     const { error, data } = await supabase.storage
       .from("images")
-      .upload(`posts/${writeUser.email}/${inputs.id}/mainImg`, selectedFile, {
-        cacheControl: "3600",
-        upsert: check,
-      });
+      .upload(
+        `posts/${writeUser.email}/${id}/mainImg_${customToday}`,
+        selectedFile,
+        {
+          cacheControl: "3600",
+          upsert: false,
+        }
+      );
     if (error) console.log("Error creating a Main Image", error);
     else {
       console.log("Main Image created successfully", data);
-      await handleDownMainImg();
+      await handleDownMainImg(id, customToday);
     }
   };
 
-  const handleDownMainImg = async () => {
+  const handleDownMainImg = async (id: number, customToday: string) => {
     const { data } = supabase.storage
       .from("images")
-      .getPublicUrl(`posts/${writeUser.email}/${inputs.id}/mainImg`);
+      .getPublicUrl(`posts/${writeUser.email}/${id}/mainImg_${customToday}`);
 
     setMainImgPreview(data.publicUrl);
     selectedMain = data.publicUrl;
@@ -282,8 +289,7 @@ const WriteComponentPage = () => {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (mainImgpreview === "") return alert("메인 사진은 필수입니다.");
-    await getMainImgArr(true);
-    await getSubImgArr();
+
     await addPost();
   };
 
@@ -311,14 +317,41 @@ const WriteComponentPage = () => {
     if (error) console.log("Error creating a post", error);
     else {
       console.log("Post created successfully", data);
+      await getMainImgArr(data[0].id);
+      await getSubImgArr(data[0].id);
+      await editPost(data[0].id);
+    }
+  };
+
+  const editPost = async (id: number) => {
+    const { data, error } = await supabase
+      .from("posts")
+      .update({
+        mainImg: selectedMain,
+        subImg: selectedSubArray,
+      })
+      .eq("id", id)
+      .select();
+
+    if (error) console.log("Error creating a post", error);
+    else {
+      console.log("Post edited successfully", data);
       alert("글 작성 완료");
       router.push(`/posts/${data[0].id}`);
     }
   };
 
-  const getSubImgArr = async () => {
+  const getTodayDate = () => {
+    let today = new Date();
+    let customToday = `${today.getFullYear()}-${
+      today.getMonth() + 1
+    }-${today.getDate()}-${today.getHours()}-${today.getMinutes()}-${today.getSeconds()}`;
+    return customToday;
+  };
+
+  const getSubImgArr = async (id: number) => {
     if (subImgFile1 !== undefined)
-      await handleUploadSubImg(subImgFile1, "subImg1");
+      await handleUploadSubImg(subImgFile1, "subImg1", id);
     else {
       if (subImgpreview1 !== null) {
         if (subImgpreview1 === undefined || subImgpreview1 === "") return;
@@ -326,7 +359,7 @@ const WriteComponentPage = () => {
       }
     }
     if (subImgFile2 !== undefined)
-      await handleUploadSubImg(subImgFile2, "subImg2");
+      await handleUploadSubImg(subImgFile2, "subImg2", id);
     else {
       if (subImgpreview2 !== null) {
         if (subImgpreview2 === undefined || subImgpreview2 === "") return;
@@ -334,7 +367,7 @@ const WriteComponentPage = () => {
       }
     }
     if (subImgFile3 !== undefined)
-      await handleUploadSubImg(subImgFile3, "subImg3");
+      await handleUploadSubImg(subImgFile3, "subImg3", id);
     else {
       if (subImgpreview3 !== null) {
         if (subImgpreview3 === undefined || subImgpreview3 === "") return;
@@ -342,7 +375,7 @@ const WriteComponentPage = () => {
       }
     }
     if (subImgFile4 !== undefined)
-      await handleUploadSubImg(subImgFile4, "subImg4");
+      await handleUploadSubImg(subImgFile4, "subImg4", id);
     else {
       if (subImgpreview4 !== null) {
         if (subImgpreview4 === undefined || subImgpreview4 === "") return;
@@ -350,7 +383,7 @@ const WriteComponentPage = () => {
       }
     }
     if (subImgFile5 !== undefined)
-      await handleUploadSubImg(subImgFile5, "subImg5");
+      await handleUploadSubImg(subImgFile5, "subImg5", id);
     else {
       if (subImgpreview5 !== null) {
         if (subImgpreview1 === undefined || subImgpreview1 === "") return;
@@ -359,28 +392,41 @@ const WriteComponentPage = () => {
     }
   };
 
-  const handleUploadSubImg = async (selectedFile: File, subImg: string) => {
+  const handleUploadSubImg = async (
+    selectedFile: File,
+    subImg: string,
+    id: number
+  ) => {
     console.log(selectedFile);
-    const { data: dataDist, error: errorDist } = await supabase.storage
-      .from("images")
-      .remove([`posts/${writeUser.email}/${inputs.id}/${subImg}`]);
+    let customToday = getTodayDate();
+    // const { data: dataDist, error: errorDist } = await supabase.storage
+    //   .from("images")
+    //   .remove([`posts/${writeUser.email}/${id}/${subImg}`]);
     const { error, data } = await supabase.storage
       .from("images")
-      .upload(`posts/${writeUser.email}/${inputs.id}/${subImg}`, selectedFile, {
-        cacheControl: "3600",
-        upsert: false,
-      });
+      .upload(
+        `posts/${writeUser.email}/${id}/${subImg}_${customToday}`,
+        selectedFile,
+        {
+          cacheControl: "3600",
+          upsert: false,
+        }
+      );
     if (error) console.log("Error creating a Sub Image", error);
     else {
       console.log("Sub Image created successfully", data);
-      await handleDownSubImg(subImg);
+      await handleDownSubImg(subImg, id, customToday);
     }
   };
 
-  const handleDownSubImg = async (subImg: string) => {
+  const handleDownSubImg = async (
+    subImg: string,
+    id: number,
+    customToday: string
+  ) => {
     const { data } = supabase.storage
       .from("images")
-      .getPublicUrl(`posts/${writeUser.email}/${inputs.id}/${subImg}`);
+      .getPublicUrl(`posts/${writeUser.email}/${id}/${subImg}_${customToday}`);
 
     selectedSubArray.push(data.publicUrl);
   };
@@ -388,7 +434,7 @@ const WriteComponentPage = () => {
   return (
     <>
       <Nav />
-      <div className="container w-full mt-16">
+      <div className="container mt-16 w-full">
         <h2 className="text-3xl">코디 작성</h2>
         <HrComponents mt={50} mb={50} />
         <form className="flex flex-col gap-[30px]" onSubmit={handleSubmit}>
@@ -400,7 +446,7 @@ const WriteComponentPage = () => {
           <div className="flex flex-col gap-[10px]">
             <label>
               메인 사진
-              <span className="text-red-500 text-xs pl-[10px]">* 필수</span>
+              <span className="pl-[10px] text-xs text-red-500">* 필수</span>
             </label>
             <div className="writeFileWrap">
               <div className="writeFileList">

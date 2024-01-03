@@ -10,7 +10,6 @@ const PostEditAndDelete = ({ postId }: { postId: number }) => {
       const answer = window.confirm("정말 삭제하시겠습니까?");
       if (!answer) return;
       const data = await getEventByPostDelete("id", postId);
-      console.log(data);
       if (data) {
         alert("삭제 되었습니다.");
         router.push("/posts");

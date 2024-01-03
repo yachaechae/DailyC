@@ -4,6 +4,7 @@ import Nav from "@/components/main/nav/Nav";
 import {
   inputsState,
   postDataState,
+  postState,
   tagListState,
   tagsState,
   writeUserState,
@@ -16,46 +17,99 @@ import { useRecoilState } from "recoil";
 import { InputContent, InputGender, InputHeight, InputTitle } from "./inputs";
 import { InputTags } from "./tags";
 import { useRouter } from "next/navigation";
+import { getEventByPost } from "@/api/write";
 
-const EditComponentPage = ({ postData }: { postData: any[] | null }) => {
+const EditComponentPage = ({
+  postData,
+  params,
+}: {
+  postData: any[] | null;
+  params: number;
+}) => {
   const router = useRouter();
   const [writeUser, setWriteUser] = useRecoilState(writeUserState);
   const [inputs, setInputs] = useRecoilState(inputsState);
   const [tags, setTags] = useRecoilState(tagsState);
   const [tagList, setTagList] = useRecoilState(tagListState);
   const [postDataId, setPostDataId] = useRecoilState(postDataState);
-  const [likes, setLikes] = useState<string[]>([])
-  const [bookmarks, setBookmarks] = useState<string[]>([])
+  const [likes, setLikes] = useState<string[]>([]);
+  const [bookmarks, setBookmarks] = useState<string[]>([]);
+  const [postDataing, setPostDating] = useRecoilState(postState);
 
-  useEffect(() => {
-    if (postData !== null) {
-      setPostDataId(postData[0].id);
-      setInputs({
-        ...inputs,
-        gender: postData[0].gender,
-        height: postData[0].height,
-        title: postData[0].title,
-        content: postData[0].content,
-      });
-      setTags([...tags, ...postData[0].tags]);
-      for (let i = 0; i < postData[0].tags.length; i++) {
-        if (!tagList.includes(postData[0].tags[i])) {
-          setTagList([...tagList, postData[0].tags[i]]);
-        }
-      }
-      setWriteUser({
-        id: postData[0].writedId,
-        email: postData[0].writedName,
-      });
-      console.log(postData[0].likes)
-      setLikes(postData[0].likes)
-      setBookmarks(postData[0].bookmarks)
-    }
-  }, [postData]);
+  const [postDataWrap, setPostDataWrap] = useRecoilState(postState);
+  const [postDataSupa, setPostDataSupa] = useState<postType[]>([]);
 
   const mainImg = useRef<any>(null);
   const [mainImgFile, setMainImgFile] = useState<File>();
   const [mainImgpreview, setMainImgPreview] = useState<string | null>("");
+  const subImg1 = useRef<any>(null);
+  const subImg2 = useRef<any>(null);
+  const subImg3 = useRef<any>(null);
+  const subImg4 = useRef<any>(null);
+  const subImg5 = useRef<any>(null);
+  const [subImgFile1, setSubImgFile1] = useState<File>();
+  const [subImgFile2, setSubImgFile2] = useState<File>();
+  const [subImgFile3, setSubImgFile3] = useState<File>();
+  const [subImgFile4, setSubImgFile4] = useState<File>();
+  const [subImgFile5, setSubImgFile5] = useState<File>();
+  const [subImgpreview1, setSubImgPreview1] = useState<string | null>("");
+  const [subImgpreview2, setSubImgPreview2] = useState<string | null>("");
+  const [subImgpreview3, setSubImgPreview3] = useState<string | null>("");
+  const [subImgpreview4, setSubImgPreview4] = useState<string | null>("");
+  const [subImgpreview5, setSubImgPreview5] = useState<string | null>("");
+  // const [beforePreivew, setBeforePreivew] = useState<string[]>([]);
+
+  useEffect(() => {
+    async function fetchData(params: number) {
+      const data: postType[] = await getEventByPost("id", params);
+      setPostDataSupa(data);
+    }
+    fetchData(params);
+  }, [postData]);
+
+  useEffect(() => {
+    if (postDataSupa.length > 0 && postData) {
+      setPostDataId(postData[0].id);
+      setInputs({
+        ...inputs,
+        gender: postDataSupa[0].gender,
+        height: postDataSupa[0].height,
+        title: postDataSupa[0].title,
+        content: postDataSupa[0].content,
+      });
+      setTags(postDataSupa[0].tags);
+      for (let i = 0; i < postDataSupa[0].tags.length; i++) {
+        if (!tagList.includes(postDataSupa[0].tags[i])) {
+          setTagList([...tagList, postDataSupa[0].tags[i]]);
+        }
+      }
+      setWriteUser({
+        id: postDataSupa[0].writedId,
+        email: postDataSupa[0].writedName,
+      });
+      setLikes(postDataSupa[0].likes);
+      setBookmarks(postDataSupa[0].bookmarks);
+      setMainImgPreview(postDataSupa[0].mainImg);
+      // setBeforePreivew([ // 이미지 삭제 때문에 고민..
+      //   ...beforePreivew,
+      //   postDataSupa[0].mainImg,
+      //   ...postDataSupa[0].subImg,
+      // ]);
+      if (postDataSupa[0].subImg.length > 0) {
+        if (postDataSupa[0].subImg[0])
+          setSubImgPreview1(postDataSupa[0].subImg[0]);
+        if (postDataSupa[0].subImg[1])
+          setSubImgPreview2(postDataSupa[0].subImg[1]);
+        if (postDataSupa[0].subImg[2])
+          setSubImgPreview3(postDataSupa[0].subImg[2]);
+        if (postDataSupa[0].subImg[3])
+          setSubImgPreview4(postDataSupa[0].subImg[3]);
+        if (postDataSupa[0].subImg[4])
+          setSubImgPreview5(postDataSupa[0].subImg[4]);
+      }
+    }
+  }, [postDataSupa]);
+
   let selectedMain: string | null = "";
 
   const handleChangeImg = async (e: ChangeEvent<HTMLInputElement>) => {
@@ -81,55 +135,60 @@ const EditComponentPage = ({ postData }: { postData: any[] | null }) => {
     setMainImgPreview("");
   };
 
-  const getMainImgArr = async (check: boolean) => {
-    if (mainImgFile !== undefined)
-      await handleUploadMainImg(mainImgFile, check);
+  const getTodayDate = () => {
+    let today = new Date();
+    let customToday = `${today.getFullYear()}-${
+      today.getMonth() + 1
+    }-${today.getDate()}-${today.getHours()}-${today.getMinutes()}-${today.getSeconds()}`;
+    return customToday;
+  };
+
+  const getMainImgArr = async () => {
+    if (mainImgFile !== undefined) await handleUploadMainImg(mainImgFile);
     else {
       if (mainImgpreview !== "") selectedMain = mainImgpreview;
     }
   };
 
-  const handleUploadMainImg = async (selectedFile: File, check: boolean) => {
+  const removeImgStorage = async (imgName: string) => {
+    const { data, error } = await supabase.storage
+      .from("images")
+      .remove([`posts/${writeUser.email}/${postDataId}/${imgName}`]);
+    if (error) console.log("Error remove Image", error);
+    console.log("Post remove Image successfully ", data);
+  };
+
+  const handleUploadMainImg = async (selectedFile: File) => {
+    let customToday = getTodayDate();
     const { error, data } = await supabase.storage
       .from("images")
-      .upload(`posts/${writeUser.email}/${postDataId}/mainImg`, selectedFile, {
-        cacheControl: "3600",
-        upsert: check,
-      });
+      .upload(
+        `posts/${writeUser.email}/${postDataId}/mainImg_${customToday}`,
+        selectedFile,
+        {
+          cacheControl: "3600",
+          upsert: false,
+        }
+      );
     if (error) console.log("Error creating a Main Image", error);
     else {
       console.log("Main Image created successfully", data);
-      await handleDownMainImg();
+      await handleDownMainImg(customToday);
     }
   };
 
-  const handleDownMainImg = async () => {
+  const handleDownMainImg = async (customToday: string) => {
     const { data } = supabase.storage
       .from("images")
-      .getPublicUrl(`posts/${writeUser.email}/${postDataId}/mainImg`);
+      .getPublicUrl(
+        `posts/${writeUser.email}/${postDataId}/mainImg_${customToday}`
+      );
 
     setMainImgPreview(data.publicUrl);
     selectedMain = data.publicUrl;
-    console.log(selectedMain, "selectedMain");
   };
 
   let selectedSubArray: string[] = [];
-
-  const subImg1 = useRef<any>(null);
-  const subImg2 = useRef<any>(null);
-  const subImg3 = useRef<any>(null);
-  const subImg4 = useRef<any>(null);
-  const subImg5 = useRef<any>(null);
-  const [subImgFile1, setSubImgFile1] = useState<File>();
-  const [subImgFile2, setSubImgFile2] = useState<File>();
-  const [subImgFile3, setSubImgFile3] = useState<File>();
-  const [subImgFile4, setSubImgFile4] = useState<File>();
-  const [subImgFile5, setSubImgFile5] = useState<File>();
-  const [subImgpreview1, setSubImgPreview1] = useState<string | null>("");
-  const [subImgpreview2, setSubImgPreview2] = useState<string | null>("");
-  const [subImgpreview3, setSubImgPreview3] = useState<string | null>("");
-  const [subImgpreview4, setSubImgPreview4] = useState<string | null>("");
-  const [subImgpreview5, setSubImgPreview5] = useState<string | null>("");
 
   const handleChangeSubImg = async (
     e: ChangeEvent<HTMLInputElement>,
@@ -297,13 +356,35 @@ const EditComponentPage = ({ postData }: { postData: any[] | null }) => {
     }
   };
 
+  const removeStorageImg = async () => {
+    let arr: (string | null)[] = [
+      mainImgpreview,
+      subImgpreview1,
+      subImgpreview2,
+      subImgpreview3,
+      subImgpreview4,
+      subImgpreview5,
+    ];
+
+    for (let i = 0; i < arr.length; i++) {
+      let splitItem = arr[i]?.split("/");
+      console.log(splitItem);
+      if (splitItem && splitItem[11]) {
+        console.log(splitItem[11]);
+        await removeImgStorage(splitItem[11]);
+      }
+    }
+  };
+
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (mainImgpreview === "") return alert("메인 사진은 필수입니다.");
-    await getMainImgArr(true);
+    // await removeStorageImg(); // 사진 삭제 기능 다시 봐야함
+    await getMainImgArr();
     await getSubImgArr();
     await editPost();
   };
+
   // editPOst 다른 부분
   const editPost = async () => {
     const date = new Date(Date.now());
@@ -322,7 +403,7 @@ const EditComponentPage = ({ postData }: { postData: any[] | null }) => {
         subImg: selectedSubArray,
         update_at: date,
         likes,
-        bookmarks
+        bookmarks,
       })
       .eq("id", postDataId)
       .select();
@@ -379,14 +460,14 @@ const EditComponentPage = ({ postData }: { postData: any[] | null }) => {
   };
 
   const handleUploadSubImg = async (selectedFile: File, subImg: string) => {
-    console.log(selectedFile);
-    const { data: dataDist, error: errorDist } = await supabase.storage
-      .from("images")
-      .remove([`posts/${writeUser.email}/${postDataId}/${subImg}`]);
+    let customToday = getTodayDate();
+    // const { data: dataDist, error: errorDist } = await supabase.storage
+    //   .from("images")
+    //   .remove([`posts/${writeUser.email}/${postDataId}/${subImg}_${customToday}`]);
     const { error, data } = await supabase.storage
       .from("images")
       .upload(
-        `posts/${writeUser.email}/${postDataId}/${subImg}`,
+        `posts/${writeUser.email}/${postDataId}/${subImg}_${customToday}`,
         selectedFile,
         {
           cacheControl: "3600",
@@ -408,27 +489,11 @@ const EditComponentPage = ({ postData }: { postData: any[] | null }) => {
     selectedSubArray.push(data.publicUrl);
   };
 
-  // ------------- 새로 추가 ----------------
-  useEffect(() => {
-    if (postData !== null) {
-      setMainImgPreview(postData[0].mainImg);
-      if (postData[0].subImg.length > 0) {
-        if (postData[0].subImg[0]) setSubImgPreview1(postData[0].subImg[0]);
-        if (postData[0].subImg[1]) setSubImgPreview2(postData[0].subImg[1]);
-        if (postData[0].subImg[2]) setSubImgPreview3(postData[0].subImg[2]);
-        if (postData[0].subImg[3]) setSubImgPreview4(postData[0].subImg[3]);
-        if (postData[0].subImg[4]) setSubImgPreview5(postData[0].subImg[4]);
-      }
-    }
-  }, []);
-
-  // ------------- 새로 추가 ----------------
-
   return (
     <>
       <Nav />
       {postData !== null ? (
-        <div className="container w-full mt-16">
+        <div className="container mt-16 w-full">
           <h2 className="text-3xl">코디 작성</h2>
           <HrComponents mt={50} mb={50} />
           <form className="flex flex-col gap-[30px]" onSubmit={handleSubmit}>
@@ -440,7 +505,7 @@ const EditComponentPage = ({ postData }: { postData: any[] | null }) => {
             <div className="flex flex-col gap-[10px]">
               <label>
                 메인 사진
-                <span className="text-red-500 text-xs pl-[10px]">* 필수</span>
+                <span className="pl-[10px] text-xs text-red-500">* 필수</span>
               </label>
               <div className="writeFileWrap">
                 <div className="writeFileList">
@@ -527,7 +592,9 @@ const EditComponentPage = ({ postData }: { postData: any[] | null }) => {
                         </p>{" "}
                         <button
                           type="button"
-                          onClick={() => previewSubDelete(2)}
+                          onClick={() => {
+                            previewSubDelete(2), removeStorageImg();
+                          }}
                           className="delBtn"
                         >
                           X
@@ -561,7 +628,9 @@ const EditComponentPage = ({ postData }: { postData: any[] | null }) => {
                         </p>{" "}
                         <button
                           type="button"
-                          onClick={() => previewSubDelete(3)}
+                          onClick={() => {
+                            previewSubDelete(3), removeStorageImg();
+                          }}
                           className="delBtn"
                         >
                           X
@@ -595,7 +664,9 @@ const EditComponentPage = ({ postData }: { postData: any[] | null }) => {
                         </p>{" "}
                         <button
                           type="button"
-                          onClick={() => previewSubDelete(4)}
+                          onClick={() => {
+                            previewSubDelete(4), removeStorageImg();
+                          }}
                           className="delBtn"
                         >
                           X
@@ -629,7 +700,9 @@ const EditComponentPage = ({ postData }: { postData: any[] | null }) => {
                         </p>{" "}
                         <button
                           type="button"
-                          onClick={() => previewSubDelete(5)}
+                          onClick={() => {
+                            previewSubDelete(5), removeStorageImg();
+                          }}
                           className="delBtn"
                         >
                           X

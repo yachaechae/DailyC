@@ -7,6 +7,7 @@ import RecoilProvider from "@/components/RecoilProvider";
 import GetProfile from "@/components/profile/GetProfile";
 import ScrollToTopBtn from "@/components/layout/ScrollToTopBtn";
 import GoToBtn from "@/components/layout/GoToBtn";
+import Loading from "@/components/layout/Loading";
 
 const jua = Jua({ weight: "400", subsets: ["latin"] });
 const judson = Judson({ weight: "400", subsets: ["latin"] });
@@ -42,10 +43,15 @@ export default function RootLayout({
                   DailyC
                 </Link>
                 <GoToBtn />
+                <ScrollToTopBtn />
+                <Loading />
               </div>
             </header>
             {children}
-            <ScrollToTopBtn />
+            <footer className="mt-10 flex h-24 w-full flex-col items-center justify-center bg-gray-200 text-gray-600">
+              <div>@DAILY C</div>
+              <div>대표 : 서지훈 | 윤창근 | 윤호준 | 임세현</div>
+            </footer>
           </GetProfile>
         </RecoilProvider>
       </body>

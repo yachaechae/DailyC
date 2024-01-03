@@ -6,7 +6,7 @@ async function fetchData(params: { id: number }) {
   return data;
 }
 
-export default async function EditPage({ params }: { params?: any }) {
+export default async function EditPage({ params }: { params: { id: number } }) {
   const postData = await fetchData(params);
-  return <EditFormPage postData={postData} />;
+  return <EditFormPage postData={postData} params={params.id} />;
 }

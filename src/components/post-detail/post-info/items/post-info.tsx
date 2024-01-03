@@ -1,11 +1,20 @@
 import React from "react";
 
 type dateType = {
-  createAt: Date;
-  updateAt: Date;
+  createAt: string;
+  updateAt: string | null;
+  writedName: string;
+  gender: string;
+  height: string;
 };
 
-const PostDetailInfo = ({ createAt, updateAt }: dateType) => {
+const PostDetailInfo = ({
+  createAt,
+  updateAt,
+  writedName,
+  gender,
+  height,
+}: dateType) => {
   const newDate = new Date(createAt);
   const createDate = newDate.toLocaleString("ko-KR", {
     year: "numeric",
@@ -33,6 +42,11 @@ const PostDetailInfo = ({ createAt, updateAt }: dateType) => {
       ) : (
         <div className="text-lg text-gray-500">{editDate} (Edit)</div>
       )}
+      <div className="mt-1 text-sm text-gray-800">{writedName}</div>
+      <div className="mt-1 text-sm text-gray-800">
+        {gender === "woman" ? <span>여자</span> : <span>남자</span>} | {height}
+        cm
+      </div>
     </>
   );
 };

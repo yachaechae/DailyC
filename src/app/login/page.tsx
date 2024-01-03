@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase-config";
 import Link from "next/link";
 import { useRecoilState } from "recoil";
-import { isLoginState, userState } from "@/recoil/state";
+import { isLoginState, openLoadingState, userState } from "@/recoil/state";
 import ReturnUserIsLogin from "@/components/profile/ReturnUserIsLogin";
 
 function page() {
@@ -14,6 +14,7 @@ function page() {
   const [password, setPassword] = useState<string>("");
   const [isLogin, setIsLogin] = useRecoilState(isLoginState);
   const [user, setUser] = useRecoilState(userState);
+  const [openLoading, setOpenLoading] = useRecoilState(openLoadingState);
 
   const handleEmailInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
@@ -25,6 +26,7 @@ function page() {
 
   const handleLginForm = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setOpenLoading(true);
 
     const { data, error } = await supabase.auth.signInWithPassword({
       email,
@@ -50,8 +52,10 @@ function page() {
     if (error) {
       console.error("error : ", error);
       setIsLogin(false);
+      setOpenLoading(false);
       return alert(error.message);
     }
+    setOpenLoading(false);
   };
 
   return (
@@ -104,11 +108,16 @@ function page() {
             </button>
           </form>
           <div className="flex w-full justify-end">
-            <Link href={"/signup"} legacyBehavior>
+            <Link
+              href={"/signup"}
+              onClick={() => setOpenLoading(true)}
+              legacyBehavior
+            >
               <a className="mt-3 text-xs text-gray-500">회원가입</a>
             </Link>
           </div>
         </div>
+        <div></div>
       </div>
     </ReturnUserIsLogin>
   );

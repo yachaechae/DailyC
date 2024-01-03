@@ -1,3 +1,4 @@
+export const postKey = "postKey";
 export const inputsKey = "inputsKey";
 export const tagsKey = "tagsKey";
 export const tagItemKey = "tagItemKey";
