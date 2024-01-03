@@ -1,36 +1,40 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Introduction
+##DailyC : 오늘의 외출 코디 공유
+유행하는 코디를 확인할 수 있으며, 날씨에 맞는 원하는 테마별 코디를 확인할 수 있습니다
+친구들간 코디 공유를 통해 서로 안겹치게 옷을 입을 수 있습니다
 
-## Getting Started
+# Duration
+2023.12.26 ~ 2024.01.03
 
-First, run the development server:
+# Development Environment
+- NextJS 14
+- typeScript
+- tailwind CSS
+- MUI CSS
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+# Data Manamgement
+- Recoil
+- React-query v5
+- next
+- supabase
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+# Features
+- 회원가입과 로그인
+supabase Authentication을 이용해 회원가입과 로그인 구현
+- 마이 페이지
+내가 작성한 글, 북마크한 글, 좋아요한 글을 supabase database를 통해 가져와 보여줍니다
+프로필 수정은 supabase Authentication으로 닉네임과 유저 이미지를 교체 구현
+- 인기 카드
+좋아요가 높은 순으로해서 데이터를 정리해 구현
+- 카테고리
+작성자가 글을 쓸 때 남긴 해시태그별 코디 리스트 정리 화면
+- 코디 상세페이지
+코디 카드 작성자의 상세 글 내용이 나와있는 정보 페이지
+해당 게시물에서 좋아요나 북마크 기능들을 보여줄 수 있다
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+# Distribution
+- Vercel
+- Glitch
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+# Deployment Address
+- https://daily-c-zeta.vercel.app/main
