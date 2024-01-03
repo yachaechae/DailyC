@@ -11,12 +11,14 @@ import { InputContent, InputGender, InputHeight, InputTitle } from "./inputs";
 import { InputTags } from "./tags";
 import { getUser } from "@/utils/auth";
 import { useRouter } from "next/navigation";
+import { openLoadingState } from "@/recoil/state";
 
 const WriteComponentPage = () => {
   const router = useRouter();
   const [writeUser, setWriteUser] = useRecoilState(writeUserState);
   const [inputs, setInputs] = useRecoilState(inputsState);
   const [tags, setTags] = useRecoilState(tagsState);
+  const [openLoading, setOpenLoading] = useRecoilState(openLoadingState);
 
   const getProfile = async () => {
     const user = await getUser();
@@ -83,7 +85,7 @@ const WriteComponentPage = () => {
         {
           cacheControl: "3600",
           upsert: false,
-        }
+        },
       );
     if (error) console.log("Error creating a Main Image", error);
     else {
@@ -122,7 +124,7 @@ const WriteComponentPage = () => {
 
   const handleChangeSubImg = async (
     e: ChangeEvent<HTMLInputElement>,
-    value: number
+    value: number,
   ) => {
     if (e.target.files !== null) {
       const file = e.target.files[0];
@@ -289,7 +291,7 @@ const WriteComponentPage = () => {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (mainImgpreview === "") return alert("메인 사진은 필수입니다.");
-
+    setOpenLoading(true);
     await addPost();
   };
 
@@ -395,7 +397,7 @@ const WriteComponentPage = () => {
   const handleUploadSubImg = async (
     selectedFile: File,
     subImg: string,
-    id: number
+    id: number,
   ) => {
     console.log(selectedFile);
     let customToday = getTodayDate();
@@ -410,7 +412,7 @@ const WriteComponentPage = () => {
         {
           cacheControl: "3600",
           upsert: false,
-        }
+        },
       );
     if (error) console.log("Error creating a Sub Image", error);
     else {
@@ -422,7 +424,7 @@ const WriteComponentPage = () => {
   const handleDownSubImg = async (
     subImg: string,
     id: number,
-    customToday: string
+    customToday: string,
   ) => {
     const { data } = supabase.storage
       .from("images")

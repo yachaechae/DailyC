@@ -1,6 +1,6 @@
 import Nav from "@/components/main/nav/Nav";
 import HrComponents from "@/components/ui/hr";
-import { userState } from "@/recoil/state";
+import { openLoadingState, userState } from "@/recoil/state";
 import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import PostDetailContent from "./items/post-content";
@@ -25,6 +25,7 @@ const postComponents = ({
   const [user, setUser] = useRecoilState(userState);
   const [postDataWrap, setPostDataWrap] = useRecoilState(postState);
   const [postDataSupa, setPostDataSupa] = useRecoilState(postStateArr);
+  const [openLoading, setOpenLoading] = useRecoilState(openLoadingState);
 
   useEffect(() => {
     if (postData !== null) {
@@ -61,6 +62,7 @@ const postComponents = ({
         writedName: postDataSupa[0].writedName,
       });
     }
+    setOpenLoading(false);
   }, [postDataSupa]);
 
   return (
