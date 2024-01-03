@@ -90,7 +90,7 @@ const postComponents = ({
           <HrComponents mt={30} mb={30} />
           {checkUser ? (
             <>
-              <PostEditAndDelete postId={postDataWrap.id} />
+              <PostEditAndDelete params={params} />
               <PostLikeAndBook params={params} />
             </>
           ) : (
