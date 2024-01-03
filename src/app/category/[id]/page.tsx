@@ -76,7 +76,9 @@ export default function CategoryDetail({ params }: { params?: any }) {
           onClick={handleClick}
           className={`${jua.className} w-fit p-0 text-4xl text-black`}
         >
-          {selectedTag}
+          <span className={`${jua.className} w-fit p-0 text-4xl text-black`}>
+            {selectedTag}
+          </span>
         </Button>
         <Menu
           id="basic-menu"
