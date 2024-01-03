@@ -12,7 +12,6 @@ export default function page() {
       <Banner />
       <div className="container mt-[10rem]">
         <Popular />
-        <Recent />
       </div>
     </>
   );
