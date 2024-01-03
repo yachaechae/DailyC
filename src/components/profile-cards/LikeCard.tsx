@@ -6,11 +6,10 @@ import CardHeader from "@mui/material/CardHeader";
 import CardMedia from "@mui/material/CardMedia";
 import IconButton from "@mui/material/IconButton";
 import OrangeIcon from "@/icon/OrangeIcon";
-import { Jua, Judson } from "next/font/google";
+import { Judson } from "next/font/google";
 import UserImg from "../profile/UserImg";
 
 const judson = Judson({ weight: "400", subsets: ["latin"] });
-const jua = Jua({ weight: "400", subsets: ["latin"] });
 
 type Props = {
   title: string;
