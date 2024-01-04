@@ -7,16 +7,18 @@
 ![localhost_3000_category (3)](https://github.com/yachaechae/DailyC/assets/96414670/ef866906-5741-422a-996a-f0f328d9e30d)
 ![localhost_3000_category (4)](https://github.com/yachaechae/DailyC/assets/96414670/7d2ae674-00fd-40cd-8053-745d109689ee)
 ![localhost_3000_category (5)](https://github.com/yachaechae/DailyC/assets/96414670/d20d6842-09cf-40e3-9493-da2bcca99483)
+
 # Introduction
-##DailyC : 오늘의 외출 코디 공유
-유행하는 코디를 확인할 수 있으며, 날씨에 맞는 원하는 테마별 코디를 확인할 수 있습니다
-친구들간 코디 공유를 통해 서로 안겹치게 옷을 입을 수 있습니다
+오늘의 외출 코디 공유  
+유행하는 코디, 계절에 맞는 코디 정보를 확인할 수 있습니다.  
+원하는 코디 카드를 저장할 수 있습니다.  
+오늘의 출근룩, 데이트 룩을 공유할 수 있습니다.  
 
 # Duration
 2023.12.26 ~ 2024.01.03
 
 # Development Environment
-- NextJS 14
+- NextJS 14 App Router
 - typeScript
 - tailwind CSS
 - MUI CSS
@@ -43,7 +45,6 @@ supabase Authentication을 이용해 회원가입과 로그인 구현
 
 # Distribution
 - Vercel
-- Glitch
 
 # Deployment Address
 - https://daily-c-zeta.vercel.app/main
